@@ -15,8 +15,7 @@ public class CourierController : ControllerBase
         
     }
     
-    //todo: хз
-    /*/// <summary>
+    /// <summary>
     /// Get list of available orders
     /// </summary>
     [HttpGet]
@@ -24,7 +23,7 @@ public class CourierController : ControllerBase
     public void GetAvailableOrders()
     {
         
-    }*/
+    }
 
     /// <summary>
     /// Change order status when delivered it
