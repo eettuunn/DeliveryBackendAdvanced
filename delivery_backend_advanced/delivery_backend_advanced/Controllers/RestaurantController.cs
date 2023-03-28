@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;
@@ -6,13 +7,20 @@ namespace delivery_backend_advanced.Controllers;
 [Route("api/restaurant")]
 public class RestaurantController : ControllerBase
 {
+    private readonly IRestaurantService _restaurantService;
+
+    public RestaurantController(IRestaurantService restaurantService)
+    {
+        _restaurantService = restaurantService;
+    }
+
     /// <summary>
     /// Get list of restaurants
     /// </summary>
     [HttpGet]
-    public void GetAllRestaurants()
+    public async Task<List<RestaurantListElementDto>> GetAllRestaurants()
     {
-        
+        return await _restaurantService.GetRestaurantList();
     }
 
     /// <summary>
@@ -20,17 +28,17 @@ public class RestaurantController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("{restaurantId}")]
-    public void GetRestaurantDetails(Guid restaurantId)
+    public async Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, Guid? menuId)
     {
-        
+        return await _restaurantService.GetRestaurantDetails(restaurantId, menuId);
     }
     
     /// <summary>
-    /// Get restaurant's menu
+    /// Get restaurant's orders
     /// </summary>
     [HttpGet]
-    [Route("{restaurantId}/menu")]
-    public void GetRestaurantMenu(Guid restaurantId, Guid? menuId)
+    [Route("{restaurantId}/orders")]
+    public void GetRestaurantOrders(Guid restaurantId)
     {
         
     }

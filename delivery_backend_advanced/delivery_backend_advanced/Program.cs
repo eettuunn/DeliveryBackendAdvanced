@@ -1,5 +1,7 @@
 using System.Reflection;
 using delivery_backend_advanced.Models;
+using delivery_backend_advanced.Services;
+using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,10 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFilename = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
+
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
+
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 
 var connection = builder.Configuration.GetConnectionString("Postgres");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));

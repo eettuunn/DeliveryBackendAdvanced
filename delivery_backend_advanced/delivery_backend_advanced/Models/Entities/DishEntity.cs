@@ -24,5 +24,5 @@ public class DishEntity
     [Required]
     public DishCategory Category { get; set; }
 
-    //public List<RatingEntity> Ratings = new();
+    // public List<RatingEntity> Ratings = new();
 }
