@@ -1,4 +1,6 @@
 using System.Reflection;
+using delivery_backend_advanced.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,14 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
+var connection = builder.Configuration.GetConnectionString("Postgres");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
+
 var app = builder.Build();
+
+using var serviceScope = app.Services.CreateScope();
+var dbContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
+dbContext?.Database.Migrate();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
