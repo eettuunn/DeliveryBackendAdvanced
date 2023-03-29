@@ -2,6 +2,7 @@
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Entities;
+using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,10 +29,9 @@ public class RestaurantService : IRestaurantService
         List<RestaurantListElementDto> restDtos = _mapper.Map<List<RestaurantListElementDto>>(restEntities);
         for (int i = 0; i < restEntities.Count; i++)
         {
-            restDtos[i].menus = restEntities[i]
+            restDtos[i].menu = _mapper.Map<List<MenuShortDto>>(restEntities[i]
                 .Menus
-                .Select(menu => menu.Name)
-                .ToList();
+                .ToList());
         }
 
         return restDtos;
@@ -48,15 +48,44 @@ public class RestaurantService : IRestaurantService
         var restDto = _mapper.Map<RestaurantDetailsDto>(rest);
         if (menuId == null)
         {
-            restDto.menu = _mapper.Map<MenuDto>(rest.Menus[0]);
+            restDto.menus = _mapper.Map<MenuDto>(rest
+                .Menus
+                .FirstOrDefault(menu => menu.IsMain));
         }
         else
         {
-            restDto.menu = _mapper.Map<MenuDto>(rest
+            restDto.menus = _mapper.Map<MenuDto>(rest
                 .Menus
-                .Where(menu => menu.Id == menuId));
+                .FirstOrDefault(menu => menu.Id == menuId));
         }
         
         return restDto;
+    }
+
+    public async Task<List<OrderDto>> GetRestaurantOrders(Guid restaurantId)
+    {
+        var orderEntities = await _context
+            .Orders
+            .Include(order => order.Restaurant)
+            .Include(order => order.Dishes)
+            .ThenInclude(dish => dish.Dish)
+            .Where(order => order.Restaurant.Id == restaurantId && (order.Status == OrderStatus.Created ||
+                                                                    order.Status == OrderStatus.Kitchen ||
+                                                                    order.Status == OrderStatus.Packaging))
+            .ToListAsync();
+        
+        List<OrderDto> orderDtos = _mapper.Map<List<OrderDto>>(orderEntities);
+
+        //todo: cringe, maybe double mapper, and testint
+        for (int i = 0; i < orderEntities.Count; i++)
+        {
+            orderDtos[i].dishes = _mapper.Map<List<DishInOrderDto>>(orderEntities[i].Dishes.Select(d => d.Dish));
+            for (int j = 0; j < orderDtos[i].dishes.Count; j++)
+            {
+                orderDtos[i].dishes[j].amount = orderEntities[i].Dishes[j].Amount;
+            }
+        }
+        
+        return orderDtos;
     }
 }

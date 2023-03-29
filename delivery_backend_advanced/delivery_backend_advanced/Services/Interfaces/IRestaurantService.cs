@@ -7,4 +7,6 @@ public interface IRestaurantService
     public Task<List<RestaurantListElementDto>> GetRestaurantList();
 
     public Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, Guid? menuId);
+
+    public Task<List<OrderDto>> GetRestaurantOrders(Guid restaurantId);
 }

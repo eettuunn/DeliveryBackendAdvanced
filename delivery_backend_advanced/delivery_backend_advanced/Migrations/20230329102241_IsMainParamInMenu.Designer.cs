@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using delivery_backend_advanced.Models;
@@ -11,9 +12,10 @@ using delivery_backend_advanced.Models;
 namespace delivery_backend_advanced.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230329102241_IsMainParamInMenu")]
+    partial class IsMainParamInMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,16 +42,11 @@ namespace delivery_backend_advanced.Migrations
                     b.Property<Guid?>("OrderEntityId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DishId");
 
                     b.HasIndex("OrderEntityId");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("DishesInBasket");
                 });
@@ -132,15 +129,10 @@ namespace delivery_backend_advanced.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Orders");
                 });
@@ -191,15 +183,7 @@ namespace delivery_backend_advanced.Migrations
                         .WithMany("Dishes")
                         .HasForeignKey("OrderEntityId");
 
-                    b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Dish");
-
-                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishEntity", b =>
@@ -213,17 +197,6 @@ namespace delivery_backend_advanced.Migrations
                 {
                     b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Menus")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
-                });
-
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.OrderEntity", b =>
-                {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
-                        .WithMany("Orders")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -255,8 +228,6 @@ namespace delivery_backend_advanced.Migrations
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.RestaurantEntity", b =>
                 {
                     b.Navigation("Menus");
-
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,8 @@ public class RestaurantEntity
     [Required]
     public string Name { get; set; }
 
+    public List<OrderEntity> Orders { get; set; } = new();
+
     public List<MenuEntity> Menus { get; set; } = new();
 
     // public List<CookEntity> Cooks { get; set; }= new();

@@ -38,8 +38,8 @@ public class RestaurantController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("{restaurantId}/orders")]
-    public void GetRestaurantOrders(Guid restaurantId)
+    public async Task<List<OrderDto>> GetRestaurantOrders(Guid restaurantId)
     {
-        
+        return await _restaurantService.GetRestaurantOrders(restaurantId);
     }
 }

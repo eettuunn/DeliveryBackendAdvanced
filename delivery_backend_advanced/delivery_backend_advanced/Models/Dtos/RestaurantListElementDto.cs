@@ -6,5 +6,5 @@ public class RestaurantListElementDto
     
     public string name { get; set; }
 
-    public List<string> menus { get; set; } = new();
+    public List<MenuShortDto> menu { get; set; } = new();
 }

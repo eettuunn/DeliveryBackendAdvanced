@@ -9,6 +9,9 @@ public class MenuEntity
     
     [Required]
     public string Name { get; set; }
+
+    [Required]
+    public bool IsMain { get; set; } = false;
     
     [Required]
     public RestaurantEntity Restaurant { get; set; }

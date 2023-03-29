@@ -5,7 +5,7 @@ namespace delivery_backend_advanced.Models.Entities;
 public class DishBasketEntity
 {
     public Guid Id { get; set; }
-
+    
     // [Required]
     // public CustomerEntity Customer { get; set; }
     
@@ -14,6 +14,9 @@ public class DishBasketEntity
 
     [Required]
     public int Amount { get; set; }
+    
+    [Required]
+    public RestaurantEntity Restaurant { get; set; }
     
     //todo: мб можно придумать другую реализацию хранения блюд в заказе
     [Required]
