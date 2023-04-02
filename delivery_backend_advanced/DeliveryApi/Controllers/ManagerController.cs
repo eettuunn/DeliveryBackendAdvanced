@@ -44,4 +44,15 @@ public class ManagerController : ControllerBase
     {
         
     }
+    
+    
+    
+    /// <summary>
+    /// Set main menu by Id
+    /// </summary>
+    [HttpPut]
+    [Route("{restaurantId}/menu/{menuId}")]
+    public void SetMenuMain(Guid restaurantId, Guid menuId)
+    {
+    }
 }

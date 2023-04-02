@@ -2,6 +2,7 @@ using System.Reflection;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Services;
 using delivery_backend_advanced.Services.Interfaces;
+using DeliveryApi.DAL;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,14 +22,15 @@ builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 
-var connection = builder.Configuration.GetConnectionString("Postgres");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
+builder.ConfigureDeliveryApiDAL();
+// var connection = builder.Configuration.GetConnectionString("Postgres");
+// builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
 
 var app = builder.Build();
 
-using var serviceScope = app.Services.CreateScope();
+/*using var serviceScope = app.Services.CreateScope();
 var dbContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
-dbContext?.Database.Migrate();
+dbContext?.Database.Migrate();*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.ConfigureDeliveryApiDAL();
 
 app.UseHttpsRedirection();
 
