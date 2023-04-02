@@ -1,6 +1,7 @@
 using System.Reflection;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Services;
+using delivery_backend_advanced.Services.ExceptionHandler;
 using delivery_backend_advanced.Services.Interfaces;
 using DeliveryApi.DAL;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ConfigureDeliveryApiDAL();
+
+app.UseExceptionMiddleware();
 
 app.UseHttpsRedirection();
 

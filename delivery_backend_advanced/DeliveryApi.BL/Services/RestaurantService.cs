@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using delivery_backend_advanced.Exceptions;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Enums;
@@ -42,7 +43,7 @@ public class RestaurantService : IRestaurantService
             .Restaurants
             .Where(r => r.Id == restaurantId)
             .Include(r => r.Menus)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync() ?? throw new CantFindByIdException("restaurant", restaurantId);
         
         var restDto = _mapper.Map<RestaurantDetailsDto>(rest);
         if (menuId == null)
@@ -55,7 +56,8 @@ public class RestaurantService : IRestaurantService
         {
             restDto.menus = _mapper.Map<MenuDto>(rest
                 .Menus
-                .FirstOrDefault(menu => menu.Id == menuId));
+                .FirstOrDefault(menu => menu.Id == menuId)) ??
+                            throw new CantFindByIdException("menu", menuId);
         }
         
         return restDto;
@@ -63,6 +65,12 @@ public class RestaurantService : IRestaurantService
 
     public async Task<List<OrderDto>> GetRestaurantOrders(Guid restaurantId)
     {
+        var restaurant = await _context
+                             .Restaurants
+                             .FirstOrDefaultAsync(r => r.Id == restaurantId) ??
+                         throw new CantFindByIdException("restaurant", restaurantId);
+        
+        
         var orderEntities = await _context
             .Orders
             .Include(order => order.Restaurant)
