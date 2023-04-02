@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Models.Dtos;
-using delivery_backend_advanced.Models.Entities;
 using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using delivery_backend_advanced.Models.Entities;
 using delivery_backend_advanced.Models.Enums;
 
 namespace delivery_backend_advanced.Models.Dtos;

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using delivery_backend_advanced.Models;
@@ -11,9 +12,10 @@ using delivery_backend_advanced.Models;
 namespace delivery_backend_advanced.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230329151135_ConnectedOrderRestBasket")]
+    partial class ConnectedOrderRestBasket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,7 @@ namespace delivery_backend_advanced.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishBasketEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.DishBasketEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +56,7 @@ namespace delivery_backend_advanced.Migrations
                     b.ToTable("DishesInBasket");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.DishEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,7 +92,7 @@ namespace delivery_backend_advanced.Migrations
                     b.ToTable("Dishes");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.MenuEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.MenuEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,7 +115,7 @@ namespace delivery_backend_advanced.Migrations
                     b.ToTable("Menus");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.OrderEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.OrderEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,7 +147,7 @@ namespace delivery_backend_advanced.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.RatingEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.RatingEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,7 +166,7 @@ namespace delivery_backend_advanced.Migrations
                     b.ToTable("Ratings");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.RestaurantEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.RestaurantEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -179,19 +181,19 @@ namespace delivery_backend_advanced.Migrations
                     b.ToTable("Restaurants");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishBasketEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.DishBasketEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.DishEntity", "Dish")
+                    b.HasOne("DeliveryApi.Models.Entities.DishEntity", "Dish")
                         .WithMany()
                         .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("delivery_backend_advanced.Models.Entities.OrderEntity", null)
+                    b.HasOne("DeliveryApi.Models.Entities.OrderEntity", null)
                         .WithMany("Dishes")
                         .HasForeignKey("OrderEntityId");
 
-                    b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
+                    b.HasOne("DeliveryApi.Models.Entities.RestaurantEntity", "Restaurant")
                         .WithMany()
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -202,16 +204,16 @@ namespace delivery_backend_advanced.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.DishEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.MenuEntity", null)
+                    b.HasOne("DeliveryApi.Models.Entities.MenuEntity", null)
                         .WithMany("Dishes")
                         .HasForeignKey("MenuEntityId");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.MenuEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.MenuEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
+                    b.HasOne("DeliveryApi.Models.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Menus")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -220,9 +222,9 @@ namespace delivery_backend_advanced.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.OrderEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.OrderEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
+                    b.HasOne("DeliveryApi.Models.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Orders")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -231,9 +233,9 @@ namespace delivery_backend_advanced.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.RatingEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.RatingEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.DishEntity", "Dish")
+                    b.HasOne("DeliveryApi.Models.Entities.DishEntity", "Dish")
                         .WithMany()
                         .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -242,17 +244,17 @@ namespace delivery_backend_advanced.Migrations
                     b.Navigation("Dish");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.MenuEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.MenuEntity", b =>
                 {
                     b.Navigation("Dishes");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.OrderEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.OrderEntity", b =>
                 {
                     b.Navigation("Dishes");
                 });
 
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.RestaurantEntity", b =>
+            modelBuilder.Entity("DeliveryApi.Models.Entities.RestaurantEntity", b =>
                 {
                     b.Navigation("Menus");
 

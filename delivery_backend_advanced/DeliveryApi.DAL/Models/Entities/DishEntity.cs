@@ -21,6 +21,7 @@ public class DishEntity
     [Required]
     public byte[] Photo { get; set; } = Array.Empty<byte>();
     
+    //todo: wtf
     [Required]
     public DishCategory Category { get; set; }
 
