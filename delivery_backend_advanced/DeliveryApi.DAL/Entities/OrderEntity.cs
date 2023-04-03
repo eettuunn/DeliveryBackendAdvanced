@@ -30,9 +30,7 @@ public class OrderEntity
     // [Required]
     // public CustomerEntity Customer { get; set; }
     
-    //[Required]
-    // public CookEntity Cook { get; set; }
-    
-    // [Required]
-    // public CourierEntity Courier { get; set; }
+    // public CookEntity? Cook { get; set; }
+
+    // public CourierEntity? Courier { get; set; }
 }

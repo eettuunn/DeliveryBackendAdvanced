@@ -29,9 +29,9 @@ public class DishController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("{dishId}/rating/check")]
-    public bool CheckAbilityToRate(Guid dishId)
+    public async Task<bool> CheckAbilityToRate(Guid dishId)
     {
-        return true;
+        return await _dishService.CheckAbilityToRate(dishId);
     }
 
     /// <summary>
