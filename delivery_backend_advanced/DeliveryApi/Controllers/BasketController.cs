@@ -1,4 +1,5 @@
-﻿using delivery_backend_advanced.Services.Interfaces;
+﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;
@@ -17,9 +18,9 @@ public class BasketController : ControllerBase
     /// Get user's basket
     /// </summary>
     [HttpGet]
-    public void GetUserBasket()
+    public async Task<BasketDto> GetUserBasket()
     {
-        
+        return await _basketService.GetUserBasket();
     }
     
     /// <summary>
