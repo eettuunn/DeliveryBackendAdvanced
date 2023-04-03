@@ -6,5 +6,5 @@ public class RestaurantDetailsDto
     
     public string name { get; set; }
     
-    public MenuDto menus { get; set; }
+    public MenuDto menu { get; set; }
 }

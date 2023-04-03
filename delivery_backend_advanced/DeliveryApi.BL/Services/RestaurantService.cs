@@ -43,18 +43,19 @@ public class RestaurantService : IRestaurantService
             .Restaurants
             .Where(r => r.Id == restaurantId)
             .Include(r => r.Menus)
+            .ThenInclude(menu => menu.Dishes)
             .FirstOrDefaultAsync() ?? throw new CantFindByIdException("restaurant", restaurantId);
         
         var restDto = _mapper.Map<RestaurantDetailsDto>(rest);
         if (menuId == null)
         {
-            restDto.menus = _mapper.Map<MenuDto>(rest
+            restDto.menu = _mapper.Map<MenuDto>(rest
                 .Menus
                 .FirstOrDefault(menu => menu.IsMain));
         }
         else
         {
-            restDto.menus = _mapper.Map<MenuDto>(rest
+            restDto.menu = _mapper.Map<MenuDto>(rest
                 .Menus
                 .FirstOrDefault(menu => menu.Id == menuId)) ??
                             throw new CantFindByIdException("menu", menuId);

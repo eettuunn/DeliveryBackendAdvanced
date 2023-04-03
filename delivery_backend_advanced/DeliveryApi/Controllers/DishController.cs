@@ -39,8 +39,8 @@ public class DishController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("{dishId}/rating")]
-    public void RateDish(Guid dishId)
+    public async Task RateDish(Guid dishId, int value)
     {
-        
+        await _dishService.RateDish(dishId, value);
     }
 }

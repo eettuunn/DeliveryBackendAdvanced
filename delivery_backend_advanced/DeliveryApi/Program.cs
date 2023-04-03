@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Services;
 using delivery_backend_advanced.Services.ExceptionHandler;
@@ -25,17 +26,15 @@ builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IDishService, DishService>();
 
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options => 
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
 builder.ConfigureDeliveryApiDAL();
-// var connection = builder.Configuration.GetConnectionString("Postgres");
-// builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
 
 var app = builder.Build();
 
-/*using var serviceScope = app.Services.CreateScope();
-var dbContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
-dbContext?.Database.Migrate();*/
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

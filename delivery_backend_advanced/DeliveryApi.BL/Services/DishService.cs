@@ -62,7 +62,38 @@ public class DishService : IDishService
         return CheckDishInOrder(userOrders, dishBasketEntities);
     }
 
-    
+    public async Task RateDish(Guid dishId, int value)
+    {
+        if (value < 1 || value > 10)
+        {
+            throw new BadRequestException("Rating value must be in range from 1 to 10");
+        }
+        var canRate = await CheckAbilityToRate(dishId);
+
+        if (canRate)
+        {
+            var dishEntity = await _context
+                .Dishes
+                .Include(dish => dish.Ratings)
+                .FirstOrDefaultAsync(dish => dish.Id == dishId) ?? throw new CantFindByIdException("dish", dishId);
+          
+            //todo: add change rating when user already rated this dish
+            
+            RatingEntity ratingEntity = new RatingEntity()
+            {
+                Id = new Guid(),
+                Value = value,
+                Dish = dishEntity
+            };
+
+            await _context.Ratings.AddAsync(ratingEntity);
+            RecalculateAverageRating(ref dishEntity);
+            await _context.SaveChangesAsync();
+        }
+        else throw new ConflictException("You can't rate this dish");
+    }
+
+
     // auxiliary
     private bool CheckDishInOrder(List<OrderEntity> orders, List<DishBasketEntity> dishes)
     {
@@ -78,5 +109,13 @@ public class DishService : IDishService
         }
 
         return false;
+    }
+
+    private void RecalculateAverageRating(ref DishEntity dishEntity)
+    {
+        int sum = dishEntity.Ratings.Sum(r => r.Value);
+        int count = dishEntity.Ratings.Count;
+
+        dishEntity.AverageRating = Math.Round((double)sum / count, 1);
     }
 }

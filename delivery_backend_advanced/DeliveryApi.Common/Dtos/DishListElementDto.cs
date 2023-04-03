@@ -15,4 +15,6 @@ public class DishListElementDto
     public byte[] photo { get; set; }
     
     public DishCategory category { get; set; }
+    
+    public double averageRating { get; set; }
 }

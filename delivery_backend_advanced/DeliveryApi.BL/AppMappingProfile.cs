@@ -11,7 +11,7 @@ public class AppMappingProfile : Profile
         CreateMap<RestaurantEntity, RestaurantListElementDto>();
         CreateMap<MenuEntity, MenuDto>().ReverseMap();
         CreateMap<DishEntity, DishListElementDto>();
-        CreateMap<RestaurantEntity, RestaurantDetailsDto>().ForMember(rest => rest.menus, opt => opt.Ignore());
+        CreateMap<RestaurantEntity, RestaurantDetailsDto>().ForMember(rest => rest.menu, opt => opt.Ignore());
         CreateMap<MenuEntity, MenuShortDto>();
         CreateMap<OrderEntity, OrderDto>();
         CreateMap<DishEntity, DishInOrderDto>();
