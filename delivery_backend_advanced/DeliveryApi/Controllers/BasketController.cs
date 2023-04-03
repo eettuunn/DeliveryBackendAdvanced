@@ -1,10 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using delivery_backend_advanced.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;
 
 [Route("api/basket")]
 public class BasketController : ControllerBase
 {
+    private readonly IBasketService _basketService;
+
+    public BasketController(IBasketService basketService)
+    {
+        _basketService = basketService;
+    }
+
     /// <summary>
     /// Get user's basket
     /// </summary>
@@ -18,27 +26,18 @@ public class BasketController : ControllerBase
     /// Add dish to basket
     /// </summary>
     [HttpPost]
-    public void AddDishToBasket()
+    [Route("{dishId}/{restaurantId}")]
+    public async Task AddDishToBasket(Guid dishId, Guid restaurantId)
     {
-        
-    }
-
-    /// <summary>
-    /// Increase number of dishes in basket
-    /// </summary>
-    [HttpPatch]
-    [Route("{dishId}/increase")]
-    public void IncreaseDishNumber(Guid dishId)
-    {
-        
+        await _basketService.AddDishToBasket(dishId, restaurantId);
     }
     
     /// <summary>
     /// Reduce number of dishes in basket
     /// </summary>
-    [HttpPatch]
-    [Route("{dishId}/reduce")]
-    public void ReduceDishNumber(Guid dishId)
+    [HttpDelete]
+    [Route("{dishId}/{restaurantId}/reduce")]
+    public void ReduceDishNumber(Guid dishId, Guid restaurantId, bool? delete = null)
     {
         
     }
