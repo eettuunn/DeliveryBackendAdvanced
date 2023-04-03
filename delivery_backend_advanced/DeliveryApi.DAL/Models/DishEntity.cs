@@ -15,15 +15,16 @@ public class DishEntity
     
     public string? Description { get; set; }
     
+    public double? AverageRating { get; set; }
+    
     [Required]
     public bool IsVegetarian { get; set; }
 
     [Required]
     public byte[] Photo { get; set; } = Array.Empty<byte>();
     
-    //todo: wtf
     [Required]
     public DishCategory Category { get; set; }
 
-    // public List<RatingEntity> Ratings = new();
+    public List<RatingEntity> Ratings { get; set; } = new();
 }

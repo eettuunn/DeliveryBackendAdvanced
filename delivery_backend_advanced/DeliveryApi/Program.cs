@@ -3,6 +3,7 @@ using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Services;
 using delivery_backend_advanced.Services.ExceptionHandler;
 using delivery_backend_advanced.Services.Interfaces;
+using DeliveryApi.BL.Services;
 using DeliveryApi.DAL;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IDishService, DishService>();
 
 builder.ConfigureDeliveryApiDAL();
 // var connection = builder.Configuration.GetConnectionString("Postgres");

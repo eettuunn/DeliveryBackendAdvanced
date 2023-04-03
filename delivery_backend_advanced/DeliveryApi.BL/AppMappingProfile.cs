@@ -16,5 +16,6 @@ public class AppMappingProfile : Profile
         CreateMap<OrderEntity, OrderDto>();
         CreateMap<DishEntity, DishInOrderDto>();
         CreateMap<DishBasketEntity, DishInOrderDto>();
+        CreateMap<DishEntity, DishDetailsDto>();
     }
 }
