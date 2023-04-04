@@ -36,9 +36,9 @@ public class BasketController : ControllerBase
     /// <summary>
     /// Reduce number of dishes in basket
     /// </summary>
-    [HttpDelete]
-    [Route("{dishId}/{restaurantId}/reduce")]
-    public void ReduceDishNumber(Guid dishId, Guid restaurantId, bool? delete = null)
+    [HttpPatch]
+    [Route("reduce/{dishBaketId}")]
+    public void ReduceDishNumber(Guid dishId, Guid restaurantId)
     {
         
     }
@@ -47,9 +47,9 @@ public class BasketController : ControllerBase
     /// Delete dish from basket completely 
     /// </summary>
     [HttpDelete]
-    [Route("{dishId}")]
-    public void DeleteDishFromBasket(Guid dishId)
+    [Route("delete/{dishBasketId}")]
+    public async Task DeleteDishFromBasket(Guid dishBasketId)
     {
-        
+        await _basketService.DeleteDishFromBasket(dishBasketId);
     }
 }

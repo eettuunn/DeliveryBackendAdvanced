@@ -12,5 +12,5 @@ public class DishBasketDto
     
     public int amount { get; set; }
     
-    public string? image { get; set; }
+    public byte[] photo { get; set; }
 }

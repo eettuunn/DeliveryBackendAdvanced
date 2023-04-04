@@ -80,6 +80,17 @@ public class BasketService : IBasketService
         return basketDto;
     }
 
+    public async Task DeleteDishFromBasket(Guid dishBasketId)
+    {
+        var dishInBasketEntity = await _context
+                                     .DishesInBasket
+                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder) ??
+                                 throw new CantFindByIdException("dish in your basket", dishBasketId);
+
+        _context.DishesInBasket.Remove(dishInBasketEntity);
+        await _context.SaveChangesAsync();
+    }
+
     private List<RestaurantBasketDto> FillRestaurantsInBasket(List<DishBasketEntity> dishesInBasket)
     {
         List<RestaurantBasketDto> restaurants = new();
@@ -89,6 +100,7 @@ public class BasketService : IBasketService
             var dishBasketDto = _mapper.Map<DishBasketDto>(dish.Dish);
             dishBasketDto.amount = dish.Amount;
             dishBasketDto.totalPrice = dishBasketDto.amount * dishBasketDto.price;
+            dishBasketDto.id = dish.Id;
             
             int index = restaurants.FindIndex(r => r.id == dish.Restaurant.Id);
             if (index >= 0)
