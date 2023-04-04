@@ -6,6 +6,6 @@ public interface IBasketService
 {
     public Task AddDishToBasket(Guid dishId, Guid restaurantId);
     public Task<BasketDto> GetUserBasket();
-
     public Task DeleteDishFromBasket(Guid dishBasketId);
+    public Task ReduceDishInBasket(Guid dishBasketId);
 }

@@ -37,10 +37,10 @@ public class BasketController : ControllerBase
     /// Reduce number of dishes in basket
     /// </summary>
     [HttpPatch]
-    [Route("reduce/{dishBaketId}")]
-    public void ReduceDishNumber(Guid dishId, Guid restaurantId)
+    [Route("reduce/{dishBasketId}")]
+    public async Task ReduceDishNumber(Guid dishBasketId)
     {
-        
+        await _basketService.ReduceDishInBasket(dishBasketId);
     }
 
     /// <summary>
