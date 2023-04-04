@@ -66,6 +66,7 @@ public class RestaurantService : IRestaurantService
 
     public async Task<List<OrderDto>> GetRestaurantOrders(Guid restaurantId)
     {
+        //todo: sorting, filters and search
         var restaurant = await _context
                              .Restaurants
                              .FirstOrDefaultAsync(r => r.Id == restaurantId) ??
