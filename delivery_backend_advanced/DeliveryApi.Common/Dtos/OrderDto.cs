@@ -21,6 +21,9 @@ public class OrderDto
     
     [Required]
     public OrderStatus status { get; set; }
+    
+    [Required]
+    public int number { get; set; }
 
     public List<DishInOrderDto> dishes { get; set; } = new();
     

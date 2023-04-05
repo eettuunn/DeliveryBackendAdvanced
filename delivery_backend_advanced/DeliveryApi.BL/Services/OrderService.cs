@@ -23,6 +23,7 @@ public class OrderService : IOrderService
 
     public async Task CreateOrder(CreateOrderDto orderDto)
     {
+        //todo: maybe do create orders for all rests at once
         var orderDishes = await _context
             .DishesInBasket
             .Include(dib => dib.Dish)
@@ -42,7 +43,8 @@ public class OrderService : IOrderService
             Address = orderDto.address,
             Status = OrderStatus.Created,
             Restaurant = restaurantEntity,
-            Dishes = orderDishes
+            Dishes = orderDishes,
+            Number = await _context.Orders.CountAsync() + 1
         };
         
         orderDishes.Select(dib =>
@@ -69,5 +71,30 @@ public class OrderService : IOrderService
         List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
 
         return orderDtos;
+    }
+
+    public async Task<OrderDto> GetOrderDetails(Guid orderId)
+    {
+        //todo: sorting, filters, search and user
+        var orderEntity = await _context
+            .Orders
+            .Include(order => order.Restaurant)
+            .Include(order => order.Dishes)
+            .ThenInclude(dish => dish.Dish)
+            .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
+        
+        OrderDto orderDto = _mapper.Map<OrderDto>(orderEntity);
+        orderDto.dishes = _mapper.Map<List<DishInOrderDto>>(orderEntity.Dishes.Select(d => d.Dish));
+        for (int i = 0; i < orderEntity.Dishes.Count; i++)
+        {
+            orderDto.dishes[i].amount = orderEntity.Dishes[i].Amount;
+        }
+        
+        return orderDto;
+    }
+
+    public Task CancelOrder(Guid orderId)
+    {
+        throw new NotImplementedException();
     }
 }

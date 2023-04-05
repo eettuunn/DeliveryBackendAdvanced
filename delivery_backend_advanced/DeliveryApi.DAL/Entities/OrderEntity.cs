@@ -23,6 +23,9 @@ public class OrderEntity
     public OrderStatus Status { get; set; }
     
     [Required]
+    public int Number { get; set; }
+    
+    [Required]
     public RestaurantEntity Restaurant { get; set; }
 
     public List<DishBasketEntity> Dishes { get; set; } = new();

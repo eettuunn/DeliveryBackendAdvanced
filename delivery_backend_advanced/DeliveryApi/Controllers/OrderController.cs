@@ -62,9 +62,9 @@ public class OrderController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("{orderId}")]
-    public void GetOrderDetails()
+    public async Task<OrderDto> GetOrderDetails(Guid orderId)
     {
-        
+        return await _orderService.GetOrderDetails(orderId);
     }
 
     /// <summary>
@@ -74,5 +74,14 @@ public class OrderController : ControllerBase
     public async Task<List<OrderListElementDto>> GetListOfOrders()
     {
         return await _orderService.GetUserOrders();
+    }
+    
+    /// <summary>
+    /// Get current order
+    /// </summary>
+    [HttpGet]
+    [Route("current")]
+    public void GetCurrentOrder()
+    {
     }
 }

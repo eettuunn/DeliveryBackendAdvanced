@@ -8,9 +8,6 @@ public class OrderListElementDto
     public Guid id { get; set; }
     
     [Required]
-    public DateTime deliveryTime { get; set; }
-    
-    [Required]
     public DateTime orderTime { get; set; }
     
     [Required]
@@ -21,6 +18,9 @@ public class OrderListElementDto
     
     [Required]
     public OrderStatus status { get; set; }
+    
+    [Required]
+    public int number { get; set; }
 
     // [Required]
     // public CustomerEntity customer { get; set; }
