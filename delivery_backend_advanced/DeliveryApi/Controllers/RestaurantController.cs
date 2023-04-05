@@ -38,7 +38,7 @@ public class RestaurantController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("{restaurantId}/orders")]
-    public async Task<List<OrderDto>> GetRestaurantOrders(Guid restaurantId)
+    public async Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId)
     {
         return await _restaurantService.GetRestaurantOrders(restaurantId);
     }

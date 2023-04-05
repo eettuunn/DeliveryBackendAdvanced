@@ -5,4 +5,6 @@ namespace delivery_backend_advanced.Services.Interfaces;
 public interface IOrderService
 {
     public Task CreateOrder(CreateOrderDto orderDto);
+
+    public Task<List<OrderListElementDto>> GetUserOrders();
 }

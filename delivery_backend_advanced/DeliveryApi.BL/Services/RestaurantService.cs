@@ -64,7 +64,7 @@ public class RestaurantService : IRestaurantService
         return restDto;
     }
 
-    public async Task<List<OrderDto>> GetRestaurantOrders(Guid restaurantId)
+    public async Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId)
     {
         //todo: sorting, filters and search
         var restaurant = await _context
@@ -83,17 +83,7 @@ public class RestaurantService : IRestaurantService
                                                                     order.Status == OrderStatus.Packaging))
             .ToListAsync();
         
-        List<OrderDto> orderDtos = _mapper.Map<List<OrderDto>>(orderEntities);
-
-        //todo: cringe, maybe double mapper, and testint
-        for (int i = 0; i < orderEntities.Count; i++)
-        {
-            orderDtos[i].dishes = _mapper.Map<List<DishInOrderDto>>(orderEntities[i].Dishes.Select(d => d.Dish));
-            for (int j = 0; j < orderDtos[i].dishes.Count; j++)
-            {
-                orderDtos[i].dishes[j].amount = orderEntities[i].Dishes[j].Amount;
-            }
-        }
+        List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
         
         return orderDtos;
     }

@@ -14,6 +14,7 @@ public class AppMappingProfile : Profile
         CreateMap<RestaurantEntity, RestaurantDetailsDto>().ForMember(rest => rest.menu, opt => opt.Ignore());
         CreateMap<MenuEntity, MenuShortDto>();
         CreateMap<OrderEntity, OrderDto>();
+        CreateMap<OrderEntity, OrderListElementDto>();
         CreateMap<DishEntity, DishInOrderDto>();
         CreateMap<DishBasketEntity, DishInOrderDto>();
         CreateMap<DishEntity, DishDetailsDto>();

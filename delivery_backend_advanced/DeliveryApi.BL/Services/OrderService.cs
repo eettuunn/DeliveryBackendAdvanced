@@ -55,4 +55,19 @@ public class OrderService : IOrderService
         await _context.Orders.AddAsync(newOrder);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<OrderListElementDto>> GetUserOrders()
+    {
+        //todo: sorting, filters, search and user
+        var orderEntities = await _context
+            .Orders
+            .Include(order => order.Restaurant)
+            .Include(order => order.Dishes)
+            .ThenInclude(dish => dish.Dish)
+            .ToListAsync();
+        
+        List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
+
+        return orderDtos;
+    }
 }

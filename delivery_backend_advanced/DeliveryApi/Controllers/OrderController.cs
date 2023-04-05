@@ -71,8 +71,8 @@ public class OrderController : ControllerBase
     /// Get list of orders
     /// </summary>
     [HttpGet]
-    public void GetListOfOrders()
+    public async Task<List<OrderListElementDto>> GetListOfOrders()
     {
-        
+        return await _orderService.GetUserOrders();
     }
 }
