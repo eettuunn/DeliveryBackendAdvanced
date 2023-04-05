@@ -5,7 +5,6 @@ using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Entities;
 using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryApi.BL.Services;
@@ -93,8 +92,18 @@ public class OrderService : IOrderService
         return orderDto;
     }
 
-    public Task CancelOrder(Guid orderId)
+    public async Task CancelOrder(Guid orderId)
     {
-        throw new NotImplementedException();
+        //todo: also add for cura
+        var orderEntity = await _context
+            .Orders
+            .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
+        if (orderEntity.Status != OrderStatus.Created)
+        {
+            throw new ConflictException("You cant cancel order, that is already taken by cook");
+        }
+        orderEntity.Status = OrderStatus.Canceled;
+
+        await _context.SaveChangesAsync();
     }
 }

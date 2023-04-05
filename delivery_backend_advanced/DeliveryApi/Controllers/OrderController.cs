@@ -40,11 +40,11 @@ public class OrderController : ControllerBase
     /// <summary>
     /// Cancel order
     /// </summary>
-    [HttpPatch]
+    [HttpPut]
     [Route("cancel/{orderId}")]
-    public void CancelOrder(Guid orderId)
+    public async Task CancelOrder(Guid orderId)
     {
-        
+        await _orderService.CancelOrder(orderId);
     }
     
     /// <summary>
