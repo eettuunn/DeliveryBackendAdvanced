@@ -11,6 +11,9 @@ public class OrderListElementDto
     public DateTime orderTime { get; set; }
     
     [Required]
+    public DateTime deliveryTime { get; set; }
+    
+    [Required]
     public double price { get; set; }
     
     [Required]

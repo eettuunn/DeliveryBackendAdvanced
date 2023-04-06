@@ -7,6 +7,7 @@ using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace delivery_backend_advanced.Services;
 
@@ -14,11 +15,13 @@ public class RestaurantService : IRestaurantService
 {
     private readonly AppDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IConfiguration _configuration;
 
-    public RestaurantService(AppDbContext context, IMapper mapper)
+    public RestaurantService(AppDbContext context, IMapper mapper, IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;
+        _configuration = configuration;
     }
 
     public async Task<List<RestaurantListElementDto>> GetRestaurantList()
@@ -66,32 +69,62 @@ public class RestaurantService : IRestaurantService
         return restDto;
     }
 
-    public async Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query)
+    public async Task<OrdersPageDto> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query)
     {
-        //todo: sorting, filters and search
         var restaurant = await _context
                              .Restaurants
+                             .Include(r => r.Orders)
+                             .ThenInclude(order => order.Dishes)
+                             .ThenInclude(dib => dib.Dish)
                              .FirstOrDefaultAsync(r => r.Id == restaurantId) ??
                          throw new CantFindByIdException("restaurant", restaurantId);
 
-
-        var orderEntities = await _context
-            .Orders
-            .Include(order => order.Restaurant)
-            .Include(order => order.Dishes)
-            .ThenInclude(dish => dish.Dish)
+        
+        var page = query.page ?? 1;
+        var pageOrderCount = _configuration.GetValue<double>("PageSize");
+        var orderCountInRest = restaurant.Orders.Count;
+        var ordersSkip = (int)((page - 1) * pageOrderCount);
+        var ordersTake = (int)Math.Min(orderCountInRest - (page - 1) * pageOrderCount, pageOrderCount);
+        
+        var orderEntities = restaurant.Orders
             .Where(order => order.Restaurant.Id == restaurantId && (order.Status == OrderStatus.Created ||
                                                                     order.Status == OrderStatus.Kitchen ||
                                                                     order.Status == OrderStatus.Packaging))
-            /*.Where(order => query.statuses.Contains(order.Status) || query.statuses.Count == 0)
-            .Where(order => order.Number.ToString().Contains(query.search.ToString()) || query.search == null)*/
-            .ToListAsync();
+            .ToList();
+        
         
         SortAndFilterOrders(ref orderEntities, query);
 
+        
+        var pageCount = (int)Math.Ceiling(orderEntities.Count / pageOrderCount);
+        pageCount = pageCount == 0 ? 1 : pageCount;
+        orderEntities = orderEntities
+            .Skip(ordersSkip)
+            .Take(ordersTake)
+            .ToList();
+        if (page > pageCount || page < 1)
+        {
+            throw new BadRequestException("Incorrect current page");
+        }
+
+        
         List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
 
-        return orderDtos;
+        
+        var pageInfo = new PaginationDto()
+        {
+            current = page,
+            count = pageCount,
+            size = orderEntities.Count
+        };
+        OrdersPageDto ordersPage = new OrdersPageDto()
+        {
+            orders = orderDtos,
+            pagination = pageInfo
+        };
+        
+        
+        return ordersPage;
     }
 
 

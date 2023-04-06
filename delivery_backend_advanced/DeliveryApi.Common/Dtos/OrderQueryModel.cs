@@ -12,4 +12,7 @@ public class OrderQueryModel
     public OrderSort? sort { get; set; }
 
     [FromQuery(Name = "status")] public List<OrderStatus> statuses { get; set; } = new();
+    
+    [FromQuery(Name = "page")]
+    public int? page { get; set; }
 }
