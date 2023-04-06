@@ -57,7 +57,7 @@ public class OrderService : IOrderService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<OrderListElementDto>> GetUserOrders()
+    public async Task<List<OrderListElementDto>> GetUserOrders(bool current)
     {
         //todo: sorting, filters, search and user
         var orderEntities = await _context
@@ -66,7 +66,11 @@ public class OrderService : IOrderService
             .Include(order => order.Dishes)
             .ThenInclude(dish => dish.Dish)
             .ToListAsync();
-        
+
+        if (current)
+        {
+            orderEntities = orderEntities.Where(order => order.Status != OrderStatus.Delivered && order.Status != OrderStatus.Canceled).ToList();
+        }
         List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
 
         return orderDtos;

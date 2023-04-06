@@ -71,9 +71,9 @@ public class OrderController : ControllerBase
     /// Get list of orders
     /// </summary>
     [HttpGet]
-    public async Task<List<OrderListElementDto>> GetListOfOrders()
+    public async Task<List<OrderListElementDto>> GetListOfOrders(bool current = false)
     {
-        return await _orderService.GetUserOrders();
+        return await _orderService.GetUserOrders(current);
     }
     
     /// <summary>
@@ -81,7 +81,8 @@ public class OrderController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("current")]
-    public void GetCurrentOrder()
+    public void GetCurrentOrders()
     {
+        
     }
 }
