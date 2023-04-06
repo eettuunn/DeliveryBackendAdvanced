@@ -40,9 +40,9 @@ public class CookController : ControllerBase
     /// </summary>
     [HttpPatch]
     [Route("{orderId}")]
-    public void ChangeOrderStatus(Guid orderId)
+    public async Task ChangeOrderStatus(Guid orderId)
     {
-        
+        await _cookService.ChangeOrderStatus(orderId);
     }
 
     /// <summary>

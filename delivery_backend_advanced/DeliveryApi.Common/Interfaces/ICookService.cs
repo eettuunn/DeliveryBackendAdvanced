@@ -3,4 +3,6 @@
 public interface ICookService
 {
     public Task TakeOrder(Guid orderId);
+
+    public Task ChangeOrderStatus(Guid orderId);
 }

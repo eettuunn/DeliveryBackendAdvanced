@@ -26,9 +26,25 @@ public class CookService : ICookService
             .Orders
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
         
+        //check if order is already taken
         //cook.Orders.Add(orderEntity);
 
         orderEntity.Status = OrderStatus.Kitchen;
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task ChangeOrderStatus(Guid orderId)
+    {
+        var orderEntity = await _context
+            .Orders
+            .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
+        if (orderEntity.Status > OrderStatus.Packaging || orderEntity.Status == OrderStatus.Created)
+        {
+            throw new ConflictException("Order is out of kitchen");
+        }
+
+        orderEntity.Status += 1;
+
         await _context.SaveChangesAsync();
     }
 }
