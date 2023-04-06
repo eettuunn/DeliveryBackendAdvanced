@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using delivery_backend_advanced.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;
 
 [Route("api/cook")]
 public class CookController : ControllerBase
 {
+    private readonly ICookService _cookService;
+
+    public CookController(ICookService cookService)
+    {
+        _cookService = cookService;
+    }
+
     /// <summary>
     /// Get list of cook's orders
     /// </summary>
@@ -41,8 +50,8 @@ public class CookController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("{orderId}")]
-    public void TakeOrder(Guid orderId)
+    public async Task TakeOrder(Guid orderId)
     {
-        
+        await _cookService.TakeOrder(orderId);
     }
 }
