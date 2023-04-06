@@ -2,8 +2,10 @@
 using delivery_backend_advanced.Exceptions;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Models.Entities;
 using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace delivery_backend_advanced.Services;
@@ -64,15 +66,15 @@ public class RestaurantService : IRestaurantService
         return restDto;
     }
 
-    public async Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId)
+    public async Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query)
     {
         //todo: sorting, filters and search
         var restaurant = await _context
                              .Restaurants
                              .FirstOrDefaultAsync(r => r.Id == restaurantId) ??
                          throw new CantFindByIdException("restaurant", restaurantId);
-        
-        
+
+
         var orderEntities = await _context
             .Orders
             .Include(order => order.Restaurant)
@@ -81,10 +83,48 @@ public class RestaurantService : IRestaurantService
             .Where(order => order.Restaurant.Id == restaurantId && (order.Status == OrderStatus.Created ||
                                                                     order.Status == OrderStatus.Kitchen ||
                                                                     order.Status == OrderStatus.Packaging))
+            /*.Where(order => query.statuses.Contains(order.Status) || query.statuses.Count == 0)
+            .Where(order => order.Number.ToString().Contains(query.search.ToString()) || query.search == null)*/
             .ToListAsync();
         
+        SortAndFilterOrders(ref orderEntities, query);
+
         List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
-        
+
         return orderDtos;
+    }
+
+
+
+    private void SortAndFilterOrders(ref List<OrderEntity> orders, OrderQueryModel query)
+    {
+        if (query.sort != null)
+        {
+            switch (query.sort)
+            {
+                case OrderSort.CreateAsc:
+                    orders = orders.OrderBy(order => order.OrderTime).ToList();
+                    break;
+                case OrderSort.CreateDesc:
+                    orders = orders.OrderByDescending(order => order.OrderTime).ToList();
+                    break;
+                case OrderSort.DeliveryAsc:
+                    orders = orders.OrderBy(order => order.DeliveryTime).ToList();
+                    break;
+                case OrderSort.DeliveryDesc:
+                    orders = orders.OrderByDescending(order => order.DeliveryTime).ToList();
+                    break;
+            }
+        }
+        
+        if (query.search != null)
+        {
+            orders = orders.Where(order => order.Number.ToString().Contains(query.search.ToString())).ToList();
+        }
+
+        if (query.statuses.Count != 0)
+        {
+            orders = orders.Where(order => query.statuses.Contains(order.Status)).ToList();
+        }
     }
 }

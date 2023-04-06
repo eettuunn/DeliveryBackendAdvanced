@@ -1,4 +1,5 @@
 ﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,8 +39,8 @@ public class RestaurantController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("{restaurantId}/orders")]
-    public async Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId)
+    public async Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId, [FromQuery] OrderQueryModel query)
     {
-        return await _restaurantService.GetRestaurantOrders(restaurantId);
+        return await _restaurantService.GetRestaurantOrders(restaurantId, query);
     }
 }

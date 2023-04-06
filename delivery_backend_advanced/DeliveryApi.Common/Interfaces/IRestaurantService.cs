@@ -1,4 +1,5 @@
 ﻿using delivery_backend_advanced.Models.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace delivery_backend_advanced.Services.Interfaces;
 
@@ -8,5 +9,5 @@ public interface IRestaurantService
 
     public Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, Guid? menuId);
 
-    public Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId);
+    public Task<List<OrderListElementDto>> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query);
 }
