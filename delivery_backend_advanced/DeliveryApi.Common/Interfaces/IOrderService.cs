@@ -11,5 +11,6 @@ public interface IOrderService
     public Task<OrderDto> GetOrderDetails(Guid orderId);
 
     public Task CancelOrder(Guid orderId);
-    
+
+    public Task RepeatOrder(RepeatOrderDto repOrder, Guid orderId);
 }

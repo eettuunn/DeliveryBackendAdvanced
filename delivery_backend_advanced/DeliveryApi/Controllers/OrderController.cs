@@ -52,9 +52,17 @@ public class OrderController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("repeat/{orderId}")]
-    public void RepeatOrder()
+    public async Task<IActionResult> RepeatOrder([FromBody] RepeatOrderDto repeatOrderDto, Guid orderId)
     {
-        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        else
+        {
+            await _orderService.RepeatOrder(repeatOrderDto, orderId);
+            return Ok();
+        }
     }
 
     /// <summary>
@@ -74,15 +82,5 @@ public class OrderController : ControllerBase
     public async Task<List<OrderListElementDto>> GetListOfOrders(bool current = false)
     {
         return await _orderService.GetUserOrders(current);
-    }
-    
-    /// <summary>
-    /// Get current order
-    /// </summary>
-    [HttpGet]
-    [Route("current")]
-    public void GetCurrentOrders()
-    {
-        
     }
 }

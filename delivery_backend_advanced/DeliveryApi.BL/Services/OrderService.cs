@@ -22,6 +22,11 @@ public class OrderService : IOrderService
 
     public async Task CreateOrder(CreateOrderDto orderDto)
     {
+        if (orderDto.deliveryTime < DateTime.UtcNow.AddHours(1) && orderDto.deliveryTime != null)
+        {
+            throw new BadRequestException("delivery time must be more, then now + 1 hour");
+        }
+        
         //todo: maybe do create orders for all rests at once
         var orderDishes = await _context
             .DishesInBasket
@@ -108,6 +113,36 @@ public class OrderService : IOrderService
         }
         orderEntity.Status = OrderStatus.Canceled;
 
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RepeatOrder(RepeatOrderDto repOrder, Guid orderId)
+    {
+        if (repOrder.deliveryTime < DateTime.UtcNow.AddHours(1) && repOrder.deliveryTime != null)
+        {
+            throw new BadRequestException("delivery time must be more, then now + 1 hour");
+        }
+        
+        var prevOrder = await _context
+            .Orders
+            .Include(order => order.Dishes)
+            .Include(order => order.Restaurant)
+            .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
+
+        OrderEntity newOrder = new OrderEntity()
+        {
+            Id = new Guid(),
+            DeliveryTime = repOrder.deliveryTime ?? DateTime.UtcNow.AddHours(1),
+            OrderTime = DateTime.UtcNow,
+            Price = prevOrder.Price,
+            Address = repOrder.address,
+            Status = OrderStatus.Created,
+            Number = await _context.Orders.CountAsync() + 1,
+            Restaurant = prevOrder.Restaurant,
+            Dishes = prevOrder.Dishes
+        };
+
+        await _context.Orders.AddAsync(newOrder);
         await _context.SaveChangesAsync();
     }
 }
