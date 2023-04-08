@@ -6,7 +6,7 @@ public interface IOrderService
 {
     public Task CreateOrder(CreateOrderDto orderDto);
 
-    public Task<List<OrderListElementDto>> GetUserOrders(bool current);
+    public Task<OrdersPageDto> GetOrders(OrderQueryModel orderQueryModel);
     
     public Task<OrderDto> GetOrderDetails(Guid orderId);
 

@@ -1,4 +1,5 @@
-﻿using delivery_backend_advanced.Services.Interfaces;
+﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +9,12 @@ namespace delivery_backend_advanced.Controllers;
 public class CookController : ControllerBase
 {
     private readonly ICookService _cookService;
+    private readonly IOrderService _orderService;
 
-    public CookController(ICookService cookService)
+    public CookController(ICookService cookService, IOrderService orderService)
     {
         _cookService = cookService;
+        _orderService = orderService;
     }
 
     /// <summary>
@@ -19,21 +22,26 @@ public class CookController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("orders")]
-    public void GetCookOrders()
+    public async Task<OrdersPageDto> GetCookOrders([FromQuery] OrderQueryModel query)
     {
-        
+        query.role = "cook";
+        query.current = true;
+
+        return await _orderService.GetOrders(query);
     }
     
-    //todo: хз
-    /*/// <summary>
+    /// <summary>
     /// Get list of available orders
     /// </summary>
     [HttpGet]
     [Route("orders/available")]
-    public void GetAvailableOrders()
+    public async Task<OrdersPageDto> GetAvailableOrders([FromQuery] OrderQueryModel query)
     {
-        
-    }*/
+        query.role = "cook";
+        query.current = false;
+
+        return await _orderService.GetOrders(query);
+    }
 
     /// <summary>
     /// Change status of order when cooked or packaged

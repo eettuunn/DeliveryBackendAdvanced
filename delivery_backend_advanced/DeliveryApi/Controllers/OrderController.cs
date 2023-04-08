@@ -79,8 +79,8 @@ public class OrderController : ControllerBase
     /// Get list of orders
     /// </summary>
     [HttpGet]
-    public async Task<List<OrderListElementDto>> GetListOfOrders(bool current = false)
+    public async Task<OrdersPageDto> GetListOfOrders([FromQuery] OrderQueryModel query)
     {
-        return await _orderService.GetUserOrders(current);
+        return await _orderService.GetOrders(query);
     }
 }

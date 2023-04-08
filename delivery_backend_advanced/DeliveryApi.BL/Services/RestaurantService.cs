@@ -69,7 +69,7 @@ public class RestaurantService : IRestaurantService
         return restDto;
     }
 
-    public async Task<OrdersPageDto> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query)
+    /*public async Task<OrdersPageDto> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query)
     {
         var restaurant = await _context
                              .Restaurants
@@ -125,7 +125,7 @@ public class RestaurantService : IRestaurantService
         
         
         return ordersPage;
-    }
+    }*/
 
 
 

@@ -11,8 +11,16 @@ public class OrderQueryModel
     [FromQuery(Name = "sort")]
     public OrderSort? sort { get; set; }
 
-    [FromQuery(Name = "status")] public List<OrderStatus> statuses { get; set; } = new();
+    [FromQuery(Name = "status")] 
+    public List<OrderStatus> statuses { get; set; } = new();
     
     [FromQuery(Name = "page")]
     public int? page { get; set; }
+
+    [FromQuery(Name = "current")] 
+    public bool current { get; set; } = false;
+    
+    //todo: remove when add users
+    [FromQuery(Name = "role")]
+    public string role { get; set; }
 }

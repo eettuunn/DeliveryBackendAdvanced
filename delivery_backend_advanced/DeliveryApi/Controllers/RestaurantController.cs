@@ -9,10 +9,12 @@ namespace delivery_backend_advanced.Controllers;
 public class RestaurantController : ControllerBase
 {
     private readonly IRestaurantService _restaurantService;
+    private readonly IOrderService _orderService;
 
-    public RestaurantController(IRestaurantService restaurantService)
+    public RestaurantController(IRestaurantService restaurantService, IOrderService orderService)
     {
         _restaurantService = restaurantService;
+        _orderService = orderService;
     }
 
     /// <summary>
@@ -38,9 +40,11 @@ public class RestaurantController : ControllerBase
     /// Get restaurant's orders
     /// </summary>
     [HttpGet]
-    [Route("{restaurantId}/orders")]
-    public async Task<OrdersPageDto> GetRestaurantOrders(Guid restaurantId, [FromQuery] OrderQueryModel query)
+    [Route("orders")]
+    public async Task<OrdersPageDto> GetRestaurantOrders([FromQuery] OrderQueryModel query)
     {
-        return await _restaurantService.GetRestaurantOrders(restaurantId, query);
+        // return await _restaurantService.GetRestaurantOrders(restaurantId, query);
+        query.role = "manager";
+        return await _orderService.GetOrders(query);
     }
 }
