@@ -28,6 +28,7 @@ builder.Services.AddScoped<IDishService, DishService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICookService, CookService>();
+builder.Services.AddScoped<ICourierService, CourierService>();
 
 builder.Services
     .AddControllers()

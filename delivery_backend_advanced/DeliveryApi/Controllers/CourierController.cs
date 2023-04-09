@@ -8,10 +8,12 @@ namespace delivery_backend_advanced.Controllers;
 public class CourierController : ControllerBase
 {
     private readonly IOrderService _orderService;
+    private readonly ICourierService _courierService;
 
-    public CourierController(IOrderService orderService)
+    public CourierController(IOrderService orderService, ICourierService courierService)
     {
         _orderService = orderService;
+        _courierService = courierService;
     }
 
     /// <summary>
@@ -29,11 +31,11 @@ public class CourierController : ControllerBase
     /// <summary>
     /// Change order status when delivered it
     /// </summary>
-    [HttpPatch]
+    [HttpPut]
     [Route("{orderId}")]
-    public void SetOrderStatusDelivered()
+    public async Task SetOrderStatusDelivered(Guid orderId)
     {
-        
+        await _courierService.SetOrderDelivered(orderId);
     }
 
     /// <summary>
