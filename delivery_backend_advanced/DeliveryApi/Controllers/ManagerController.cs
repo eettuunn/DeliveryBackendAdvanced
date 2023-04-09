@@ -1,18 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;
 
 [Route("api/manager")]
 public class ManagerController : ControllerBase
 {
+    private readonly IManagerService _managerService;
+
+    public ManagerController(IManagerService managerService)
+    {
+        _managerService = managerService;
+    }
+
     /// <summary>
     /// Create menu of dishes for restaurant
     /// </summary>
     [HttpPost]
-    [Route("menu/new/{restaurantId}")]
-    public void CreateMenu(Guid restaurantId)
+    [Route("menu/new")]
+    public async Task CreateMenu([FromBody] CreateMenuDto createMenuDto)
     {
-        
+        await _managerService.CreateMenu(createMenuDto);
     }
 
     /// <summary>
