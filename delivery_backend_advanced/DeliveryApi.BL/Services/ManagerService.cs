@@ -78,4 +78,21 @@ public class ManagerService : IManagerService
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task SetMenuMain(Guid restaurantId, Guid menuId)
+    {
+        var menuEntity = await _context
+            .Menus
+            .FirstOrDefaultAsync(menu => menu.Id == menuId) ?? throw new CantFindByIdException("menu", menuId);
+        var restEntity = await _context
+            .Restaurants
+            .Include(rest => rest.Menus)
+            .FirstOrDefaultAsync(rest => rest.Id == restaurantId);
+        var prevMainMenu = restEntity.Menus.FirstOrDefault(menu => menu.IsMain);
+
+        prevMainMenu.IsMain = false;
+        menuEntity.IsMain = true;
+
+        await _context.SaveChangesAsync();
+    }
 }

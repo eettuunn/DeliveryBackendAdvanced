@@ -21,6 +21,7 @@ public class ManagerController : ControllerBase
     [Route("menu/new")]
     public async Task<IActionResult> CreateMenu([FromBody] CreateMenuDto createMenuDto)
     {
+        //todo: then there will be no rId
         if (createMenuDto.restaurantId == Guid.Empty)
         {
             ModelState.AddModelError("restaurantId", "restaurantId field is required");
@@ -73,8 +74,8 @@ public class ManagerController : ControllerBase
     /// </summary>
     [HttpPut]
     [Route("{restaurantId}/menu/{menuId}")]
-    public void SetMenuMain(Guid restaurantId, Guid menuId)
+    public async Task SetMenuMain(Guid restaurantId, Guid menuId)
     {
-        
+        await _managerService.SetMenuMain(restaurantId, menuId);
     }
 }

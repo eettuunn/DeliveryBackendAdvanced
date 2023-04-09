@@ -7,4 +7,5 @@ public interface IManagerService
     public Task CreateMenu(CreateMenuDto createMenuDto);
     public Task AddDishToMenu(Guid menuId, Guid dishId);
     public Task DeleteDishFromMenu(Guid menuId, Guid dishId);
+    public Task SetMenuMain(Guid restaurantId, Guid menuId);
 }
