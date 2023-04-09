@@ -52,10 +52,29 @@ public class ManagerService : IManagerService
 
         if (menuEntity.Dishes.Contains(dishEntity))
         {
-            throw new ConflictException("This dish is already in menu");
+            throw new ConflictException($"Dish with id {dishId} is already in menu");
         }
         
         menuEntity.Dishes.Add(dishEntity);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteDishFromMenu(Guid menuId, Guid dishId)
+    {
+        var menuEntity = await _context
+            .Menus
+            .FirstOrDefaultAsync(menu => menu.Id == menuId) ?? throw new CantFindByIdException("menu", menuId);
+        var dishEntity = await _context
+            .Dishes
+            .FirstOrDefaultAsync(dish => dish.Id == dishId) ?? throw new CantFindByIdException("dish", dishId);
+
+        if (!menuEntity.Dishes.Contains(dishEntity))
+        {
+            throw new ConflictException($"There is no dish with id {dishId}");
+        }
+        
+        menuEntity.Dishes.Remove(dishEntity);
 
         await _context.SaveChangesAsync();
     }
