@@ -18,27 +18,13 @@ public class CookController : ControllerBase
     }
 
     /// <summary>
-    /// Get list of cook's orders
+    /// Get list of orders for cook (current == true => taken, else => available)
     /// </summary>
     [HttpGet]
     [Route("orders")]
     public async Task<OrdersPageDto> GetCookOrders([FromQuery] OrderQueryModel query)
     {
         query.role = "cook";
-        query.current = true;
-
-        return await _orderService.GetOrders(query);
-    }
-    
-    /// <summary>
-    /// Get list of available orders
-    /// </summary>
-    [HttpGet]
-    [Route("orders/available")]
-    public async Task<OrdersPageDto> GetAvailableOrders([FromQuery] OrderQueryModel query)
-    {
-        query.role = "cook";
-        query.current = false;
 
         return await _orderService.GetOrders(query);
     }

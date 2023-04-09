@@ -17,7 +17,7 @@ public class OrderQueryModel
     [FromQuery(Name = "page")]
     public int? page { get; set; }
 
-    [FromQuery(Name = "current")] 
+    [FromQuery(Name = "current")]
     public bool current { get; set; } = false;
     
     //todo: remove when add users
