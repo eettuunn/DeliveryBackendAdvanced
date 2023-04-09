@@ -42,7 +42,7 @@ public class RestaurantService : IRestaurantService
         return restDtos;
     }
 
-    public async Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, Guid? menuId)
+    public async Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, string? menuName)
     {
         var rest = await _context
             .Restaurants
@@ -52,7 +52,7 @@ public class RestaurantService : IRestaurantService
             .FirstOrDefaultAsync() ?? throw new CantFindByIdException("restaurant", restaurantId);
         
         var restDto = _mapper.Map<RestaurantDetailsDto>(rest);
-        if (menuId == null)
+        if (menuName == null)
         {
             restDto.menu = _mapper.Map<MenuDto>(rest
                 .Menus
@@ -60,10 +60,12 @@ public class RestaurantService : IRestaurantService
         }
         else
         {
-            restDto.menu = _mapper.Map<MenuDto>(rest
-                .Menus
-                .FirstOrDefault(menu => menu.Id == menuId)) ??
-                            throw new CantFindByIdException("menu", menuId);
+            var restEntity = rest.Menus.FirstOrDefault(menu => menu.Name == menuName);
+            restDto.menu = restEntity == null
+                ? _mapper.Map<MenuDto>(rest
+                    .Menus
+                    .FirstOrDefault(menu => menu.IsMain))
+                : _mapper.Map<MenuDto>(restEntity);
         }
         
         return restDto;
