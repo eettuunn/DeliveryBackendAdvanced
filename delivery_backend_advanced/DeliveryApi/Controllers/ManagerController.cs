@@ -19,9 +19,21 @@ public class ManagerController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("menu/new")]
-    public async Task CreateMenu([FromBody] CreateMenuDto createMenuDto)
+    public async Task<IActionResult> CreateMenu([FromBody] CreateMenuDto createMenuDto)
     {
-        await _managerService.CreateMenu(createMenuDto);
+        if (createMenuDto.restaurantId == Guid.Empty)
+        {
+            ModelState.AddModelError("restaurantId", "restaurantId field is required");
+        }
+        if (ModelState.IsValid)
+        {
+            await _managerService.CreateMenu(createMenuDto);
+            return Ok();
+        }
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
 
     /// <summary>
@@ -29,9 +41,9 @@ public class ManagerController : ControllerBase
     /// </summary>
     [HttpPut]
     [Route("menu/{menuId}/{dishId}")]
-    public void AddDishToMenu(Guid menuId, Guid dishId)
+    public async Task AddDishToMenu(Guid menuId, Guid dishId)
     {
-        
+        await _managerService.AddDishToMenu(menuId, dishId);
     }
     
     /// <summary>
