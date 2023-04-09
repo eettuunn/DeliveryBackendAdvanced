@@ -1,28 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;
 
 [Route("api/courier")]
 public class CourierController : ControllerBase
 {
+    private readonly IOrderService _orderService;
+
+    public CourierController(IOrderService orderService)
+    {
+        _orderService = orderService;
+    }
+
     /// <summary>
-    /// Get list of courier's orders
+    /// Get list of courier's orders (current == true => taken, else => available)
     /// </summary>
     [HttpGet]
     [Route("orders")]
-    public void GetCourierOrders()
+    public async Task<OrdersPageDto> GetCourierOrders([FromQuery] OrderQueryModel query)
     {
+        query.role = "courier";
         
-    }
-    
-    /// <summary>
-    /// Get list of available orders
-    /// </summary>
-    [HttpGet]
-    [Route("orders/available")]
-    public void GetAvailableOrders()
-    {
-        
+        return await _orderService.GetOrders(query);
     }
 
     /// <summary>
