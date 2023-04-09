@@ -26,4 +26,16 @@ public class CourierService : ICourierService
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task TakeOrder(Guid orderId)
+    {
+        var orderEntity = await _context
+            .Orders
+            .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
+
+        // courier.Orders.Add(orderEntity);
+        orderEntity.Status = OrderStatus.Delivery;
+
+        await _context.SaveChangesAsync();
+    }
 }

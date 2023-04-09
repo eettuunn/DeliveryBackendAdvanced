@@ -43,8 +43,8 @@ public class CourierController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("{orderId}")]
-    public void TakeOrder()
+    public async Task TakeOrder(Guid orderId)
     {
-        
+        await _courierService.TakeOrder(orderId);
     }
 }
