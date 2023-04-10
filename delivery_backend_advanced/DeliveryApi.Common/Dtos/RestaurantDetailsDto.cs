@@ -6,5 +6,7 @@ public class RestaurantDetailsDto
     
     public string name { get; set; }
     
+    public List<string> menuNames { get; set; }
+    
     public MenuDto menu { get; set; }
 }

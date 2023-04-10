@@ -78,4 +78,14 @@ public class ManagerController : ControllerBase
     {
         await _managerService.SetMenuMain(restaurantId, menuId);
     }
+    
+    /// <summary>
+    /// Edit menu information
+    /// </summary>
+    [HttpPut]
+    [Route("menu/{menuId}")]
+    public async Task EditMenu(Guid menuId, [FromBody] EditMenuDto editMenuDto)
+    {
+        await _managerService.EditMenu(menuId, editMenuDto);
+    }
 }

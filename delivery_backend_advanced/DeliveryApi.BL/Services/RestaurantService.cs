@@ -52,6 +52,7 @@ public class RestaurantService : IRestaurantService
             .FirstOrDefaultAsync() ?? throw new CantFindByIdException("restaurant", restaurantId);
         
         var restDto = _mapper.Map<RestaurantDetailsDto>(rest);
+        restDto.menuNames = rest.Menus.Select(menu => menu.Name).ToList();
         if (menuName == null)
         {
             restDto.menu = _mapper.Map<MenuDto>(rest

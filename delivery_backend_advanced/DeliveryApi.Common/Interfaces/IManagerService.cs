@@ -9,4 +9,5 @@ public interface IManagerService
     public Task DeleteDishFromMenu(Guid menuId, Guid dishId);
     public Task SetMenuMain(Guid restaurantId, Guid menuId);
     public Task DeleteMenu(Guid menuId);
+    public Task EditMenu(Guid menuId, EditMenuDto editMenuDto);
 }

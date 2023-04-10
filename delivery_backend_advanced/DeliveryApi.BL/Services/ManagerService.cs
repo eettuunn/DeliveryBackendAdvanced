@@ -105,4 +105,20 @@ public class ManagerService : IManagerService
         _context.Menus.Remove(menuEntity);
         await _context.SaveChangesAsync();
     }
+
+    public async Task EditMenu(Guid menuId, EditMenuDto editMenuDto)
+    {
+        if(await _context.Menus.AnyAsync(menu => menu.Name == editMenuDto.name))
+        {
+            throw new BadRequestException("Menu with this name already exists");
+        }
+        
+        var menuEntity = await _context
+            .Menus
+            .FirstOrDefaultAsync(menu => menu.Id == menuId) ?? throw new CantFindByIdException("menu", menuId);
+
+        menuEntity.Name = editMenuDto.name ?? menuEntity.Name;
+        
+        await _context.SaveChangesAsync();
+    }
 }
