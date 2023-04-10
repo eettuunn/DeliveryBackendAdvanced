@@ -95,4 +95,14 @@ public class ManagerService : IManagerService
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task DeleteMenu(Guid menuId)
+    {
+        var menuEntity = await _context
+            .Menus
+            .FirstOrDefaultAsync(menu => menu.Id == menuId) ?? throw new CantFindByIdException("menu", menuId);
+
+        _context.Menus.Remove(menuEntity);
+        await _context.SaveChangesAsync();
+    }
 }

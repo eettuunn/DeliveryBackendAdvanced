@@ -62,9 +62,9 @@ public class ManagerController : ControllerBase
     /// </summary>
     [HttpDelete]
     [Route("menu/{menuId}")]
-    public void DeleteMenu(Guid menuId)
+    public async Task DeleteMenu(Guid menuId)
     {
-        
+        await _managerService.DeleteMenu(menuId);
     }
     
     
