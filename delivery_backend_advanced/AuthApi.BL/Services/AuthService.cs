@@ -40,19 +40,30 @@ public class AuthService : IAuthService
         }
 
         var findUser = await _context
-            .Users
-            .FirstOrDefaultAsync(user => user.Email == registerUserDto.email);
-        if (findUser == null)
+                           .Users
+                           .FirstOrDefaultAsync(user => user.Email == registerUserDto.email) ??
+                       throw new NotFoundException($"User with email {registerUserDto.email} not found");
+
+        await _userManager.AddToRoleAsync(findUser, UserRole.Customer.ToString());
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task LoginUser(LoginUserDto loginUserDto)
+    {
+        var findUser = await _userManager
+            .FindByEmailAsync(loginUserDto.email) ?? throw new BadRequestException("Invalid credentials");
+
+        var isPasswordValid = await _userManager.CheckPasswordAsync(findUser, loginUserDto.password);
+        if (!isPasswordValid)
         {
-            throw new NotFoundException($"User with email {registerUserDto.email} not found");
+            throw new BadRequestException("Invalid credentials");
         }
 
-        if (!await _roleManager.RoleExistsAsync(UserRole.Customer.ToString()))
-        {
-            var role = new IdentityRole();
-            role.Name = UserRole.Customer.ToString();
-            await _roleManager.CreateAsync(role);
-        }
-        await _userManager.AddToRoleAsync(findUser, UserRole.Customer.ToString());
+        var user = await _context
+                       .Users
+                       .FirstOrDefaultAsync(user => user.Email == loginUserDto.email) ??
+                   throw new BadRequestException($"Can't find user with email {loginUserDto.email}");
+        
+        
     }
 }

@@ -28,4 +28,19 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
     }
+    
+    [HttpPost]
+    [Route("login")]
+    public async Task<IActionResult> LoginUser([FromBody] LoginUserDto loginUserDto)
+    {
+        if (ModelState.IsValid)
+        {
+            await _authService.LoginUser(loginUserDto);
+            return Ok();
+        }
+        else
+        {
+            return BadRequest(ModelState);
+        }
+    }
 }
