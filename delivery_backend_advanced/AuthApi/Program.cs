@@ -1,5 +1,9 @@
+using AuthApi.BL;
+using AuthApi.BL.Services;
+using AuthApi.Common.Interfaces;
 using AuthApi.DAL;
 using AuthApi.DAL.Entities;
+using delivery_backend_advanced.Services.ExceptionHandler;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,9 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     {
@@ -17,7 +24,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
         options.Password.RequireDigit = false;
         options.Password.RequiredUniqueChars = 0;
         options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
 
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
         options.Lockout.MaxFailedAccessAttempts = 5;
@@ -44,6 +52,8 @@ if (app.Environment.IsDevelopment())
 app.ConfigureDeliveryApiDAL();
 
 app.UseHttpsRedirection();
+
+app.UseExceptionMiddleware();
 
 app.UseAuthorization();
 

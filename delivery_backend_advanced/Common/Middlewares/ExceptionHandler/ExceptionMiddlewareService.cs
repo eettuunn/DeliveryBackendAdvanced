@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using delivery_backend_advanced.Exceptions;
-using delivery_backend_advanced.Models.Dtos;
+﻿using delivery_backend_advanced.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace delivery_backend_advanced.Services.ExceptionHandler;
@@ -49,6 +47,11 @@ public class ExceptionMiddlewareService
         {
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             await context.Response.WriteAsJsonAsync(new { message = exception.Message });
+        }
+        catch (AuthErrorsException exception)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new { errors = exception.Errors });
         }
         /*catch (Exception exception)
         {
