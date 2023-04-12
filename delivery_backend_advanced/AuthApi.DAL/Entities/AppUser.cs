@@ -8,16 +8,15 @@ public class AppUser : IdentityUser
 {
     public Guid Id { get; set; }
     
-    public string FullName { get; set; }
-    
     public DateTime BirthDate { get; set; }
     
     public Gender Gender { get; set; }
     
-    public string Phone { get; set; }
+    public ManagerEntity? Manager { get; set; }
     
-    [EmailAddress]
-    public string Email { get; set; }
-
-    public List<UserRole> Roles { get; set; } = new();
+    public CourierEntity? Courier { get; set; }
+    
+    public CookEntity? Cook { get; set; }
+    
+    public CustomerEntity? Customer { get; set; }
 }
