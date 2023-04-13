@@ -20,8 +20,8 @@ public class AuthController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            await _authService.RegisterUser(registerUserDto);
-            return Ok();
+            var tokenPair = await _authService.RegisterUser(registerUserDto);
+            return Ok(tokenPair);
         }
         else
         {
@@ -35,8 +35,8 @@ public class AuthController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            await _authService.LoginUser(loginUserDto);
-            return Ok();
+            var tokePair = await _authService.LoginUser(loginUserDto);
+            return Ok(tokePair);
         }
         else
         {

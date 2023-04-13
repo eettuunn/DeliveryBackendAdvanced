@@ -9,5 +9,6 @@ public class AppMappingProfile : Profile
     public AppMappingProfile()
     {
         CreateMap<RegisterUserDto, AppUser>();
+        CreateMap<AppUser, TokenUserDto>();
     }
 }

@@ -6,8 +6,6 @@ namespace AuthApi.DAL.Entities;
 
 public class AppUser : IdentityUser
 {
-    public Guid Id { get; set; }
-    
     public DateTime BirthDate { get; set; }
     
     public Gender Gender { get; set; }
@@ -19,4 +17,6 @@ public class AppUser : IdentityUser
     public CookEntity? Cook { get; set; }
     
     public CustomerEntity? Customer { get; set; }
+    
+    public string? RefreshToken { get; set; }
 }

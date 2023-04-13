@@ -4,6 +4,6 @@ namespace AuthApi.Common.Interfaces;
 
 public interface IAuthService
 {
-    public Task RegisterUser(RegisterUserDto registerUserDto);
-    public Task LoginUser(LoginUserDto loginUserDto);
+    public Task<TokenPairDto> RegisterUser(RegisterUserDto registerUserDto);
+    public Task<TokenPairDto> LoginUser(LoginUserDto loginUserDto);
 }
