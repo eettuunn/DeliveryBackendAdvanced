@@ -43,4 +43,11 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
     }
+
+    [HttpPost]
+    [Route("refresh")]
+    public async Task<TokenPairDto> RefreshToken([FromBody] TokenPairDto tokenPairDto)
+    {
+        return await _authService.RefreshToken(tokenPairDto);
+    }
 }

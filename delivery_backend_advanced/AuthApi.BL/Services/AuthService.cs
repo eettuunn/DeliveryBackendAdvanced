@@ -1,9 +1,11 @@
-﻿using AuthApi.Common.Dtos;
+﻿using System.Security.Claims;
+using AuthApi.Common.Dtos;
 using AuthApi.Common.Enums;
 using AuthApi.Common.Interfaces;
 using AuthApi.DAL;
 using AuthApi.DAL.Entities;
 using AutoMapper;
+using Common.Configurations;
 using delivery_backend_advanced.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -73,9 +75,63 @@ public class AuthService : IAuthService
                        .FirstOrDefaultAsync(user => user.Email == loginUserDto.email) ??
                    throw new BadRequestException($"Can't find user with email {loginUserDto.email}");
 
+        var roles = await GetUserRoles(user);
+
+        var tokenUser = _mapper.Map<TokenUserDto>(user);
+        var accessToken = _tokenService.CreateToken(tokenUser, roles);
+        user.RefreshToken = _tokenService.GenerateRefreshToken();
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtConfig.RefreshLifetime);
+        await _userManager.UpdateAsync(user);
+        
+        return new TokenPairDto()
+        {
+            accessToken = accessToken,
+            refreshToken = user.RefreshToken
+        };
+    }
+
+    public async Task<TokenPairDto> RefreshToken(TokenPairDto tokenPairDto)
+    {
+        var info = _tokenService.GetExpiredTokenInfo(tokenPairDto.accessToken);
+        if (info == null)
+        {
+            throw new BadRequestException("Invalid access or refresh token");
+        }
+        
+        var email = info.FindFirst(ClaimTypes.Email)?.Value;
+        var userEntity = await _userManager.FindByEmailAsync(email);
+        
+        if (userEntity == null || 
+            userEntity.RefreshToken != tokenPairDto.refreshToken ||
+            userEntity.RefreshTokenExpiryTime < DateTime.UtcNow)
+        {
+            throw new BadRequestException("Invalid access or refresh token");
+        }
+
+        var tokenUser = _mapper.Map<TokenUserDto>(userEntity);
+        var roles = await GetUserRoles(userEntity);
+        
+        var newAccess = _tokenService.CreateToken(tokenUser, roles);
+        var newRefresh = _tokenService.GenerateRefreshToken();
+
+        userEntity.RefreshToken = newRefresh;
+        await _userManager.UpdateAsync(userEntity);
+        
+        
+        return new TokenPairDto()
+        {
+            accessToken = newAccess,
+            refreshToken = newRefresh
+        };
+    }
+
+
+
+    private async Task<List<IdentityRole>> GetUserRoles(AppUser user)
+    {
         var rolesIds = await _context
             .UserRoles
-            .Where(role => role.UserId == user.Id.ToString())
+            .Where(role => role.UserId == user.Id)
             .Select(role => role.RoleId)
             .ToListAsync();
         var roles = await _context
@@ -83,14 +139,6 @@ public class AuthService : IAuthService
             .Where(role => rolesIds.Contains(role.Id))
             .ToListAsync();
 
-        var tokenUser = _mapper.Map<TokenUserDto>(user);
-        var accessToken = _tokenService.CreateToken(tokenUser, roles);
-        user.RefreshToken = _tokenService.GenerateRefreshToken();
-
-        return new TokenPairDto()
-        {
-            accesToken = accessToken,
-            refreshToken = user.RefreshToken
-        };
+        return roles;
     }
 }

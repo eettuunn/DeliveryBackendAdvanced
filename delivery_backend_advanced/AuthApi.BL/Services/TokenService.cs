@@ -42,7 +42,7 @@ public class TokenService : ITokenService
             new(ClaimTypes.Email, user.email)
             
         };
-
+//todo: watch lecture for role claim name
         foreach (var r in roles)
         {
             claims.Add(new(ClaimTypes.Role, r.Name));
@@ -52,15 +52,48 @@ public class TokenService : ITokenService
 
     public static JwtSecurityToken CreateJwtToken(IEnumerable<Claim> claims)
     {
-        var expire = JwtConfig.Lifetime;
-        
         return new JwtSecurityToken(
             JwtConfig.Issuer,
             JwtConfig.Audience,
             claims,
-            expires: DateTime.UtcNow.AddMinutes(expire),
+            expires: DateTime.UtcNow.AddMinutes(JwtConfig.JwtLifetime),
             signingCredentials: new SigningCredentials(JwtConfig.GetSymmetricSecurityKey(),
                 SecurityAlgorithms.HmacSha256)
         );
     }
+    
+    public ClaimsPrincipal? GetExpiredTokenInfo(string? accessToken)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = JwtConfig.GetSymmetricSecurityKey(),
+            ValidateLifetime = false
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            throw new SecurityTokenException("Invalid token");
+
+        return principal;
+    }
+    
+    /*public static JwtSecurityToken CreateToken(List<Claim> authClaims)
+    {
+        var authSigningKey = JwtConfig.GetSymmetricSecurityKey();
+        var tokenValidityInMinutes = JwtConfig.Lifetime;
+        
+        var token = new JwtSecurityToken(
+            issuer: JwtConfig.Issuer,
+            audience: JwtConfig.Audience,
+            expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
+            claims: authClaims,
+            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+        );
+
+        return token;
+    }*/
 }

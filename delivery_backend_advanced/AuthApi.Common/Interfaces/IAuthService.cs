@@ -6,4 +6,5 @@ public interface IAuthService
 {
     public Task<TokenPairDto> RegisterUser(RegisterUserDto registerUserDto);
     public Task<TokenPairDto> LoginUser(LoginUserDto loginUserDto);
+    public Task<TokenPairDto> RefreshToken(TokenPairDto tokenPairDto);
 }
