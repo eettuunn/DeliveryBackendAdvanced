@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,18 +16,30 @@ public class EmailController : ControllerBase
         _emailService = emailService;
     }
 
+    /// <summary>
+    /// Endpoint for link in confirm email
+    /// </summary>
     [HttpGet]
     public async Task ConfirmEmail(string email, string code)
     {
         await _emailService.ConfirmEmail(email, code);
     }
 
+    /// <summary>
+    /// Send confirm email after registration
+    /// </summary>
     [HttpPost]
     [Authorize]
     [Route("confirm")]
     public async Task ConfirmEmailAfterRegistration()
     {
-        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-        await _emailService.SendConfirmationEmail(HttpContext.Request, Url, email);
+        var userEmail = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        var emailDto = new SendEmailDto()
+        {
+            email = userEmail,
+            subject = "Confirm email",
+            message = "Для подтверждения почты перейдите по ссылке: "
+        };
+        await _emailService.SendConfirmationEmail(HttpContext.Request, Url, emailDto);
     }
 }

@@ -45,7 +45,13 @@ public class AuthService : IAuthService
             throw new AuthErrorsException(errorsStrings);
         }
 
-        await _emailService.SendConfirmationEmail(httpRequest, urlHelper, newUser.Email);
+        var emailDto = new SendEmailDto()
+        {
+            email = newUser.Email,
+            subject = "Confirm email",
+            message = "Для подтверждения почты перейдите по ссылке: "
+        };
+        await _emailService.SendConfirmationEmail(httpRequest, urlHelper, emailDto);
 
         var findUser = await _context
                            .Users
@@ -127,6 +133,20 @@ public class AuthService : IAuthService
             accessToken = newAccess,
             refreshToken = newRefresh
         };
+    }
+
+    public async Task ChangePassword(ChangePasswordDto changePasswordDto, string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (!await _userManager.CheckPasswordAsync(user, changePasswordDto.oldPassword))
+        {
+            throw new BadRequestException("Incorrect oldPassword");
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _userManager.ResetPasswordAsync(user, token, changePasswordDto.newPassword);
+        await _userManager.UpdateAsync(user);
     }
 
 

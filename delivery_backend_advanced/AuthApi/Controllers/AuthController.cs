@@ -1,4 +1,5 @@
-﻿using AuthApi.Common.Dtos;
+﻿using System.Security.Claims;
+using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,9 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
+    /// <summary>
+    /// Register user
+    /// </summary>
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto registerUserDto)
@@ -30,6 +34,9 @@ public class AuthController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Login user
+    /// </summary>
     [HttpPost]
     [Route("login")]
     public async Task<IActionResult> LoginUser([FromBody] LoginUserDto loginUserDto)
@@ -45,10 +52,33 @@ public class AuthController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Refresh token
+    /// </summary>
     [HttpPost]
     [Route("refresh")]
     public async Task<TokenPairDto> RefreshToken([FromBody] TokenPairDto tokenPairDto)
     {
         return await _authService.RefreshToken(tokenPairDto);
+    }
+    
+    /// <summary>
+    /// Change password
+    /// </summary>
+    [HttpPost]
+    [Authorize]
+    [Route("password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+    {
+        if (ModelState.IsValid)
+        {
+            var userEmail = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+            await _authService.ChangePassword(changePasswordDto, userEmail);
+            return Ok();
+        }
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
 }

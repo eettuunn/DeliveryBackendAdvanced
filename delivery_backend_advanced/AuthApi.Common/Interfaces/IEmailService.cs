@@ -8,5 +8,5 @@ public interface IEmailService
 {
     public Task SendEmailAsync(SendEmailDto emailDto);
     public Task ConfirmEmail(string email, string code);
-    public Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, string email);
+    public Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, SendEmailDto emailDto);
 }

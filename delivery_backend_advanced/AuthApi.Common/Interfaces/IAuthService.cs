@@ -9,4 +9,5 @@ public interface IAuthService
     public Task<TokenPairDto> RegisterUser(RegisterUserDto registerUserDto, HttpRequest httpRequest, IUrlHelper urlHelper);
     public Task<TokenPairDto> LoginUser(LoginUserDto loginUserDto);
     public Task<TokenPairDto> RefreshToken(TokenPairDto tokenPairDto);
+    public Task ChangePassword(ChangePasswordDto changePasswordDto, string email);
 }

@@ -20,12 +20,10 @@ namespace AuthApi.BL.Services;
 public class EmailService : IEmailService
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly AuthDbContext _context;
 
-    public EmailService(UserManager<AppUser> userManager, AuthDbContext context)
+    public EmailService(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
-        _context = context;
     }
 
     public async Task SendEmailAsync(SendEmailDto emailDto)
@@ -57,26 +55,20 @@ public class EmailService : IEmailService
         }
     }
     
-    public async Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, string email)
+    public async Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, SendEmailDto emailDto)
     {
-        var user = await _context
-                       .Users
-                       .FirstOrDefaultAsync(user => user.Email == email) ??
-                   throw new NotFoundException($"Cant find user with email {email}");
-        
+        var user = await _userManager.FindByEmailAsync(emailDto.email) ??
+                   throw new NotFoundException($"Cant find user with email {emailDto.email}");
+
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        
         var callbackUrl = urlHelper.Action(
             "ConfirmEmail",
             "Email",
             new { email = user.Email, code = code },
             request.Scheme);
+        emailDto.message += $"<a href='{callbackUrl}'>link</a>";
         
-        var emailDto = new SendEmailDto()
-        {
-            email = user.Email,
-            subject = "Confirm your account",
-            message =  $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>"
-        };
         await SendEmailAsync(emailDto);
     }
 }
