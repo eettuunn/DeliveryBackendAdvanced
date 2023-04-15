@@ -129,18 +129,6 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task ConfirmEmail(Guid userId, string code)
-    {
-        var user = await _userManager.FindByIdAsync(userId.ToString()) ??
-                   throw new CantFindByIdException("user", userId);
-        
-        var result = await _userManager.ConfirmEmailAsync(user, code);
-        if (!result.Succeeded)
-        {
-            throw new Exception("Error");
-        }
-    }
-
 
     private async Task<List<IdentityRole>> GetUserRoles(AppUser user)
     {
@@ -162,7 +150,7 @@ public class AuthService : IAuthService
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var callbackUrl = urlHelper.Action(
             "ConfirmEmail",
-            "Auth",
+            "Email",
             new { userId = user.Id, code = code },
             request.Scheme);
         

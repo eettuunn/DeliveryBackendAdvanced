@@ -51,11 +51,4 @@ public class AuthController : ControllerBase
     {
         return await _authService.RefreshToken(tokenPairDto);
     }
-
-    [HttpGet]
-    [Route("email")]
-    public async Task ConfirmEmail(Guid userId, string code)
-    {
-        await _authService.ConfirmEmail(userId, code);
-    }
 }
