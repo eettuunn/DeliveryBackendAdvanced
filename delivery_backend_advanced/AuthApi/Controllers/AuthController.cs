@@ -1,5 +1,6 @@
 ﻿using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthApi.Controllers;
@@ -20,7 +21,7 @@ public class AuthController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            var tokenPair = await _authService.RegisterUser(registerUserDto);
+            var tokenPair = await _authService.RegisterUser(registerUserDto, HttpContext.Request, Url);
             return Ok(tokenPair);
         }
         else
@@ -49,5 +50,12 @@ public class AuthController : ControllerBase
     public async Task<TokenPairDto> RefreshToken([FromBody] TokenPairDto tokenPairDto)
     {
         return await _authService.RefreshToken(tokenPairDto);
+    }
+
+    [HttpGet]
+    [Route("email")]
+    public async Task ConfirmEmail(Guid userId, string code)
+    {
+        await _authService.ConfirmEmail(userId, code);
     }
 }

@@ -22,17 +22,19 @@ public class AuthService : IAuthService
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IEmailService _emailService;
 
-    public AuthService(AuthDbContext context, UserManager<AppUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager, ITokenService tokenService)
+    public AuthService(AuthDbContext context, UserManager<AppUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager, ITokenService tokenService, IEmailService emailService)
     {
         _context = context;
         _userManager = userManager;
         _mapper = mapper;
         _roleManager = roleManager;
         _tokenService = tokenService;
+        _emailService = emailService;
     }
 
-    public async Task<TokenPairDto> RegisterUser(RegisterUserDto registerUserDto)
+    public async Task<TokenPairDto> RegisterUser(RegisterUserDto registerUserDto, HttpRequest httpRequest, IUrlHelper urlHelper)
     {
         var newUser = _mapper.Map<AppUser>(registerUserDto);
         var result = await _userManager.CreateAsync(newUser, registerUserDto.password);
@@ -42,6 +44,8 @@ public class AuthService : IAuthService
             var errorsStrings = result.Errors.Select(e => e.Description.ToString()).ToList();
             throw new AuthErrorsException(errorsStrings);
         }
+
+        await SendConfirmationEmail(httpRequest, urlHelper, newUser);
 
         var findUser = await _context
                            .Users
@@ -125,6 +129,17 @@ public class AuthService : IAuthService
         };
     }
 
+    public async Task ConfirmEmail(Guid userId, string code)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString()) ??
+                   throw new CantFindByIdException("user", userId);
+        
+        var result = await _userManager.ConfirmEmailAsync(user, code);
+        if (!result.Succeeded)
+        {
+            throw new Exception("Error");
+        }
+    }
 
 
     private async Task<List<IdentityRole>> GetUserRoles(AppUser user)
@@ -140,5 +155,23 @@ public class AuthService : IAuthService
             .ToListAsync();
 
         return roles;
+    }
+
+    private async Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, AppUser user)
+    {
+        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var callbackUrl = urlHelper.Action(
+            "ConfirmEmail",
+            "Auth",
+            new { userId = user.Id, code = code },
+            request.Scheme);
+        
+        var emailDto = new SendEmailDto()
+        {
+            email = user.Email,
+            subject = "Confirm your account",
+            message =  $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>"
+        };
+        await _emailService.SendEmailAsync(emailDto);
     }
 }

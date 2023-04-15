@@ -80,20 +80,4 @@ public class TokenService : ITokenService
 
         return principal;
     }
-    
-    /*public static JwtSecurityToken CreateToken(List<Claim> authClaims)
-    {
-        var authSigningKey = JwtConfig.GetSymmetricSecurityKey();
-        var tokenValidityInMinutes = JwtConfig.Lifetime;
-        
-        var token = new JwtSecurityToken(
-            issuer: JwtConfig.Issuer,
-            audience: JwtConfig.Audience,
-            expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
-            claims: authClaims,
-            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-        );
-
-        return token;
-    }*/
 }
