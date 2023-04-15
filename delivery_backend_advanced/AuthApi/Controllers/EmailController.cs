@@ -1,4 +1,6 @@
-﻿using AuthApi.Common.Interfaces;
+﻿using System.Security.Claims;
+using AuthApi.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthApi.Controllers;
@@ -14,9 +16,17 @@ public class EmailController : ControllerBase
     }
 
     [HttpGet]
-    [Route("email/confirm")]
-    public async Task ConfirmEmail(Guid userId, string code)
+    public async Task ConfirmEmail(string email, string code)
     {
-        await _emailService.ConfirmEmail(userId, code);
+        await _emailService.ConfirmEmail(email, code);
+    }
+
+    [HttpPost]
+    [Authorize]
+    [Route("confirm")]
+    public async Task ConfirmEmailAfterRegistration()
+    {
+        var email = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        await _emailService.SendConfirmationEmail(HttpContext.Request, Url, email);
     }
 }

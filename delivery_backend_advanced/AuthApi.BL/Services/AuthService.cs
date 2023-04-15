@@ -45,7 +45,7 @@ public class AuthService : IAuthService
             throw new AuthErrorsException(errorsStrings);
         }
 
-        await SendConfirmationEmail(httpRequest, urlHelper, newUser);
+        await _emailService.SendConfirmationEmail(httpRequest, urlHelper, newUser.Email);
 
         var findUser = await _context
                            .Users
@@ -143,23 +143,5 @@ public class AuthService : IAuthService
             .ToListAsync();
 
         return roles;
-    }
-
-    private async Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, AppUser user)
-    {
-        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var callbackUrl = urlHelper.Action(
-            "ConfirmEmail",
-            "Email",
-            new { userId = user.Id, code = code },
-            request.Scheme);
-        
-        var emailDto = new SendEmailDto()
-        {
-            email = user.Email,
-            subject = "Confirm your account",
-            message =  $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>"
-        };
-        await _emailService.SendEmailAsync(emailDto);
     }
 }

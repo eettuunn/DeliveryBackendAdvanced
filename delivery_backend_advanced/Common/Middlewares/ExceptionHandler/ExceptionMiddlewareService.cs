@@ -56,7 +56,7 @@ public class ExceptionMiddlewareService
         /*catch (Exception exception)
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(exception.Message);
+            await context.Response.WriteAsJsonAsync(new { message = exception.Message });
         }*/
     }
 }

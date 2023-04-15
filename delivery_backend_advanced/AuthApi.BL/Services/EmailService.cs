@@ -1,12 +1,16 @@
 ﻿using System.Net.Mail;
 using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
+using AuthApi.DAL;
 using AuthApi.DAL.Entities;
 using Common.Configurations;
 using delivery_backend_advanced.Exceptions;
 using MailKit.Security;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
@@ -16,10 +20,12 @@ namespace AuthApi.BL.Services;
 public class EmailService : IEmailService
 {
     private readonly UserManager<AppUser> _userManager;
+    private readonly AuthDbContext _context;
 
-    public EmailService(UserManager<AppUser> userManager)
+    public EmailService(UserManager<AppUser> userManager, AuthDbContext context)
     {
         _userManager = userManager;
+        _context = context;
     }
 
     public async Task SendEmailAsync(SendEmailDto emailDto)
@@ -38,16 +44,39 @@ public class EmailService : IEmailService
  
         await client.DisconnectAsync(true);
     }
-    
-    public async Task ConfirmEmail(Guid userId, string code)
+
+    public async Task ConfirmEmail(string email, string code)
     {
-        var user = await _userManager.FindByIdAsync(userId.ToString()) ??
-                   throw new CantFindByIdException("user", userId);
+        var user = await _userManager.FindByEmailAsync(email) ??
+                   throw new NotFoundException($"Cant find user with email {email}");
         
         var result = await _userManager.ConfirmEmailAsync(user, code);
         if (!result.Succeeded)
         {
             throw new Exception("Error");
         }
+    }
+    
+    public async Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, string email)
+    {
+        var user = await _context
+                       .Users
+                       .FirstOrDefaultAsync(user => user.Email == email) ??
+                   throw new NotFoundException($"Cant find user with email {email}");
+        
+        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var callbackUrl = urlHelper.Action(
+            "ConfirmEmail",
+            "Email",
+            new { email = user.Email, code = code },
+            request.Scheme);
+        
+        var emailDto = new SendEmailDto()
+        {
+            email = user.Email,
+            subject = "Confirm your account",
+            message =  $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>"
+        };
+        await SendEmailAsync(emailDto);
     }
 }
