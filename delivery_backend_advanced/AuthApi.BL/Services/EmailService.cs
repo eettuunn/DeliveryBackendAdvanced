@@ -71,4 +71,21 @@ public class EmailService : IEmailService
         
         await SendEmailAsync(emailDto);
     }
+
+    public async Task SendConfirmationPasswordEmail(HttpRequest request, IUrlHelper urlHelper, string newPassword, SendEmailDto emailDto)
+    {
+        var user = await _userManager.FindByEmailAsync(emailDto.email) ??
+                   throw new NotFoundException($"Cant find user with email {emailDto.email}");
+
+        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        
+        var callbackUrl = urlHelper.Action(
+            "ChangeForgotPassword",
+            "Auth",
+            new { email = user.Email, password = newPassword },
+            request.Scheme);
+        emailDto.message += $"<a href='{callbackUrl}'>link</a>";
+        
+        await SendEmailAsync(emailDto);
+    }
 }

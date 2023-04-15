@@ -9,4 +9,5 @@ public interface IEmailService
     public Task SendEmailAsync(SendEmailDto emailDto);
     public Task ConfirmEmail(string email, string code);
     public Task SendConfirmationEmail(HttpRequest request, IUrlHelper urlHelper, SendEmailDto emailDto);
+    public Task SendConfirmationPasswordEmail(HttpRequest request, IUrlHelper urlHelper, string newPassword, SendEmailDto emailDto);
 }

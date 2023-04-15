@@ -145,7 +145,29 @@ public class AuthService : IAuthService
         }
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var result = await _userManager.ResetPasswordAsync(user, token, changePasswordDto.newPassword);
+        await _userManager.ResetPasswordAsync(user, token, changePasswordDto.newPassword);
+        await _userManager.UpdateAsync(user);
+    }
+
+    public async Task ForgotPassword(ForgotPasswordDto forgotPassword, HttpRequest request, IUrlHelper urlHelper)
+    {
+        var sendEmail = new SendEmailDto()
+        {
+            email = forgotPassword.email,
+            message = "Чтобы изменить пароль перейдите по ссылке: ",
+            subject = "Change password"
+        };
+        
+        await _emailService.SendConfirmationPasswordEmail(request, urlHelper, forgotPassword.password, sendEmail);
+    }
+
+    public async Task ChangeForgotPassword(string email, string password)
+    {
+        var user = await _userManager.FindByEmailAsync(email) ??
+                   throw new NotFoundException($"Cant find user with email {email}");
+        
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        await _userManager.ResetPasswordAsync(user, token, password);
         await _userManager.UpdateAsync(user);
     }
 

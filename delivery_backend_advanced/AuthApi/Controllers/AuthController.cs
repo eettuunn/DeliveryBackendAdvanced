@@ -81,4 +81,32 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
     }
+    
+    /// <summary>
+    /// Change password if forgot it
+    /// </summary>
+    [HttpPost]
+    [Route("password/forgot")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPassword)
+    {
+        if (ModelState.IsValid)
+        {
+            await _authService.ForgotPassword(forgotPassword, HttpContext.Request, Url);
+            return Ok();
+        }
+        else
+        {
+            return BadRequest(ModelState);
+        }
+    }
+    
+    /// <summary>
+    ///
+    /// </summary>
+    [HttpGet]
+    [Route("password/forgot")]
+    public async Task ChangeForgotPassword(string email, string password)
+    {
+        await _authService.ChangeForgotPassword(email, password);
+    }
 }
