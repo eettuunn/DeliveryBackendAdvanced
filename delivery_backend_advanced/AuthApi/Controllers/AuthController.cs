@@ -65,7 +65,7 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Change password
     /// </summary>
-    [HttpPost]
+    [HttpPut]
     [Authorize]
     [Route("password")]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
@@ -85,7 +85,7 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Change password if forgot it
     /// </summary>
-    [HttpPost]
+    [HttpPut]
     [Route("password/forgot")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPassword)
     {
@@ -101,9 +101,22 @@ public class AuthController : ControllerBase
     }
     
     /// <summary>
-    ///
+    /// Endpoint for link in 'forgot password' email
     /// </summary>
     [HttpGet]
+    [Authorize]
+    [Route("profile")]
+    public async Task<ProfileDto> GetProfile()
+    {
+        var userEmail = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        return await _authService.GetProfile(userEmail);
+    }
+    
+    /// <summary>
+    /// Endpoint for link in 'forgot password' email
+    /// </summary>
+    [HttpGet]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("password/forgot")]
     public async Task ChangeForgotPassword(string email, string password)
     {

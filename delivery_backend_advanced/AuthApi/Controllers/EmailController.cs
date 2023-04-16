@@ -17,9 +17,10 @@ public class EmailController : ControllerBase
     }
 
     /// <summary>
-    /// Endpoint for link in confirm email
+    /// Endpoint for link in 'email confirm' email
     /// </summary>
     [HttpGet]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public async Task ConfirmEmail(string email, string code)
     {
         await _emailService.ConfirmEmail(email, code);

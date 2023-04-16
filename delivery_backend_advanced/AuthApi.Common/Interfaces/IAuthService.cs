@@ -12,4 +12,5 @@ public interface IAuthService
     public Task ChangePassword(ChangePasswordDto changePasswordDto, string email);
     public Task ForgotPassword(ForgotPasswordDto forgotPassword, HttpRequest request, IUrlHelper urlHelper);
     public Task ChangeForgotPassword(string email, string password);
+    public Task<ProfileDto> GetProfile(string email);
 }

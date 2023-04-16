@@ -1,6 +1,7 @@
 ﻿using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;

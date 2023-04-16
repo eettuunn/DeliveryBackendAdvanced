@@ -171,6 +171,14 @@ public class AuthService : IAuthService
         await _userManager.UpdateAsync(user);
     }
 
+    public async Task<ProfileDto> GetProfile(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException($"Cant find user with email {email}");
+        var profile = _mapper.Map<ProfileDto>(user);
+        
+        return profile;
+    }
+
 
     private async Task<List<IdentityRole>> GetUserRoles(AppUser user)
     {
