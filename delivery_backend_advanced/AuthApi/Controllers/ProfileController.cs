@@ -75,4 +75,21 @@ public class ProfileController : ControllerBase
     {
         await _profileService.ChangeForgotPassword(email, password);
     }
+    
+    /// <summary>
+    /// Change password if forgot it
+    /// </summary>
+    [HttpPut]
+    [Authorize]
+    [Route("edit")]
+    public async Task<TokenPairDto> EditProfile([FromBody] EditProfileDto editProfileDto)
+    {
+        var userEmail = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+        if (editProfileDto.email != null)
+        {
+            return await _profileService.EditProfile(editProfileDto, userEmail, Url, HttpContext.Request);
+        }
+
+        return await _profileService.EditProfile(editProfileDto, userEmail);
+    }
 }

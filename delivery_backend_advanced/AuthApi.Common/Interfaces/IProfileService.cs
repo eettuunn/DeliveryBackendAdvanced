@@ -10,4 +10,5 @@ public interface IProfileService
     public Task ForgotPassword(ForgotPasswordDto forgotPassword, HttpRequest request, IUrlHelper urlHelper);
     public Task ChangeForgotPassword(string email, string password);
     public Task<ProfileDto> GetProfile(string email);
+    public Task<TokenPairDto> EditProfile(EditProfileDto editProfileDto, string email, IUrlHelper? urlHelper = null, HttpRequest? request = null);
 }

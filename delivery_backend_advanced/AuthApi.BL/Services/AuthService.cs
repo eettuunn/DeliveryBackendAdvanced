@@ -21,15 +21,13 @@ public class AuthService : IAuthService
     private readonly AuthDbContext _context;
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
-    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IEmailService _emailService;
 
-    public AuthService(AuthDbContext context, UserManager<AppUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager, ITokenService tokenService, IEmailService emailService)
+    public AuthService(AuthDbContext context, UserManager<AppUser> userManager, IMapper mapper, ITokenService tokenService, IEmailService emailService)
     {
         _context = context;
         _userManager = userManager;
         _mapper = mapper;
-        _roleManager = roleManager;
         _tokenService = tokenService;
         _emailService = emailService;
     }

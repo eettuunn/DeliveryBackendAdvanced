@@ -1,11 +1,14 @@
 ﻿using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
+using AuthApi.DAL;
 using AuthApi.DAL.Entities;
 using AutoMapper;
+using Common.Configurations;
 using delivery_backend_advanced.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthApi.BL.Services;
 
@@ -14,12 +17,16 @@ public class ProfileService : IProfileService
     private readonly UserManager<AppUser> _userManager;
     private readonly IEmailService _emailService;
     private readonly IMapper _mapper;
+    private readonly ITokenService _tokenService;
+    private readonly AuthDbContext _context;
 
-    public ProfileService(UserManager<AppUser> userManager, IEmailService emailService, IMapper mapper)
+    public ProfileService(UserManager<AppUser> userManager, IEmailService emailService, IMapper mapper, ITokenService tokenService, AuthDbContext context)
     {
         _userManager = userManager;
         _emailService = emailService;
         _mapper = mapper;
+        _tokenService = tokenService;
+        _context = context;
     }
 
     public async Task ChangePassword(ChangePasswordDto changePasswordDto, string email)
@@ -64,5 +71,68 @@ public class ProfileService : IProfileService
         var profile = _mapper.Map<ProfileDto>(user);
         
         return profile;
+    }
+
+    public async Task<TokenPairDto> EditProfile(EditProfileDto editProfileDto, string email, IUrlHelper? url, HttpRequest? request)
+    {
+        var user = await _userManager.FindByEmailAsync(email) ??
+                   throw new NotFoundException($"Cant find user with email {email}");
+
+        if (editProfileDto.email != null)
+        {
+            user.Email = editProfileDto.email;
+            user.EmailConfirmed = false;
+
+            var sendEmail = new SendEmailDto()
+            {
+                email = editProfileDto.email,
+                message = "Чтобы подтвердить свою почту, перейдите по ссылке: ",
+                subject = "Confirm email"
+            };
+            
+            await _userManager.UpdateAsync(user);
+            await _emailService.SendConfirmationEmail(request, url, sendEmail);
+        }
+
+        user.PhoneNumber = editProfileDto.phoneNumber ?? user.PhoneNumber;
+        user.BirthDate = editProfileDto.birthDate ?? user.BirthDate;
+        user.Gender = editProfileDto.gender ?? user.Gender;
+        user.UserName = editProfileDto.userName ?? user.UserName;
+
+        return await GetGeneratedTokenPair(user);
+    }
+
+
+
+
+    private async Task<TokenPairDto> GetGeneratedTokenPair(AppUser user)
+    {
+        var roles = await GetUserRoles(user);
+        var tokenUser = _mapper.Map<TokenUserDto>(user);
+        var accessToken = _tokenService.CreateToken(tokenUser, roles);
+        user.RefreshToken = _tokenService.GenerateRefreshToken();
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtConfig.RefreshLifetime);
+        await _userManager.UpdateAsync(user);
+        
+        return new TokenPairDto()
+        {
+            accessToken = accessToken,
+            refreshToken = user.RefreshToken
+        };
+    }
+    
+    private async Task<List<IdentityRole>> GetUserRoles(AppUser user)
+    {
+        var rolesIds = await _context
+            .UserRoles
+            .Where(role => role.UserId == user.Id)
+            .Select(role => role.RoleId)
+            .ToListAsync();
+        var roles = await _context
+            .Roles
+            .Where(role => rolesIds.Contains(role.Id))
+            .ToListAsync();
+
+        return roles;
     }
 }
