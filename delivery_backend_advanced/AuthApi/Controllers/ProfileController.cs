@@ -3,6 +3,7 @@ using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Tls;
 
 namespace AuthApi.Controllers;
 
@@ -82,14 +83,19 @@ public class ProfileController : ControllerBase
     [HttpPut]
     [Authorize]
     [Route("edit")]
-    public async Task<TokenPairDto> EditProfile([FromBody] EditProfileDto editProfileDto)
+    public async Task<IActionResult> EditProfile([FromBody] EditProfileDto editProfileDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var userEmail = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
         if (editProfileDto.email != null)
         {
-            return await _profileService.EditProfile(editProfileDto, userEmail, Url, HttpContext.Request);
+            return Ok(await _profileService.EditProfile(editProfileDto, userEmail, Url, HttpContext.Request));
         }
 
-        return await _profileService.EditProfile(editProfileDto, userEmail);
+        return Ok(await _profileService.EditProfile(editProfileDto, userEmail));
     }
 }
