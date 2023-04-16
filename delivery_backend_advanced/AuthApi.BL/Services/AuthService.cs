@@ -134,50 +134,7 @@ public class AuthService : IAuthService
             refreshToken = newRefresh
         };
     }
-
-    public async Task ChangePassword(ChangePasswordDto changePasswordDto, string email)
-    {
-        var user = await _userManager.FindByEmailAsync(email);
-
-        if (!await _userManager.CheckPasswordAsync(user, changePasswordDto.oldPassword))
-        {
-            throw new BadRequestException("Incorrect oldPassword");
-        }
-
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        await _userManager.ResetPasswordAsync(user, token, changePasswordDto.newPassword);
-        await _userManager.UpdateAsync(user);
-    }
-
-    public async Task ForgotPassword(ForgotPasswordDto forgotPassword, HttpRequest request, IUrlHelper urlHelper)
-    {
-        var sendEmail = new SendEmailDto()
-        {
-            email = forgotPassword.email,
-            message = "Чтобы изменить пароль перейдите по ссылке: ",
-            subject = "Change password"
-        };
-        
-        await _emailService.SendConfirmationPasswordEmail(request, urlHelper, forgotPassword.password, sendEmail);
-    }
-
-    public async Task ChangeForgotPassword(string email, string password)
-    {
-        var user = await _userManager.FindByEmailAsync(email) ??
-                   throw new NotFoundException($"Cant find user with email {email}");
-        
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        await _userManager.ResetPasswordAsync(user, token, password);
-        await _userManager.UpdateAsync(user);
-    }
-
-    public async Task<ProfileDto> GetProfile(string email)
-    {
-        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException($"Cant find user with email {email}");
-        var profile = _mapper.Map<ProfileDto>(user);
-        
-        return profile;
-    }
+    
 
 
     private async Task<List<IdentityRole>> GetUserRoles(AppUser user)

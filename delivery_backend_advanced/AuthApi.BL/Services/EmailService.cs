@@ -81,7 +81,7 @@ public class EmailService : IEmailService
         
         var callbackUrl = urlHelper.Action(
             "ChangeForgotPassword",
-            "Auth",
+            "Profile",
             new { email = user.Email, password = newPassword },
             request.Scheme);
         emailDto.message += $"<a href='{callbackUrl}'>link</a>";

@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text;
 using AuthApi.BL;
 using AuthApi.BL.Services;
+using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
 using AuthApi.DAL;
 using AuthApi.DAL.Entities;
@@ -27,6 +28,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
