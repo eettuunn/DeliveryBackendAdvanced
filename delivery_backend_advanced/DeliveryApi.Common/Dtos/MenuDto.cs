@@ -6,5 +6,5 @@ public class MenuDto
     
     public string name { get; set; }
 
-    public List<DishListElementDto> dishes { get; set; }
+    public List<DishListElementDto> dishes { get; set; } 
 }

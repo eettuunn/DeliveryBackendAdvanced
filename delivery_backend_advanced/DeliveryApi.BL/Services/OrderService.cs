@@ -107,41 +107,6 @@ public class OrderService : IOrderService
         
         
         return ordersPage;
-        /*//todo: sorting, filters, search and user
-        var orderEntities = await _context
-            .Orders
-            .Include(order => order.Restaurant)
-            .Include(order => order.Dishes)
-            .ThenInclude(dish => dish.Dish)
-            .ToListAsync();
-
-        if (current)
-        {
-            orderEntities = orderEntities.Where(order => order.Status != OrderStatus.Delivered && order.Status != OrderStatus.Canceled).ToList();
-        }
-        List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
-
-        return orderDtos;
-    }
-
-    public async Task<OrderDto> GetOrderDetails(Guid orderId)
-    {
-        //todo: sorting, filters, search and user
-        var orderEntity = await _context
-            .Orders
-            .Include(order => order.Restaurant)
-            .Include(order => order.Dishes)
-            .ThenInclude(dish => dish.Dish)
-            .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
-        
-        OrderDto orderDto = _mapper.Map<OrderDto>(orderEntity);
-        orderDto.dishes = _mapper.Map<List<DishInOrderDto>>(orderEntity.Dishes.Select(d => d.Dish));
-        for (int i = 0; i < orderEntity.Dishes.Count; i++)
-        {
-            orderDto.dishes[i].amount = orderEntity.Dishes[i].Amount;
-        }
-        
-        return orderDto;*/
     }
 
     public async Task<OrderDto> GetOrderDetails(Guid orderId)

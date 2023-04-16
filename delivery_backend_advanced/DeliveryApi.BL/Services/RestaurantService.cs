@@ -24,13 +24,32 @@ public class RestaurantService : IRestaurantService
         _configuration = configuration;
     }
 
-    public async Task<List<RestaurantListElementDto>> GetRestaurantList()
+    public async Task<RestListPageDto> GetRestaurantList(string? search, int? page)
     {
         var restEntities = await _context
             .Restaurants
             .Include(r => r.Menus)
+            .Where(r => r.Name.Contains(search) || search == null)
             .ToListAsync();
 
+        
+        var curPage = page ?? 1;
+        var pageRestsCount = _configuration.GetValue<double>("PageSize");
+        var restCount = restEntities.Count;
+        var dishesSkip = (int)((page - 1) * pageRestsCount);
+        var dishesTake = (int)Math.Min(restCount - (curPage - 1) * pageRestsCount, pageRestsCount);
+        var pageCount = (int)Math.Ceiling(restEntities.Count / pageRestsCount);
+        pageCount = pageCount == 0 ? 1 : pageCount;
+        restEntities = restEntities
+            .Skip(dishesSkip)
+            .Take(dishesTake)
+            .ToList();
+        if (page > pageCount || page < 1)
+        {
+            throw new BadRequestException("Incorrect current page");
+        }
+        
+        
         List<RestaurantListElementDto> restDtos = _mapper.Map<List<RestaurantListElementDto>>(restEntities);
         for (int i = 0; i < restEntities.Count; i++)
         {
@@ -39,10 +58,23 @@ public class RestaurantService : IRestaurantService
                 .ToList());
         }
 
-        return restDtos;
+        
+        var pageInfo = new PaginationDto()
+        {
+            current = curPage,
+            count = pageCount,
+            size = restEntities.Count
+        };
+        RestListPageDto restPage = new RestListPageDto()
+        {
+            rests = restDtos,
+            pagination = pageInfo
+        };
+        
+        return restPage;
     }
 
-    public async Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, string? menuName)
+    public async Task<RestaurantPageDto> GetRestaurantDetails(Guid restaurantId, DishesQueryModel query)
     {
         var rest = await _context
             .Restaurants
@@ -53,114 +85,113 @@ public class RestaurantService : IRestaurantService
         
         var restDto = _mapper.Map<RestaurantDetailsDto>(rest);
         restDto.menuNames = rest.Menus.Select(menu => menu.Name).ToList();
-        if (menuName == null)
-        {
-            restDto.menu = _mapper.Map<MenuDto>(rest
-                .Menus
-                .FirstOrDefault(menu => menu.IsMain));
-        }
-        else
-        {
-            var restEntity = rest.Menus.FirstOrDefault(menu => menu.Name == menuName);
-            restDto.menu = restEntity == null
-                ? _mapper.Map<MenuDto>(rest
-                    .Menus
-                    .FirstOrDefault(menu => menu.IsMain))
-                : _mapper.Map<MenuDto>(restEntity);
-        }
+        restDto.menu = GetMenu(query.menu, rest);
         
-        return restDto;
-    }
 
-    /*public async Task<OrdersPageDto> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query)
-    {
-        var restaurant = await _context
-                             .Restaurants
-                             .Include(r => r.Orders)
-                             .ThenInclude(order => order.Dishes)
-                             .ThenInclude(dib => dib.Dish)
-                             .FirstOrDefaultAsync(r => r.Id == restaurantId) ??
-                         throw new CantFindByIdException("restaurant", restaurantId);
-
-        
         var page = query.page ?? 1;
-        var pageOrderCount = _configuration.GetValue<double>("PageSize");
-        var orderCountInRest = restaurant.Orders.Count;
-        var ordersSkip = (int)((page - 1) * pageOrderCount);
-        var ordersTake = (int)Math.Min(orderCountInRest - (page - 1) * pageOrderCount, pageOrderCount);
+        var pageDishesCount = _configuration.GetValue<double>("PageSize");
+        var dishCountInMenu = restDto.menu.dishes.Count;
+        var dishesSkip = (int)((page - 1) * pageDishesCount);
+        var dishesTake = (int)Math.Min(dishCountInMenu - (page - 1) * pageDishesCount, pageDishesCount);
         
-        var orderEntities = restaurant.Orders
-            .Where(order => order.Restaurant.Id == restaurantId && (order.Status == OrderStatus.Created ||
-                                                                    order.Status == OrderStatus.Kitchen ||
-                                                                    order.Status == OrderStatus.Packaging))
-            .ToList();
+        var dishes = restDto.menu.dishes;
+        SortAndFilterDishes(ref dishes, query);
+        restDto.menu.dishes = dishes;
         
-        
-        SortAndFilterOrders(ref orderEntities, query);
-
-        
-        var pageCount = (int)Math.Ceiling(orderEntities.Count / pageOrderCount);
+        var pageCount = (int)Math.Ceiling(restDto.menu.dishes.Count / pageDishesCount);
         pageCount = pageCount == 0 ? 1 : pageCount;
-        orderEntities = orderEntities
-            .Skip(ordersSkip)
-            .Take(ordersTake)
+        restDto.menu.dishes = restDto.menu.dishes
+            .Skip(dishesSkip)
+            .Take(dishesTake)
             .ToList();
         if (page > pageCount || page < 1)
         {
             throw new BadRequestException("Incorrect current page");
         }
 
-        
-        List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
-
-        
         var pageInfo = new PaginationDto()
         {
             current = page,
             count = pageCount,
-            size = orderEntities.Count
+            size = restDto.menu.dishes.Count
         };
-        OrdersPageDto ordersPage = new OrdersPageDto()
+        RestaurantPageDto restaurantPage = new RestaurantPageDto()
         {
-            orders = orderDtos,
+            restaurantDetails = restDto,
             pagination = pageInfo
         };
         
-        
-        return ordersPage;
-    }*/
+        return restaurantPage;
+    }
 
 
 
-    private void SortAndFilterOrders(ref List<OrderEntity> orders, OrderQueryModel query)
+    private void SortAndFilterDishes(ref List<DishListElementDto> dishes, DishesQueryModel query)
     {
         if (query.sort != null)
         {
             switch (query.sort)
             {
-                case OrderSort.CreateAsc:
-                    orders = orders.OrderBy(order => order.OrderTime).ToList();
+                case DishSort.NameAsc:
+                    dishes = dishes.OrderBy(dish => dish.name).ToList();
                     break;
-                case OrderSort.CreateDesc:
-                    orders = orders.OrderByDescending(order => order.OrderTime).ToList();
+                case DishSort.NameDesc:
+                    dishes = dishes.OrderByDescending(dish => dish.name).ToList();
                     break;
-                case OrderSort.DeliveryAsc:
-                    orders = orders.OrderBy(order => order.DeliveryTime).ToList();
+                case DishSort.PriceAsc:
+                    dishes = dishes.OrderBy(dish => dish.price).ToList();
                     break;
-                case OrderSort.DeliveryDesc:
-                    orders = orders.OrderByDescending(order => order.DeliveryTime).ToList();
+                case DishSort.PriceDesc:
+                    dishes = dishes.OrderByDescending(dish => dish.price).ToList();
+                    break;
+                case DishSort.RatingAsc:
+                    var dishesWithRating = dishes
+                        .OrderBy(dish => dish.averageRating)
+                        .Where(dish => dish.averageRating != null)
+                        .ToList();
+                    var dishesWithoutRating = dishes
+                        .Where(dish => dish.averageRating == null)
+                        .ToList();
+            
+                    dishesWithRating.AddRange(dishesWithoutRating);
+                    dishes = dishesWithRating;
+                    break;
+                case DishSort.RatingDesc:
+                    dishes = dishes.OrderByDescending(dish => dish.averageRating).ToList();
                     break;
             }
         }
         
-        if (query.search != null)
+        if (query.isVegetarian != null)
         {
-            orders = orders.Where(order => order.Number.ToString().Contains(query.search.ToString())).ToList();
+            dishes = dishes.Where(dish => dish.isVegetarian == query.isVegetarian).ToList();
         }
 
-        if (query.statuses.Count != 0)
+        if (query.categories.Count != 0)
         {
-            orders = orders.Where(order => query.statuses.Contains(order.Status)).ToList();
+            dishes = dishes.Where(dish => query.categories.Contains(dish.category)).ToList();
         }
+    }
+
+    private MenuDto GetMenu(string menuName, RestaurantEntity restaurantEntity)
+    {
+        var menuDto = new MenuDto();
+        if (menuName == null)
+        {
+            menuDto = _mapper.Map<MenuDto>(restaurantEntity
+                .Menus
+                .FirstOrDefault(menu => menu.IsMain));
+        }
+        else
+        {
+            var restEntity = restaurantEntity.Menus.FirstOrDefault(menu => menu.Name == menuName);
+            menuDto = restEntity == null
+                ? _mapper.Map<MenuDto>(restaurantEntity
+                    .Menus
+                    .FirstOrDefault(menu => menu.IsMain))
+                : _mapper.Map<MenuDto>(restEntity);
+        }
+
+        return menuDto;
     }
 }

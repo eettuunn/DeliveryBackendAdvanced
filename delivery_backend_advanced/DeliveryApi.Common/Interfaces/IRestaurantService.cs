@@ -5,9 +5,9 @@ namespace delivery_backend_advanced.Services.Interfaces;
 
 public interface IRestaurantService
 {
-    public Task<List<RestaurantListElementDto>> GetRestaurantList();
+    public Task<RestListPageDto> GetRestaurantList(string? search, int? page);
 
-    public Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, string? menuName);
+    public Task<RestaurantPageDto> GetRestaurantDetails(Guid restaurantId, DishesQueryModel query);
 
     // public Task<OrdersPageDto> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query);
 }

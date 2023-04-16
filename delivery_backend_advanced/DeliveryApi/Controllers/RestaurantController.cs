@@ -22,9 +22,9 @@ public class RestaurantController : ControllerBase
     /// Get list of restaurants
     /// </summary>
     [HttpGet]
-    public async Task<List<RestaurantListElementDto>> GetAllRestaurants()
+    public async Task<RestListPageDto> GetAllRestaurants(string? search, int? page)
     {
-        return await _restaurantService.GetRestaurantList();
+        return await _restaurantService.GetRestaurantList(search, page);
     }
 
     /// <summary>
@@ -32,9 +32,9 @@ public class RestaurantController : ControllerBase
     /// </summary>
     [HttpGet]
     [Route("{restaurantId}")]
-    public async Task<RestaurantDetailsDto> GetRestaurantDetails(Guid restaurantId, string? name)
+    public async Task<RestaurantPageDto> GetRestaurantDetails(Guid restaurantId, DishesQueryModel query)
     {
-        return await _restaurantService.GetRestaurantDetails(restaurantId, name);
+        return await _restaurantService.GetRestaurantDetails(restaurantId, query);
     }
     
     /// <summary>
