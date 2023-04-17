@@ -33,6 +33,11 @@ public class CourierService : ICourierService
             .Orders
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
 
+        if (orderEntity.Status != OrderStatus.Delivery)
+        {
+            throw new ConflictException("Courier only can take order with status Delivery");
+        }
+        
         // courier.Orders.Add(orderEntity);
         orderEntity.Status = OrderStatus.Delivery;
 

@@ -1,4 +1,5 @@
 ﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,7 @@ public class CourierController : ControllerBase
     [Route("orders")]
     public async Task<OrdersPageDto> GetCourierOrders([FromQuery] OrderQueryModel query)
     {
-        query.role = "courier";
-        
-        return await _orderService.GetOrders(query);
+        return await _orderService.GetOrders(query, UserRole.Courier);
     }
 
     /// <summary>

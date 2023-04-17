@@ -25,7 +25,11 @@ public class CookService : ICookService
         var orderEntity = await _context
             .Orders
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
-        
+
+        if (orderEntity.Status != OrderStatus.Created)
+        {
+            throw new ConflictException("Cook can take only orders with status created");
+        }
         //check if order is already taken
         //cook.Orders.Add(orderEntity);
 

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using delivery_backend_advanced.Exceptions;
 using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -81,6 +82,6 @@ public class OrderController : ControllerBase
     [HttpGet]
     public async Task<OrdersPageDto> GetListOfOrders([FromQuery] OrderQueryModel query)
     {
-        return await _orderService.GetOrders(query);
+        return await _orderService.GetOrders(query, UserRole.Customer);
     }
 }

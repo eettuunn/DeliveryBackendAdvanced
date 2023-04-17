@@ -36,6 +36,11 @@ public class OrderService : IOrderService
             .Include(dib => dib.Dish)
             .Where(dib => !dib.IsInOrder)
             .ToListAsync();
+        if (orderDishes.Count == 0)
+        {
+            throw new ConflictException("There are no dishes in basket");
+        }
+        
         var restaurantEntity = await _context
                                    .Restaurants
                                    .FirstOrDefaultAsync(r => r.Id == orderDto.restaurantId) ??
@@ -65,9 +70,9 @@ public class OrderService : IOrderService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<OrdersPageDto> GetOrders(OrderQueryModel query)
+    public async Task<OrdersPageDto> GetOrders(OrderQueryModel query, UserRole role)
     {
-        var orderEntities = await OrdersRoleDepend(query.role, query.current);
+        var orderEntities = await OrdersRoleDepend(role, query.current);
         
         var page = query.page ?? 1;
         var pageOrderCount = _configuration.GetValue<double>("PageSize");
@@ -75,7 +80,7 @@ public class OrderService : IOrderService
         var ordersSkip = (int)((page - 1) * pageOrderCount);
         var ordersTake = (int)Math.Min(orderCountInRest - (page - 1) * pageOrderCount, pageOrderCount);
 
-        SortAndFilterOrders(ref orderEntities, query);
+        SortAndFilterOrders(ref orderEntities, query, role);
 
         
         var pageCount = (int)Math.Ceiling(orderEntities.Count / pageOrderCount);
@@ -176,26 +181,26 @@ public class OrderService : IOrderService
 
 
 
-    private async Task<List<OrderEntity>> OrdersRoleDepend(string role, bool current)
+    private async Task<List<OrderEntity>> OrdersRoleDepend(UserRole role, bool current)
     {
         List<OrderEntity> orders = new List<OrderEntity>();
         switch (role)
         {
-            case "customer":
+            case UserRole.Customer:
                 orders = await _context
                     .Orders
                     //.Where(order => order.Customer.Id == userId)
                     .Where(order => current == false || order.Status != OrderStatus.Canceled && order.Status != OrderStatus.Delivered)
                     .ToListAsync();
                 break;
-            case "manager":
+            case UserRole.Manager:
                 // var restaurantId = user.Restaurant.Id;
                 orders = await _context
                     .Orders
                     // .Where(order => order.Restaurant.Id == restaurantId)
                     .ToListAsync();
                 break;
-            case "cook":
+            case UserRole.Cook:
                 orders = await _context
                     .Orders
                     .Where(
@@ -203,12 +208,12 @@ public class OrderService : IOrderService
                                  order.Status == OrderStatus.Created || current/* && cook.Orders.Contains(order)*/)
                     .ToListAsync();
                 break;
-            case "courier":
+            case UserRole.Courier:
                 orders = await _context
                     .Orders
                     .Where(
                         order => !current &&
-                                 order.Status == OrderStatus.Packaging || current/* && courier.Orders.Contains(order)*/)
+                                 order.Status == OrderStatus.Delivery || current/* && courier.Orders.Contains(order)*/)
                     .ToListAsync();
                 break;
         }
@@ -216,7 +221,7 @@ public class OrderService : IOrderService
         return orders;
     }
     
-    private void SortAndFilterOrders(ref List<OrderEntity> orders, OrderQueryModel query)
+    private void SortAndFilterOrders(ref List<OrderEntity> orders, OrderQueryModel query, UserRole role)
     {
         if (query.sort != null)
         {
@@ -242,7 +247,7 @@ public class OrderService : IOrderService
             orders = orders.Where(order => order.Number.ToString().Contains(query.search.ToString())).ToList();
         }
 
-        if (query.statuses.Count != 0 && query.role == "manager")
+        if (query.statuses.Count != 0 && role == UserRole.Manager)
         {
             orders = orders.Where(order => query.statuses.Contains(order.Status)).ToList();
         }

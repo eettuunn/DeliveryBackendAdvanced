@@ -1,4 +1,5 @@
 ﻿using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,7 @@ public class CookController : ControllerBase
     [Route("orders")]
     public async Task<OrdersPageDto> GetCookOrders([FromQuery] OrderQueryModel query)
     {
-        query.role = "cook";
-
-        return await _orderService.GetOrders(query);
+        return await _orderService.GetOrders(query, UserRole.Cook);
     }
 
     /// <summary>

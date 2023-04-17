@@ -44,8 +44,6 @@ public class RestaurantController : ControllerBase
     [Route("orders")]
     public async Task<OrdersPageDto> GetRestaurantOrders([FromQuery] OrderQueryModel query)
     {
-        // return await _restaurantService.GetRestaurantOrders(restaurantId, query);
-        query.role = "manager";
-        return await _orderService.GetOrders(query);
+        return await _orderService.GetOrders(query, UserRole.Manager);
     }
 }

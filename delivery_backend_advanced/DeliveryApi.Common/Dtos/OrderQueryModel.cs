@@ -19,8 +19,4 @@ public class OrderQueryModel
 
     [FromQuery(Name = "current")]
     public bool current { get; set; } = false;
-    
-    //todo: remove when add users
-    [FromQuery(Name = "role")]
-    public string role { get; set; }
 }
