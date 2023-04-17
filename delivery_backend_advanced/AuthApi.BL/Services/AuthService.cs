@@ -34,6 +34,7 @@ public class AuthService : IAuthService
 
     public async Task<TokenPairDto> RegisterUser(RegisterUserDto registerUserDto, HttpRequest httpRequest, IUrlHelper urlHelper)
     {
+        CheckRegisterValidness(registerUserDto);
         var newUser = _mapper.Map<AppUser>(registerUserDto);
         var result = await _userManager.CreateAsync(newUser, registerUserDto.password);
 
@@ -148,5 +149,13 @@ public class AuthService : IAuthService
             .ToListAsync();
 
         return roles;
+    }
+
+    private void CheckRegisterValidness(RegisterUserDto rud)
+    {
+        if (DateTime.UtcNow.Year - rud.birthDate.Year  is < 7 or > 80)
+        {
+            throw new BadRequestException("You must be in range 7 to 80 years old");
+        }
     }
 }

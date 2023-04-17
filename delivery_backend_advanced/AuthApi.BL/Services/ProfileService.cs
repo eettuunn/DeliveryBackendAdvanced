@@ -135,4 +135,12 @@ public class ProfileService : IProfileService
 
         return roles;
     }
+
+    private void CheckEditValidness(EditProfileDto epd)
+    {
+        if (epd.birthDate != null && (DateTime.UtcNow.Year - epd.birthDate.Value.Year is < 7 or > 80))
+        {
+            throw new BadRequestException("You must be in range 7 to 80 years old");
+        }
+    }
 }

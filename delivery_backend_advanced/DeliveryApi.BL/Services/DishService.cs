@@ -64,7 +64,7 @@ public class DishService : IDishService
 
     public async Task RateDish(Guid dishId, int value)
     {
-        if (value < 1 || value > 10)
+        if (value is < 1 or > 10)
         {
             throw new BadRequestException("Rating value must be in range from 1 to 10");
         }

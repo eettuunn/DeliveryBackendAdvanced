@@ -7,6 +7,7 @@ namespace AuthApi.Common.Dtos;
 public class RegisterUserDto
 {
     [Required(ErrorMessage = "userName is required")]
+    [MinLength(2, ErrorMessage = "min length is 2")]
     public string userName { get; set; }
     
     [Required(ErrorMessage = "birthDate is required")]
@@ -19,6 +20,8 @@ public class RegisterUserDto
     public string phoneNumber { get; set; }
     
     [Required(ErrorMessage = "email is required")]
+    [EmailAddress]
+    [RegularExpression(@"[a-zA-Z]+\w*@[a-zA-Z]+\.[a-zA-Z]+", ErrorMessage = "Invalid email address")]
     public string email { get; set; }
 
     [Required(ErrorMessage = "password is required")] 
