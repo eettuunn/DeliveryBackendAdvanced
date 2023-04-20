@@ -61,4 +61,17 @@ public class AuthController : ControllerBase
     {
         return await _authService.RefreshToken(tokenPairDto);
     }
+
+    /// <summary>
+    /// Logout user
+    /// </summary>
+    [HttpPost]
+    [Authorize]
+    [Route("logout")]
+    public async Task LogoutUser()
+    {
+        var userEmail = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+
+        await _authService.LogoutUser(userEmail);
+    }
 }

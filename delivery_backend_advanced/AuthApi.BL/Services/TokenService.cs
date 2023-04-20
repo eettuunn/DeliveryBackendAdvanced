@@ -42,7 +42,7 @@ public class TokenService : ITokenService
             new(ClaimTypes.Email, user.email)
             
         };
-//todo: watch lecture for role claim name
+        
         foreach (var r in roles)
         {
             claims.Add(new(ClaimTypes.Role, r.Name));

@@ -133,9 +133,20 @@ public class AuthService : IAuthService
             refreshToken = newRefresh
         };
     }
+
+    public async Task LogoutUser(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email) ?? throw new NotAuthorizedException("Something went wrong");
+
+        user.RefreshToken = null;
+        user.RefreshTokenExpiryTime = null;
+        
+        await _userManager.UpdateAsync(user);
+    }
+
+
     
-
-
+    
     private async Task<List<IdentityRole>> GetUserRoles(AppUser user)
     {
         var rolesIds = await _context

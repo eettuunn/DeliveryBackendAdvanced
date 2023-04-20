@@ -56,7 +56,7 @@ public class ProfileController : ControllerBase
     }
     
     /// <summary>
-    /// Endpoint for link in 'forgot password' email
+    /// Get user's profile info
     /// </summary>
     [HttpGet]
     [Authorize]
@@ -78,7 +78,7 @@ public class ProfileController : ControllerBase
     }
     
     /// <summary>
-    /// Change password if forgot it
+    /// Edit profile
     /// </summary>
     [HttpPut]
     [Authorize]
