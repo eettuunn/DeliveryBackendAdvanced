@@ -10,6 +10,8 @@ public static class SwaggerConfigurator
 {
     public static void ConfigureSwagger(this WebApplicationBuilder builder)
     {
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
         {
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -21,7 +23,7 @@ public static class SwaggerConfigurator
                 BearerFormat = "JWT",
                 Scheme = "Bearer"
             });
-            var xmlFilename = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlFilename = $"{ Assembly.GetEntryAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             options.OperationFilter<SwaggerFilter>();
         });

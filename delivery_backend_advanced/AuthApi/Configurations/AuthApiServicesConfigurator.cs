@@ -10,8 +10,6 @@ public static class AuthApiServicesConfigurator
 {
     public static void ConfigureAuthApiServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers();
-        builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
