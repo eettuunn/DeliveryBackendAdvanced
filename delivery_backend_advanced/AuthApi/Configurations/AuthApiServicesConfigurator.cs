@@ -2,6 +2,7 @@
 using AuthApi.BL;
 using AuthApi.BL.Services;
 using AuthApi.Common.Interfaces;
+using Microsoft.OpenApi.Models;
 
 namespace delivery_backend_advanced.Configurations;
 
@@ -11,11 +12,6 @@ public static class AuthApiServicesConfigurator
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(options =>
-        {
-            var xmlFilename = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-        });
 
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<ITokenService, TokenService>();

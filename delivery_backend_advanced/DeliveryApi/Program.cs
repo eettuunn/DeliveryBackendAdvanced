@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureDeliveryApiServices();
 
+builder.ConfigureSwagger();
+
 builder.ConfigureJwt();
 
 builder.ConfigureDeliveryApiDAL();

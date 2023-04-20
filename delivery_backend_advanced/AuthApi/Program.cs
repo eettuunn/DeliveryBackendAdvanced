@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureAuthApiServices();
 
+builder.ConfigureSwagger();
+
 builder.ConfigureJwt();
 
 builder.ConfigureAuthApiIdentity();
