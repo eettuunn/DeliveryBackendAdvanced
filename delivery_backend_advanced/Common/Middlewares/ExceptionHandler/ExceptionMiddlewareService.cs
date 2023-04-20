@@ -53,10 +53,10 @@ public class ExceptionMiddlewareService
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsJsonAsync(new { errors = exception.Errors });
         }
-        /*catch (Exception exception)
+        catch (Exception exception)
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsJsonAsync(new { message = exception.Message });
-        }*/
+        }
     }
 }

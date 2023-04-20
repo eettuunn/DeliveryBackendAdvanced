@@ -94,6 +94,7 @@ public class RestaurantService : IRestaurantService
         var dishesSkip = (int)((page - 1) * pageDishesCount);
         var dishesTake = (int)Math.Min(dishCountInMenu - (page - 1) * pageDishesCount, pageDishesCount);
         
+        
         var dishes = restDto.menu.dishes;
         SortAndFilterDishes(ref dishes, query);
         restDto.menu.dishes = dishes;

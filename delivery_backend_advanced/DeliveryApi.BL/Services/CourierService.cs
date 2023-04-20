@@ -43,4 +43,18 @@ public class CourierService : ICourierService
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task CancelOrder(Guid orderId)
+    {
+        var order = await _context
+            .Orders
+            .FirstOrDefaultAsync(or => or.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
+        if (order.Status != OrderStatus.Delivery)
+        {
+            throw new ConflictException("Can't cancel order, that dont on delivery by courier");
+        }
+
+        order.Status = OrderStatus.Canceled;
+        await _context.SaveChangesAsync();
+    }
 }

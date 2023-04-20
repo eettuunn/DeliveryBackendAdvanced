@@ -1,4 +1,5 @@
-﻿using delivery_backend_advanced.Models.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,8 +40,16 @@ public class DishController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("{dishId}/rating")]
-    public async Task RateDish(Guid dishId, int value)
+    public async Task<IActionResult> RateDish(Guid dishId, [Range(1, 10)] int value)
     {
-        await _dishService.RateDish(dishId, value);
+        if (ModelState.IsValid)
+        {
+            await _dishService.RateDish(dishId, value);
+            return Ok();
+        }
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
 }

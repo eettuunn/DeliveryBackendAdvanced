@@ -90,7 +90,10 @@ public class ManagerService : IManagerService
             .FirstOrDefaultAsync(rest => rest.Id == restaurantId);
         var prevMainMenu = restEntity.Menus.FirstOrDefault(menu => menu.IsMain);
 
-        prevMainMenu.IsMain = false;
+        if (prevMainMenu != null)
+        {
+            prevMainMenu.IsMain = false;
+        }
         menuEntity.IsMain = true;
 
         await _context.SaveChangesAsync();

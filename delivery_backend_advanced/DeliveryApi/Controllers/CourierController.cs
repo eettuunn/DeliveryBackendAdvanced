@@ -46,4 +46,14 @@ public class CourierController : ControllerBase
     {
         await _courierService.TakeOrder(orderId);
     }
+    
+    /// <summary>
+    /// Courier takes order
+    /// </summary>
+    [HttpPost]
+    [Route("cancel/{orderId}")]
+    public async Task CancelOrder(Guid orderId)
+    {
+        await _courierService.CancelOrder(orderId);
+    }
 }

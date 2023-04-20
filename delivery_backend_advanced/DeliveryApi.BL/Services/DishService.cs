@@ -40,7 +40,7 @@ public class DishService : IDishService
             .Where(dish => dish.Id == dishId)
             .FirstOrDefaultAsync() ?? throw new CantFindByIdException("dish", dishId);
         
-        var dishBasketEntities = await _context
+        /*var dishBasketEntities = await _context
             .DishesInBasket
             .Include(dish => dish.Dish)
             .Where(dish => dish.Dish.Id == dishId)
@@ -48,7 +48,7 @@ public class DishService : IDishService
         if (dishBasketEntities.Count == 0)
         {
             return false;
-        }
+        }*/
 
         var userOrders = await _context
             .Orders
@@ -59,15 +59,11 @@ public class DishService : IDishService
             .Where(order => order.Status == OrderStatus.Delivered)
             .ToListAsync();
 
-        return CheckDishInOrder(userOrders, dishBasketEntities);
+        return CheckDishInOrder(userOrders, dishId);
     }
 
     public async Task RateDish(Guid dishId, int value)
     {
-        if (value is < 1 or > 10)
-        {
-            throw new BadRequestException("Rating value must be in range from 1 to 10");
-        }
         var canRate = await CheckAbilityToRate(dishId);
 
         if (canRate)
@@ -95,13 +91,13 @@ public class DishService : IDishService
 
 
     // auxiliary
-    private bool CheckDishInOrder(List<OrderEntity> orders, List<DishBasketEntity> dishes)
+    private bool CheckDishInOrder(List<OrderEntity> orders, Guid dishId)
     {
         foreach (var order in orders)
         {
-            foreach (var dish in dishes)
+            foreach (var dish in order.Dishes)
             {
-                if (order.Dishes.Contains(dish))
+                if (dish.Dish.Id == dishId)
                 {
                     return true;
                 }
