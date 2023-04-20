@@ -32,7 +32,7 @@ public class TokenService : ITokenService
     
     
     
-    public static List<Claim> CreateClaims(TokenUserDto user, List<IdentityRole> roles)
+    private static List<Claim> CreateClaims(TokenUserDto user, List<IdentityRole> roles)
     {
         var claims = new List<Claim>
         {
@@ -50,7 +50,7 @@ public class TokenService : ITokenService
         return claims;
     }
 
-    public static JwtSecurityToken CreateJwtToken(IEnumerable<Claim> claims)
+    private static JwtSecurityToken CreateJwtToken(IEnumerable<Claim> claims)
     {
         return new JwtSecurityToken(
             JwtConfig.Issuer,

@@ -77,8 +77,6 @@ public class EmailService : IEmailService
         var user = await _userManager.FindByEmailAsync(emailDto.email) ??
                    throw new NotFoundException($"Cant find user with email {emailDto.email}");
 
-        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        
         var callbackUrl = urlHelper.Action(
             "ChangeForgotPassword",
             "Profile",

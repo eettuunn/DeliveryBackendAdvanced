@@ -36,6 +36,7 @@ public class AuthService : IAuthService
     {
         CheckRegisterValidness(registerUserDto);
         var newUser = _mapper.Map<AppUser>(registerUserDto);
+        var newCustomer = _mapper.Map<CustomerEntity>(registerUserDto);
         var result = await _userManager.CreateAsync(newUser, registerUserDto.password);
 
         if (!result.Succeeded)
@@ -56,7 +57,9 @@ public class AuthService : IAuthService
                            .Users
                            .FirstOrDefaultAsync(user => user.Email == registerUserDto.email) ??
                        throw new NotFoundException($"User with email {registerUserDto.email} not found");
+        newCustomer.User = findUser;
 
+        await _context.Customers.AddAsync(newCustomer);
         await _userManager.AddToRoleAsync(findUser, UserRole.Customer.ToString());
         await _context.SaveChangesAsync();
 
@@ -124,6 +127,7 @@ public class AuthService : IAuthService
         var newRefresh = _tokenService.GenerateRefreshToken();
 
         userEntity.RefreshToken = newRefresh;
+        userEntity.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtConfig.RefreshLifetime);
         await _userManager.UpdateAsync(userEntity);
         
         

@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("register")]
-    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto registerUserDto)
+    public async Task<ActionResult<TokenPairDto>> RegisterUser([FromBody] RegisterUserDto registerUserDto)
     {
         if (ModelState.IsValid)
         {
@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("login")]
-    public async Task<IActionResult> LoginUser([FromBody] LoginUserDto loginUserDto)
+    public async Task<ActionResult<TokenPairDto>> LoginUser([FromBody] LoginUserDto loginUserDto)
     {
         if (ModelState.IsValid)
         {
@@ -57,9 +57,16 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost]
     [Route("refresh")]
-    public async Task<TokenPairDto> RefreshToken([FromBody] TokenPairDto tokenPairDto)
+    public async Task<ActionResult<TokenPairDto>> RefreshToken([FromBody] TokenPairDto tokenPairDto)
     {
-        return await _authService.RefreshToken(tokenPairDto);
+        if (ModelState.IsValid)
+        {
+            return Ok(await _authService.RefreshToken(tokenPairDto));
+        }
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
 
     /// <summary>

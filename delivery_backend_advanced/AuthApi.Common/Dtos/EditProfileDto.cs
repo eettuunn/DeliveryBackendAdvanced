@@ -16,4 +16,6 @@ public class EditProfileDto
     public string? userName { get; set; }
     
     public string? phoneNumber { get; set; }
+    
+    public string? address { get; set; }
 }

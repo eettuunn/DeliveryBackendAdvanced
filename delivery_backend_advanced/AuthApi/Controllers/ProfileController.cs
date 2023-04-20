@@ -83,7 +83,7 @@ public class ProfileController : ControllerBase
     [HttpPut]
     [Authorize]
     [Route("edit")]
-    public async Task<IActionResult> EditProfile([FromBody] EditProfileDto editProfileDto)
+    public async Task<ActionResult<TokenPairDto>> EditProfile([FromBody] EditProfileDto editProfileDto)
     {
         if (!ModelState.IsValid)
         {

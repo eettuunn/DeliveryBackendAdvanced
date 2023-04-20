@@ -75,6 +75,8 @@ public class ProfileService : IProfileService
 
     public async Task<TokenPairDto> EditProfile(EditProfileDto editProfileDto, string email, IUrlHelper? url, HttpRequest? request)
     {
+        CheckEditValidness(editProfileDto);
+        
         var user = await _userManager.FindByEmailAsync(email) ??
                    throw new NotFoundException($"Cant find user with email {email}");
 
@@ -99,6 +101,13 @@ public class ProfileService : IProfileService
         user.Gender = editProfileDto.gender ?? user.Gender;
         user.UserName = editProfileDto.userName ?? user.UserName;
 
+        var customer = await _context
+            .Customers
+            .Include(c => c.User)
+            .FirstOrDefaultAsync(c => c.User == user) ?? throw new BadRequestException("Something went wrong");
+        customer.Address = editProfileDto.address ?? customer.Address;
+        await _context.SaveChangesAsync();
+        
         return await GetGeneratedTokenPair(user);
     }
 

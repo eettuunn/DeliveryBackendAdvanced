@@ -26,4 +26,6 @@ public class RegisterUserDto
 
     [Required(ErrorMessage = "password is required")] 
     public string password { get; set; }
+    
+    public string? address { get; set; }
 }

@@ -9,7 +9,8 @@ public class AppMappingProfile : Profile
     public AppMappingProfile()
     {
         CreateMap<RegisterUserDto, AppUser>();
+        CreateMap<RegisterUserDto, CustomerEntity>();
         CreateMap<AppUser, TokenUserDto>();
-        CreateMap<AppUser, ProfileDto>();
+        CreateMap<AppUser, ProfileDto>(); 
     }
 }
