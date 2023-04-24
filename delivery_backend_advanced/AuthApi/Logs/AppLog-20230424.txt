@@ -1,0 +1,76 @@
+2023-04-24T20:34:16.8682097+07:00  [INF] Executed DbCommand ("37"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT EXISTS (SELECT 1 FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace WHERE c.relname='__EFMigrationsHistory');" (0723d8ff)
+2023-04-24T20:34:16.9224120+07:00  [INF] Executed DbCommand ("1"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT EXISTS (SELECT 1 FROM pg_catalog.pg_class c JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace WHERE c.relname='__EFMigrationsHistory');" (0723d8ff)
+2023-04-24T20:34:16.9354798+07:00  [INF] Executed DbCommand ("3"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT \"MigrationId\", \"ProductVersion\"
+FROM \"__EFMigrationsHistory\"
+ORDER BY \"MigrationId\";" (0723d8ff)
+2023-04-24T20:34:16.9518915+07:00  [INF] No migrations were applied. The database is already up to date. (503cba9d)
+2023-04-24T20:34:17.0346062+07:00  [INF] User profile is available. Using '"C:\Users\пк\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest. (7ac5e29c)
+2023-04-24T20:34:17.0877259+07:00  [INF] Now listening on: "http://localhost:5179" (d826f4b8)
+2023-04-24T20:34:17.0891248+07:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2023-04-24T20:34:17.0894046+07:00  [INF] Hosting environment: "Development" (bc5a1a4e)
+2023-04-24T20:34:17.0894396+07:00  [INF] Content root path: "D:\prog\web\adv-net-AdvancedBackendDotNet\delivery_backend_advanced\AuthApi" (cc26f24e)
+2023-04-24T20:34:18.3539909+07:00 0HMQ4P2DBOGEA:00000001 [INF] Request starting HTTP/1.1 POST http://localhost:5179/auth/login application/json 68 (ca22a1cb)
+2023-04-24T20:34:18.3931333+07:00 0HMQ4P2DBOGEA:00000001 [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2023-04-24T20:34:18.4072015+07:00 0HMQ4P2DBOGEA:00000001 [INF] Request:
+Protocol: HTTP/1.1
+Method: POST
+Scheme: http
+PathBase: 
+Path: /auth/login
+Accept: */*
+Connection: keep-alive
+Host: localhost:5179
+User-Agent: PostmanRuntime/7.32.2
+Accept-Encoding: gzip, deflate, br
+Authorization: [Redacted]
+Content-Type: application/json
+Content-Length: 68
+Postman-Token: [Redacted] (893de8da)
+2023-04-24T20:34:18.4101187+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executing endpoint '"AuthApi.Controllers.AuthController.LoginUser (AuthApi)"' (500cc934)
+2023-04-24T20:34:18.4306896+07:00 0HMQ4P2DBOGEA:00000001 [INF] Route matched with "{action = \"LoginUser\", controller = \"Auth\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[AuthApi.Common.Dtos.TokenPairDto]] LoginUser(AuthApi.Common.Dtos.LoginUserDto)" on controller "AuthApi.Controllers.AuthController" ("AuthApi"). (122b2fdf)
+2023-04-24T20:34:18.8052807+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed DbCommand ("17"ms) [Parameters=["@__normalizedEmail_0='?'"], CommandType='Text', CommandTimeout='30']"
+""SELECT a.\"Id\", a.\"AccessFailedCount\", a.\"BirthDate\", a.\"ConcurrencyStamp\", a.\"Email\", a.\"EmailConfirmed\", a.\"Gender\", a.\"LockoutEnabled\", a.\"LockoutEnd\", a.\"NormalizedEmail\", a.\"NormalizedUserName\", a.\"PasswordHash\", a.\"PhoneNumber\", a.\"PhoneNumberConfirmed\", a.\"RefreshToken\", a.\"RefreshTokenExpiryTime\", a.\"SecurityStamp\", a.\"TwoFactorEnabled\", a.\"UserName\"
+FROM \"AspNetUsers\" AS a
+WHERE a.\"NormalizedEmail\" = @__normalizedEmail_0
+LIMIT 2" (0723d8ff)
+2023-04-24T20:34:18.9997702+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed DbCommand ("1"ms) [Parameters=["@__loginUserDto_email_0='?'"], CommandType='Text', CommandTimeout='30']"
+""SELECT a.\"Id\", a.\"AccessFailedCount\", a.\"BirthDate\", a.\"ConcurrencyStamp\", a.\"Email\", a.\"EmailConfirmed\", a.\"Gender\", a.\"LockoutEnabled\", a.\"LockoutEnd\", a.\"NormalizedEmail\", a.\"NormalizedUserName\", a.\"PasswordHash\", a.\"PhoneNumber\", a.\"PhoneNumberConfirmed\", a.\"RefreshToken\", a.\"RefreshTokenExpiryTime\", a.\"SecurityStamp\", a.\"TwoFactorEnabled\", a.\"UserName\"
+FROM \"AspNetUsers\" AS a
+WHERE a.\"Email\" = @__loginUserDto_email_0
+LIMIT 1" (0723d8ff)
+2023-04-24T20:34:19.0146534+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed DbCommand ("4"ms) [Parameters=["@__user_Id_0='?'"], CommandType='Text', CommandTimeout='30']"
+""SELECT a.\"RoleId\"
+FROM \"AspNetUserRoles\" AS a
+WHERE a.\"UserId\" = @__user_Id_0" (0723d8ff)
+2023-04-24T20:34:19.0410641+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed DbCommand ("6"ms) [Parameters=["@__rolesIds_0='?' (DbType = Object)"], CommandType='Text', CommandTimeout='30']"
+""SELECT a.\"Id\", a.\"ConcurrencyStamp\", a.\"Name\", a.\"NormalizedName\"
+FROM \"AspNetRoles\" AS a
+WHERE a.\"Id\" = ANY (@__rolesIds_0)" (0723d8ff)
+2023-04-24T20:34:19.1738684+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed DbCommand ("1"ms) [Parameters=["@__normalizedUserName_0='?'"], CommandType='Text', CommandTimeout='30']"
+""SELECT a.\"Id\", a.\"AccessFailedCount\", a.\"BirthDate\", a.\"ConcurrencyStamp\", a.\"Email\", a.\"EmailConfirmed\", a.\"Gender\", a.\"LockoutEnabled\", a.\"LockoutEnd\", a.\"NormalizedEmail\", a.\"NormalizedUserName\", a.\"PasswordHash\", a.\"PhoneNumber\", a.\"PhoneNumberConfirmed\", a.\"RefreshToken\", a.\"RefreshTokenExpiryTime\", a.\"SecurityStamp\", a.\"TwoFactorEnabled\", a.\"UserName\"
+FROM \"AspNetUsers\" AS a
+WHERE a.\"NormalizedUserName\" = @__normalizedUserName_0
+LIMIT 1" (0723d8ff)
+2023-04-24T20:34:19.1836520+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed DbCommand ("1"ms) [Parameters=["@__normalizedEmail_0='?'"], CommandType='Text', CommandTimeout='30']"
+""SELECT a.\"Id\", a.\"AccessFailedCount\", a.\"BirthDate\", a.\"ConcurrencyStamp\", a.\"Email\", a.\"EmailConfirmed\", a.\"Gender\", a.\"LockoutEnabled\", a.\"LockoutEnd\", a.\"NormalizedEmail\", a.\"NormalizedUserName\", a.\"PasswordHash\", a.\"PhoneNumber\", a.\"PhoneNumberConfirmed\", a.\"RefreshToken\", a.\"RefreshTokenExpiryTime\", a.\"SecurityStamp\", a.\"TwoFactorEnabled\", a.\"UserName\"
+FROM \"AspNetUsers\" AS a
+WHERE a.\"NormalizedEmail\" = @__normalizedEmail_0
+LIMIT 2" (0723d8ff)
+2023-04-24T20:34:19.2902665+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed DbCommand ("8"ms) [Parameters=["@p18='?', @p0='?' (DbType = Int32), @p1='?' (DbType = DateTime), @p2='?', @p19='?', @p3='?', @p4='?' (DbType = Boolean), @p5='?' (DbType = Int32), @p6='?' (DbType = Boolean), @p7='?' (DbType = DateTime), @p8='?', @p9='?', @p10='?', @p11='?', @p12='?' (DbType = Boolean), @p13='?', @p14='?' (DbType = DateTime), @p15='?', @p16='?' (DbType = Boolean), @p17='?'"], CommandType='Text', CommandTimeout='30']"
+""UPDATE \"AspNetUsers\" SET \"AccessFailedCount\" = @p0, \"BirthDate\" = @p1, \"ConcurrencyStamp\" = @p2, \"Email\" = @p3, \"EmailConfirmed\" = @p4, \"Gender\" = @p5, \"LockoutEnabled\" = @p6, \"LockoutEnd\" = @p7, \"NormalizedEmail\" = @p8, \"NormalizedUserName\" = @p9, \"PasswordHash\" = @p10, \"PhoneNumber\" = @p11, \"PhoneNumberConfirmed\" = @p12, \"RefreshToken\" = @p13, \"RefreshTokenExpiryTime\" = @p14, \"SecurityStamp\" = @p15, \"TwoFactorEnabled\" = @p16, \"UserName\" = @p17
+WHERE \"Id\" = @p18 AND \"ConcurrencyStamp\" = @p19;" (0723d8ff)
+2023-04-24T20:34:19.3052091+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executing "OkObjectResult", writing value of type '"AuthApi.Common.Dtos.TokenPairDto"'. (605b4265)
+2023-04-24T20:34:19.3225013+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed action "AuthApi.Controllers.AuthController.LoginUser (AuthApi)" in 888.843ms (afa2e885)
+2023-04-24T20:34:19.3229669+07:00 0HMQ4P2DBOGEA:00000001 [INF] Executed endpoint '"AuthApi.Controllers.AuthController.LoginUser (AuthApi)"' (99874f2b)
+2023-04-24T20:34:19.3235536+07:00 0HMQ4P2DBOGEA:00000001 [INF] Request: "POST" "/auth/login" => 200 (4ebb7170)
+2023-04-24T20:34:19.3249058+07:00 0HMQ4P2DBOGEA:00000001 [INF] Response:
+StatusCode: 200
+Content-Type: application/json; charset=utf-8
+Date: Mon, 24 Apr 2023 13:34:19 GMT
+Server: Kestrel
+Transfer-Encoding: chunked (999214c4)
+2023-04-24T20:34:19.3332201+07:00 0HMQ4P2DBOGEA:00000001 [INF] Request finished HTTP/1.1 POST http://localhost:5179/auth/login application/json 68 - 200 - application/json;+charset=utf-8 981.1350ms (791a596a)
+2023-04-24T20:35:07.6580026+07:00  [INF] Application is shutting down... (90f52c38)

@@ -25,12 +25,17 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.2" />
+        <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\AuthApi.BL\AuthApi.BL.csproj" />
       <ProjectReference Include="..\AuthApi.Common\AuthApi.Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Logs" />
     </ItemGroup>
 
 </Project>

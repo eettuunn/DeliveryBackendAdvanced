@@ -1,3 +1,5 @@
+using AuthApi.Common.Middlewares;
+using AuthApi.Controllers;
 using AuthApi.DAL;
 using Common.Configurations;
 using delivery_backend_advanced.Configurations;
@@ -30,7 +32,11 @@ app.UseHttpsRedirection();
 
 app.UseExceptionMiddleware();
 
+app.UseLoggerMiddleware();
+
 app.UseAuthentication();
+
+app.UseHttpLogging();
 
 app.UseAuthorization();
 

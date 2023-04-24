@@ -1,0 +1,20 @@
+15:47:23.1377321   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:47:47.5375959   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+{
+  "email": "dankagrasmik@gmail.com",
+  "password": "a1234567"
+}
+
+15:47:55.1720602   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+{
+  "email": "dankagrasmik@gmail.com",
+  "passwod": "a1234567"
+}
+
+15:49:00.0734374   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+{
+  "email": "dankagrasmik@gmail.com",
+  "passwrd": "a1234567"
+}
+
