@@ -23,6 +23,8 @@ if (app.Environment.IsDevelopment())
 
 app.ConfigureDeliveryApiDAL();
 
+app.UseLoggerMiddleware();
+
 app.UseExceptionMiddleware();
 
 app.UseHttpsRedirection();

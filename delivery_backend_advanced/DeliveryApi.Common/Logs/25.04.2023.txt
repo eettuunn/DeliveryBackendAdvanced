@@ -1,0 +1,2 @@
+06:39:56.0628690   URL: http://localhost:5125/api/restaurant?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

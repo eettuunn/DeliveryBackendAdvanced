@@ -15,23 +15,17 @@ public class LoggerMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        //todo: incorrect status code
+        await _next(context);
+        
         var curPath = Directory.GetCurrentDirectory();
-        var logPath = Path.GetFullPath(Path.Combine(curPath, @$"..\AuthApi.Common\Logs\{DateTime.UtcNow.ToShortDateString()}.txt"));
+        var logPath = Path.GetFullPath(Path.Combine(curPath + 
+            @$".Common\Logs\{DateTime.UtcNow.ToShortDateString()}.txt"));
         var log = CreateLogMessage(context);
         await using (StreamWriter sw = File.AppendText(logPath))
         {
             await sw.WriteLineAsync(log);
-            if (context.Request.Method == "POST" || context.Request.Method == "PUT")
-            {
-                var body = await CreateBody(context.Request);
-                await sw.WriteLineAsync(body);
-            }
-
             await sw.WriteLineAsync();
         }
-
-        await _next(context);
     }
 
 
@@ -48,7 +42,7 @@ public class LoggerMiddleware
         return message;
     }
 
-    private async Task<string> CreateBody(HttpRequest request)
+    /*private async Task<string> CreateBody(HttpRequest request)
     {
         request.EnableBuffering();
         var buffer = new byte[Convert.ToInt32(request.ContentLength)];
@@ -57,5 +51,5 @@ public class LoggerMiddleware
         request.Body.Position = 0;
 
         return body;
-    }
+    }*/
 }

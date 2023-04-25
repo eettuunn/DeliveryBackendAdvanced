@@ -30,9 +30,9 @@ app.ConfigureDeliveryApiDAL();
 
 app.UseHttpsRedirection();
 
-app.UseExceptionMiddleware();
-
 app.UseLoggerMiddleware();
+
+app.UseExceptionMiddleware();
 
 app.UseAuthentication();
 
