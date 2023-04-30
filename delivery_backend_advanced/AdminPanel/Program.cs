@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
+
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 
 builder.ConfigureDeliveryApiDAL();

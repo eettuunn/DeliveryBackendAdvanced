@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AdminPanel.Models.RestaurantListElement>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h2>Рестораны</h2>
+        <div class="col-md-4">
+            <a href="/Restaurant/CreateRest" class="btn btn-success">Создать ресторан</a>
+        </div>
+        <table class="table table-striped">
+            <thread>
+                <tr>
+                    <th>Название</th>
+                    <th>Действие</th>
+                </tr>
+                
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.name</td>
+                        <td>
+                            <a>Изменить</a>
+                            <a>Удалить</a>
+                        </td>
+                    </tr>
+                }
+            </thread>
+        </table>
+    </div>  
+    
+</div>
+</body>
+</html>

@@ -11,11 +11,11 @@
     <form asp-action="CreateRest">
         <div class="mb-3">
             <label for="input-name" class="form-label">Имя ресторана</label>
-            <input asp-for="Name" type="text" class="form-control" id="input-name">
-            <span class="text-danger" asp-validation-for="Name">@ViewBag.nameError</span>
+            <input asp-for="name" type="text" class="form-control" id="input-name">
+            <span class="text-danger" asp-validation-for="name">@ViewBag.nameError</span>
         </div>
         <button type="submit" class="btn btn-success">Создать</button>
-        <a href="" class="btn btn-secondary">Список ресторанов</a>
+        <a href="/Restaurant/RestaurantList" class="btn btn-secondary">Список ресторанов</a>
     </form>
 </div>
 </body>

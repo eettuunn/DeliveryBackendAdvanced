@@ -5,5 +5,5 @@ namespace AdminPanel.Models;
 public class CreateRest
 {
     [Required]
-    public string Name { get; set; }
+    public string name { get; set; }
 }

@@ -10,12 +10,10 @@ namespace AdminPanel.Controllers;
 
 public class RestaurantController : Controller
 {
-    private readonly BackendDbContext _context;
     private readonly IRestaurantService _restaurantService;
 
-    public RestaurantController(BackendDbContext context, IRestaurantService restaurantService)
+    public RestaurantController(IRestaurantService restaurantService)
     {
-        _context = context;
         _restaurantService = restaurantService;
     }
 
@@ -46,5 +44,12 @@ public class RestaurantController : Controller
         }
         
         return RedirectToAction("Index");
+    }
+
+    public async Task<ActionResult<RestaurantListElement>> RestaurantList()
+    {
+        var rests = await _restaurantService.GetRestaurantList();
+
+        return View(rests);
     }
 }
