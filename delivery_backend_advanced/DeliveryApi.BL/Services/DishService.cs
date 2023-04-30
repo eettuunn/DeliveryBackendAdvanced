@@ -11,10 +11,10 @@ namespace DeliveryApi.BL.Services;
 
 public class DishService : IDishService
 {
-    private readonly AppDbContext _context;
+    private readonly BackendDbContext _context;
     private readonly IMapper _mapper;
 
-    public DishService(AppDbContext context, IMapper mapper)
+    public DishService(BackendDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

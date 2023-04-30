@@ -11,7 +11,7 @@ using delivery_backend_advanced.Models;
 
 namespace delivery_backend_advanced.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(BackendDbContext))]
     [Migration("20230329102241_IsMainParamInMenu")]
     partial class IsMainParamInMenu
     {

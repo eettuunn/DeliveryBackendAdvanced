@@ -12,11 +12,11 @@ namespace DeliveryApi.BL.Services;
 
 public class OrderService : IOrderService
 {
-    private readonly AppDbContext _context;
+    private readonly BackendDbContext _context;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
-    public OrderService(AppDbContext context, IMapper mapper, IConfiguration configuration)
+    public OrderService(BackendDbContext context, IMapper mapper, IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;

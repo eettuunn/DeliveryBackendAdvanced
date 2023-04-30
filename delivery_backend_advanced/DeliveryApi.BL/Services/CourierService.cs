@@ -8,9 +8,9 @@ namespace DeliveryApi.BL.Services;
 
 public class CourierService : ICourierService
 {
-    private readonly AppDbContext _context;
+    private readonly BackendDbContext _context;
 
-    public CourierService(AppDbContext context)
+    public CourierService(BackendDbContext context)
     {
         _context = context;
     }

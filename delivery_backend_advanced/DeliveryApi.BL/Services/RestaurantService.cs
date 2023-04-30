@@ -13,11 +13,11 @@ namespace delivery_backend_advanced.Services;
 
 public class RestaurantService : IRestaurantService
 {
-    private readonly AppDbContext _context;
+    private readonly BackendDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
 
-    public RestaurantService(AppDbContext context, IMapper mapper, IConfiguration configuration)
+    public RestaurantService(BackendDbContext context, IMapper mapper, IConfiguration configuration)
     {
         _context = context;
         _mapper = mapper;

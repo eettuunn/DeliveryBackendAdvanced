@@ -10,10 +10,10 @@ namespace DeliveryApi.BL.Services;
 
 public class BasketService : IBasketService
 {
-    private readonly AppDbContext _context;
+    private readonly BackendDbContext _context;
     private readonly IMapper _mapper;
 
-    public BasketService(AppDbContext context, IMapper mapper)
+    public BasketService(BackendDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

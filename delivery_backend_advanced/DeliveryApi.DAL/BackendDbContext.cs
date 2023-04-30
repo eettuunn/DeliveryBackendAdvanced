@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace delivery_backend_advanced.Models;
 
-public class AppDbContext : DbContext
+public class BackendDbContext : DbContext
 {
     public DbSet<DishEntity> Dishes { get; set; } 
     public DbSet<DishBasketEntity> DishesInBasket { get; set; }
@@ -13,7 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<RatingEntity> Ratings { get; set; }
     public DbSet<RestaurantEntity> Restaurants { get; set; }
     
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public BackendDbContext(DbContextOptions<BackendDbContext> options) : base(options) { }
     /*public AppDbContext() { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -10,7 +10,7 @@ using delivery_backend_advanced.Models;
 
 namespace delivery_backend_advanced.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(BackendDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

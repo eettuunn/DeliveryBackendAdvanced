@@ -11,7 +11,7 @@ using delivery_backend_advanced.Models;
 
 namespace DeliveryApi.DAL.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(BackendDbContext))]
     [Migration("20230403083921_AverageRatingInDishEntity")]
     partial class AverageRatingInDishEntity
     {

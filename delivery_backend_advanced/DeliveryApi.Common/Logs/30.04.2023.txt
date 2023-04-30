@@ -10,3 +10,7 @@
 
 06:35:22.8799063   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+12:03:45.1174646   URL: http://localhost:5125/api/restaurant?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:08:18.2681393   URL: http://localhost:5125/api/restaurant?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

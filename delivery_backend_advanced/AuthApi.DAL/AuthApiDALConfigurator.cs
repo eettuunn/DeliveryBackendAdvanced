@@ -7,13 +7,13 @@ namespace AuthApi.DAL;
 
 public static class AuthApiDALConfigurator
 {
-    public static void ConfigureDeliveryApiDAL(this WebApplicationBuilder builder)
+    public static void ConfigureAuthDAL(this WebApplicationBuilder builder)
     {
-        var connection = builder.Configuration.GetConnectionString("Postgres");
+        var connection = builder.Configuration.GetConnectionString("PostgresAuth");
         builder.Services.AddDbContext<AuthDbContext>(options => options.UseNpgsql(connection));
     }
 
-    public static void ConfigureDeliveryApiDAL(this WebApplication app)
+    public static void ConfigureAuthDAL(this WebApplication app)
     {
         using (var scope = app.Services.CreateScope())
         {

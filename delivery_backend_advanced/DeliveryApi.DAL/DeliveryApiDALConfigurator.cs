@@ -10,15 +10,15 @@ public static class DeliveryApiDALConfigurator
 {
     public static void ConfigureDeliveryApiDAL(this WebApplicationBuilder builder)
     {
-        var connection = builder.Configuration.GetConnectionString("Postgres");
-        builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
+        var connection = builder.Configuration.GetConnectionString("PostgresBackend");
+        builder.Services.AddDbContext<BackendDbContext>(options => options.UseNpgsql(connection));
     }
 
     public static void ConfigureDeliveryApiDAL(this WebApplication app)
     {
         using (var scope = app.Services.CreateScope())
         {
-            var dbContext = scope.ServiceProvider.GetService<AppDbContext>();
+            var dbContext = scope.ServiceProvider.GetService<BackendDbContext>();
             dbContext?.Database.Migrate();
         }
     }

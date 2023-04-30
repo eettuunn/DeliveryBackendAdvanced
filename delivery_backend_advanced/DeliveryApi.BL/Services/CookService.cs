@@ -10,10 +10,10 @@ namespace DeliveryApi.BL.Services;
 
 public class CookService : ICookService
 {
-    private readonly AppDbContext _context;
+    private readonly BackendDbContext _context;
     private readonly IMapper _mapper;
 
-    public CookService(AppDbContext context, IMapper mapper)
+    public CookService(BackendDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

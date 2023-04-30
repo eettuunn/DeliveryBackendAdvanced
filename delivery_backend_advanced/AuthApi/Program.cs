@@ -15,7 +15,7 @@ builder.ConfigureJwt();
 
 builder.ConfigureAuthApiIdentity();
 
-builder.ConfigureDeliveryApiDAL();
+builder.ConfigureAuthDAL();
 
 var app = builder.Build();
 
@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureDeliveryApiDAL();
+app.ConfigureAuthDAL();
 
 app.UseHttpsRedirection();
 

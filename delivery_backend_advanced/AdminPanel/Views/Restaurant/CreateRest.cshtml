@@ -1,0 +1,22 @@
+﻿@model CreateRest
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="container bg-light p-4 w-50">
+    <h2>Создание ресторана</h2>
+    <form asp-action="CreateRest">
+        <div class="mb-3">
+            <label for="input-name" class="form-label">Имя ресторана</label>
+            <input asp-for="Name" type="text" class="form-control" id="input-name">
+            <span class="text-danger" asp-validation-for="Name">@ViewBag.nameError</span>
+        </div>
+        <button type="submit" class="btn btn-success">Создать</button>
+        <a href="" class="btn btn-secondary">Список ресторанов</a>
+    </form>
+</div>
+</body>
+</html>

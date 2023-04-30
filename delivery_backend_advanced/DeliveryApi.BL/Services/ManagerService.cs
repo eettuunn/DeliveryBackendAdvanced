@@ -9,9 +9,9 @@ namespace DeliveryApi.BL.Services;
 
 public class ManagerService : IManagerService
 {
-    private readonly AppDbContext _context;
+    private readonly BackendDbContext _context;
 
-    public ManagerService(AppDbContext context)
+    public ManagerService(BackendDbContext context)
     {
         _context = context;
     }
