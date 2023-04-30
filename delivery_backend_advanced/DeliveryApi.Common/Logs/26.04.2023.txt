@@ -1,0 +1,10 @@
+14:46:21.8610368   URL: http://localhost:5125/api/cook/orders?current=true&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:47:06.3267707   URL: http://localhost:5125/api/cook/orders?current=false&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:01:26.6241734   URL: http://localhost:5125/api/cook/orders?current=false&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:01:58.5926976   URL: http://localhost:5125/api/cook/orders?current=false&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:02:11.1088720   URL: http://localhost:5125/api/cook/orders?current=false&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

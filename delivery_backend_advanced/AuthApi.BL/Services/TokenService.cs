@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AuthApi.Common.ConfigClasses;
 using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
 using Common.Configurations;
@@ -14,6 +15,13 @@ namespace AuthApi.BL.Services;
 
 public class TokenService : ITokenService
 {
+    private readonly IConfiguration _configuration;
+
+    public TokenService(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public string CreateToken(TokenUserDto tokenUserDto, List<IdentityRole> roles)
     {
         var newToken = CreateJwtToken(CreateClaims(tokenUserDto, roles));
@@ -50,26 +58,28 @@ public class TokenService : ITokenService
         return claims;
     }
 
-    private static JwtSecurityToken CreateJwtToken(IEnumerable<Claim> claims)
+    private JwtSecurityToken CreateJwtToken(IEnumerable<Claim> claims)
     {
+        var jwtConfig = _configuration.GetSection("JwtConfig").Get<JwtConfig>();
         return new JwtSecurityToken(
-            JwtConfig.Issuer,
-            JwtConfig.Audience,
+            jwtConfig.Issuer,
+            jwtConfig.Audience,
             claims,
-            expires: DateTime.UtcNow.AddMinutes(JwtConfig.JwtLifetime),
-            signingCredentials: new SigningCredentials(JwtConfig.GetSymmetricSecurityKey(),
+            expires: DateTime.UtcNow.AddMinutes(jwtConfig.AccessMinutesLifeTime),
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Key)),
                 SecurityAlgorithms.HmacSha256)
         );
     }
     
     public ClaimsPrincipal? GetExpiredTokenInfo(string? accessToken)
     {
+        var jwtConfig = _configuration.GetSection("JwtConfig").Get<JwtConfig>();
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = JwtConfig.GetSymmetricSecurityKey(),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Key)),
             ValidateLifetime = false
         };
 

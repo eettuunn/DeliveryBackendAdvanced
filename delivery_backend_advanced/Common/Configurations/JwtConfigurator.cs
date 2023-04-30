@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Text;
+using AuthApi.Common.ConfigClasses;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,15 +19,16 @@ public static class JwtConfigurator
             })
             .AddJwtBearer(options =>
             {
+                var jwtConfig = builder.Configuration.GetSection("JwtConfig").Get<JwtConfig>();
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = JwtConfig.Issuer,
-                    ValidAudience = JwtConfig.Audience,
-                    IssuerSigningKey = JwtConfig.GetSymmetricSecurityKey()
+                    ValidIssuer = jwtConfig.Issuer,
+                    ValidAudience = jwtConfig.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Key))
                 };
             });
         builder.Services.AddAuthorization(options => options.DefaultPolicy =

@@ -1,4 +1,5 @@
-﻿using AuthApi.Common.Dtos;
+﻿using AuthApi.Common.ConfigClasses;
+using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
 using AuthApi.DAL;
 using AuthApi.DAL.Entities;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AuthApi.BL.Services;
 
@@ -19,14 +21,16 @@ public class ProfileService : IProfileService
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
     private readonly AuthDbContext _context;
+    private readonly IConfiguration _configuration;
 
-    public ProfileService(UserManager<AppUser> userManager, IEmailService emailService, IMapper mapper, ITokenService tokenService, AuthDbContext context)
+    public ProfileService(UserManager<AppUser> userManager, IEmailService emailService, IMapper mapper, ITokenService tokenService, AuthDbContext context, IConfiguration configuration)
     {
         _userManager = userManager;
         _emailService = emailService;
         _mapper = mapper;
         _tokenService = tokenService;
         _context = context;
+        _configuration = configuration;
     }
 
     public async Task ChangePassword(ChangePasswordDto changePasswordDto, string email)
@@ -120,7 +124,10 @@ public class ProfileService : IProfileService
         var tokenUser = _mapper.Map<TokenUserDto>(user);
         var accessToken = _tokenService.CreateToken(tokenUser, roles);
         user.RefreshToken = _tokenService.GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtConfig.RefreshLifetime);
+        
+        var jwtConfig = _configuration.GetSection("JwtConfig").Get<JwtConfig>();
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(jwtConfig.RefreshDaysLifeTime);
+        
         await _userManager.UpdateAsync(user);
         
         return new TokenPairDto()

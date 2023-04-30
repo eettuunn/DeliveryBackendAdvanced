@@ -1,4 +1,5 @@
 ﻿using System.Net.Mail;
+using AuthApi.Common.ConfigClasses;
 using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
 using AuthApi.DAL;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
@@ -20,10 +22,12 @@ namespace AuthApi.BL.Services;
 public class EmailService : IEmailService
 {
     private readonly UserManager<AppUser> _userManager;
+    private readonly IConfiguration _configuration;
 
-    public EmailService(UserManager<AppUser> userManager)
+    public EmailService(UserManager<AppUser> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
+        _configuration = configuration;
     }
 
     public async Task SendEmailAsync(SendEmailDto emailDto)
@@ -35,9 +39,10 @@ public class EmailService : IEmailService
         emailMessage.Subject = emailDto.subject;
         emailMessage.Body = new TextPart(TextFormat.Html) { Text = emailDto.message };
 
+        var emailConfig = _configuration.GetSection("EmailConfig").Get<EmailConfig>();
         using var client = new SmtpClient();
         await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-        await client.AuthenticateAsync(EmailConfig.CorpEmail, EmailConfig.CorpPassword);
+        await client.AuthenticateAsync(emailConfig.CorpEmail, emailConfig.CorpPassword);
         await client.SendAsync(emailMessage);
  
         await client.DisconnectAsync(true);

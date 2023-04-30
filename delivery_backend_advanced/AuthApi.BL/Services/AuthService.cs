@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using AuthApi.Common.ConfigClasses;
 using AuthApi.Common.Dtos;
 using AuthApi.Common.Enums;
 using AuthApi.Common.Interfaces;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AuthApi.BL.Services;
 
@@ -22,14 +24,16 @@ public class AuthService : IAuthService
     private readonly IMapper _mapper;
     private readonly ITokenService _tokenService;
     private readonly IEmailService _emailService;
+    private readonly IConfiguration _configuration;
 
-    public AuthService(AuthDbContext context, UserManager<AppUser> userManager, IMapper mapper, ITokenService tokenService, IEmailService emailService)
+    public AuthService(AuthDbContext context, UserManager<AppUser> userManager, IMapper mapper, ITokenService tokenService, IEmailService emailService, IConfiguration configuration)
     {
         _context = context;
         _userManager = userManager;
         _mapper = mapper;
         _tokenService = tokenService;
         _emailService = emailService;
+        _configuration = configuration;
     }
 
     public async Task<TokenPairDto> RegisterUser(RegisterUserDto registerUserDto, HttpRequest httpRequest, IUrlHelper urlHelper)
@@ -92,7 +96,10 @@ public class AuthService : IAuthService
         var tokenUser = _mapper.Map<TokenUserDto>(user);
         var accessToken = _tokenService.CreateToken(tokenUser, roles);
         user.RefreshToken = _tokenService.GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtConfig.RefreshLifetime);
+      
+        var jwtConfig = _configuration.GetSection("JwtConfig").Get<JwtConfig>();
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(jwtConfig.RefreshDaysLifeTime);
+        
         await _userManager.UpdateAsync(user);
         
         return new TokenPairDto()
@@ -127,7 +134,8 @@ public class AuthService : IAuthService
         var newRefresh = _tokenService.GenerateRefreshToken();
 
         userEntity.RefreshToken = newRefresh;
-        userEntity.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtConfig.RefreshLifetime);
+        var jwtConfig = _configuration.GetSection("JwtConfig").Get<JwtConfig>();
+        userEntity.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(jwtConfig.RefreshDaysLifeTime);
         await _userManager.UpdateAsync(userEntity);
         
         

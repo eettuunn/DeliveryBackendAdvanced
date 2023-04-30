@@ -72,20 +72,19 @@ public class OrderService : IOrderService
 
     public async Task<OrdersPageDto> GetOrders(OrderQueryModel query, UserRole role)
     {
-        var orderEntities = await OrdersRoleDepend(role, query.current);
+        var orderEn = OrdersRoleDepend(role, query.current);
         
         var page = query.page ?? 1;
         var pageOrderCount = _configuration.GetValue<double>("PageSize");
-        var orderCountInRest = orderEntities.Count;
+        var orderCountInRest = await _context.Orders.CountAsync();
         var ordersSkip = (int)((page - 1) * pageOrderCount);
         var ordersTake = (int)Math.Min(orderCountInRest - (page - 1) * pageOrderCount, pageOrderCount);
 
-        SortAndFilterOrders(ref orderEntities, query, role);
-
+        var orderList = SortAndFilterOrders(orderEn, query, role);
         
-        var pageCount = (int)Math.Ceiling(orderEntities.Count / pageOrderCount);
+        var pageCount = (int)Math.Ceiling(orderList.Count / pageOrderCount);
         pageCount = pageCount == 0 ? 1 : pageCount;
-        orderEntities = orderEntities
+        orderList = orderList
             .Skip(ordersSkip)
             .Take(ordersTake)
             .ToList();
@@ -95,14 +94,14 @@ public class OrderService : IOrderService
         }
 
         
-        List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderEntities);
+        List<OrderListElementDto> orderDtos = _mapper.Map<List<OrderListElementDto>>(orderList);
 
         
         var pageInfo = new PaginationDto()
         {
             current = page,
             count = pageCount,
-            size = orderEntities.Count
+            size = orderList.Count
         };
         OrdersPageDto ordersPage = new OrdersPageDto()
         {
@@ -181,47 +180,47 @@ public class OrderService : IOrderService
 
 
 
-    private async Task<List<OrderEntity>> OrdersRoleDepend(UserRole role, bool current)
+    private IEnumerable<OrderEntity> OrdersRoleDepend(UserRole role, bool current)
     {
-        List<OrderEntity> orders = new List<OrderEntity>();
+        IEnumerable<OrderEntity> orders = Enumerable.Empty<OrderEntity>();
         switch (role)
         {
             case UserRole.Customer:
-                orders = await _context
+                orders = _context
                     .Orders
                     //.Where(order => order.Customer.Id == userId)
                     .Where(order => current == false || order.Status != OrderStatus.Canceled && order.Status != OrderStatus.Delivered)
-                    .ToListAsync();
+                    .AsEnumerable();
                 break;
             case UserRole.Manager:
                 // var restaurantId = user.Restaurant.Id;
-                orders = await _context
+                orders = _context
                     .Orders
                     // .Where(order => order.Restaurant.Id == restaurantId)
-                    .ToListAsync();
+                    .AsEnumerable();
                 break;
             case UserRole.Cook:
-                orders = await _context
+                orders = _context
                     .Orders
                     .Where(
                         order => !current &&
                                  order.Status == OrderStatus.Created || current/* && cook.Orders.Contains(order)*/)
-                    .ToListAsync();
+                    .AsEnumerable();
                 break;
             case UserRole.Courier:
-                orders = await _context
+                orders = _context
                     .Orders
                     .Where(
                         order => !current &&
                                  order.Status == OrderStatus.Delivery || current/* && courier.Orders.Contains(order)*/)
-                    .ToListAsync();
+                    .AsEnumerable();
                 break;
         }
 
         return orders;
     }
     
-    private void SortAndFilterOrders(ref List<OrderEntity> orders, OrderQueryModel query, UserRole role)
+    private List<OrderEntity> SortAndFilterOrders(IEnumerable<OrderEntity> orders, OrderQueryModel query, UserRole role)
     {
         if (query.sort != null)
         {
@@ -251,5 +250,7 @@ public class OrderService : IOrderService
         {
             orders = orders.Where(order => query.statuses.Contains(order.Status)).ToList();
         }
+
+        return orders.ToList();
     }
 }
