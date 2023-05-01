@@ -7,31 +7,31 @@
     <title>title</title>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <h2>Рестораны</h2>
-        <div class="col-md-4">
-            <a href="/Restaurant/CreateRest" class="btn btn-success">Создать ресторан</a>
-        </div>
+<div class="container w-50">
+    <div class="d-flex flex-column align-items-center">
+        <h2 class="align-self-start pb-2">Рестораны</h2>
         <table class="table table-striped">
             <thread>
                 <tr>
                     <th>Название</th>
-                    <th>Действие</th>
+                    <th class="d-flex justify-content-end pe-3">Действие</th>
                 </tr>
                 
                 @foreach (var r in Model)
                 {
                     <tr>
                         <td>@r.name</td>
-                        <td>
-                            <a>Изменить</a>
-                            <a>Удалить</a>
+                        <td class="d-flex justify-content-end">
+                            <a class="btn btn-warning m-2">Изменить</a>
+                            <a class="btn btn-danger m-2">Удалить</a>
                         </td>
                     </tr>
                 }
             </thread>
         </table>
+        <div class="align-self-start">
+            <a href="/Restaurant/CreateRest" class="btn btn-success">Создать ресторан</a>
+        </div>
     </div>  
     
 </div>
