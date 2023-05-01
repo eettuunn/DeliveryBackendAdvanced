@@ -1,0 +1,92 @@
+﻿@using AuthApi.Common.Enums
+@model UserInfo
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="container bg-light p-4 w-50">
+    <h2>Редактирование пользователя</h2>
+    <form asp-action="EditUser">
+        <div class="mb-3">
+            <label for="input-name" class="form-label">Имя</label>
+            <input asp-for="userName" type="text" class="form-control" id="input-name">
+            <span class="text-danger" asp-validation-for="userName"></span>
+        </div>
+        <div class="mb-3">
+            <label for="input-email" class="form-label">Почта</label>
+            <input asp-for="email" type="email" class="form-control" aria-describedby="emailHelp" id="input-email">
+            <span class="text-danger" asp-validation-for="userName"></span>
+        </div>
+        <div class="mb-3">
+              <label for="input-gender" class="form-label">Гендер</label>
+            <select asp-for="gender" id="input-gender" class="form-select">
+                <option value="0">Male</option>
+                <option value="1">Female</option>
+            </select>
+            <span class="text-danger" asp-validation-for="gender"></span>
+        </div>
+        <div class="mb-3">
+            <label for="input-birth" class="form-label">ДР</label>
+            <input asp-for="birthDate" type="date" class="form-control" id="input-birth">
+            <span class="text-danger" asp-validation-for="birthDate"></span>
+        </div>
+        <div class="mb-3">
+            <label for="input-phone" class="form-label">Телефон</label>
+            <input asp-for="phoneNumber" type="number" class="form-control" id="input-phone">
+            <span class="text-danger" asp-validation-for="phoneNumber"></span>
+        </div>
+        <div class="d-flex flex-row">
+            <div class="mb-3 me-3">
+                <label class="form-check-label" for="input-manager">Cook</label>
+                @if (Model.roles.Any(r => r.name == UserRole.Cook))
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-cook" checked>
+                }
+                else
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-cook">
+                }
+            </div>
+            <div class="mb-3 me-3">
+                <label class="form-check-label" for="input-manager">Courier</label>
+                @if (Model.roles.Any(r => r.name == UserRole.Courier))
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-courier" checked>
+                }
+                else
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-courier">
+                }
+            </div>
+            <div class="mb-3 me-3">
+                <label class="form-check-label" for="input-customer">Customer</label>
+                @if (Model.roles.Any(r => r.name == UserRole.Customer))
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-customer" checked>
+                }
+                else
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-customer">
+                }
+            </div>
+            <div class="mb-3 me-3">
+                <label class="form-check-label" for="input-manager">Manager</label>
+                @if (Model.roles.Any(r => r.name == UserRole.Manager))
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-manager" checked>
+                }
+                else
+                {
+                    <input class="form-check-input" type="checkbox" value="" id="input-manager">
+                }
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Редактировать</button>
+        <a asp-controller="User" asp-action="UserList" class="btn btn-secondary">Список пользователей</a>
+    </form>
+</div>
+</body>
+</html>

@@ -14,6 +14,7 @@ public class AppMappingProfile : Profile
         CreateMap<RestaurantEntity, RestaurantListElement>();
         CreateMap<RestaurantEntity, RestInfo>();
         CreateMap<AppUser, UserListElement>();
+        CreateMap<AppUser, UserInfo>();
         CreateMap<IdentityRole, Role>();
     }
 }
