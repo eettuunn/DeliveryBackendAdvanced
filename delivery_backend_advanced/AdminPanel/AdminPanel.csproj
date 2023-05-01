@@ -22,6 +22,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AuthApi.DAL\AuthApi.DAL.csproj" />
+      <ProjectReference Include="..\Common\Common.csproj" />
       <ProjectReference Include="..\DeliveryApi.DAL\DeliveryApi.DAL.csproj" />
     </ItemGroup>
 

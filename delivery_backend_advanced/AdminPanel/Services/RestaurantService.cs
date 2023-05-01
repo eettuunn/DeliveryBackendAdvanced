@@ -1,6 +1,7 @@
 ﻿using AdminPanel.Interfaces;
 using AdminPanel.Models;
 using AutoMapper;
+using delivery_backend_advanced.Exceptions;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -48,5 +49,44 @@ public class RestaurantService : IRestaurantService
         var displayRests = _mapper.Map<List<RestaurantListElement>>(rests);
 
         return displayRests;
+    }
+
+    public async Task DeleteRest(Guid Id)
+    {
+        var rest = await _context
+            .Restaurants
+            .FirstOrDefaultAsync(r => r.Id == Id) 
+                   ?? throw new CantFindByIdException("rest", Id);
+
+        _context.Remove(rest);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task EditRest(Guid Id, EditRest editRest, ModelStateDictionary modelState)
+    {
+        if (await _context.Restaurants.AnyAsync(r => r.Name == editRest.name && r.Id != Id))
+        {
+            modelState.AddModelError(nameof(editRest.name), $"Restaurant with name {editRest.name} already exists");
+            return;
+        }
+
+        var rest = await _context
+            .Restaurants
+            .FirstOrDefaultAsync(r => r.Id == Id) ?? throw new CantFindByIdException("restaurant", Id);
+
+        rest.Name = editRest.name ?? rest.Name;
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<RestInfo> GetRestInfo(Guid id)
+    {
+        var rest = await _context
+                       .Restaurants
+                       .FirstOrDefaultAsync(r => r.Id == id) 
+                   ?? throw new CantFindByIdException("rest", id);
+
+        var restInfo = _mapper.Map<RestInfo>(rest);
+        return restInfo;
     }
 }

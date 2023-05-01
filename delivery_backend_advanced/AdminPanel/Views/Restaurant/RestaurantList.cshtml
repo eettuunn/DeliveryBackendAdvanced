@@ -22,15 +22,15 @@
                     <tr>
                         <td>@r.name</td>
                         <td class="d-flex justify-content-end">
-                            <a class="btn btn-warning m-2">Изменить</a>
-                            <a class="btn btn-danger m-2">Удалить</a>
+                            <a asp-controller="Restaurant" asp-action="EditRest" asp-route-Id="@r.id" class="btn btn-warning m-2">Изменить</a>
+                            <a asp-controller="Restaurant" asp-action="DeleteRest" asp-route-Id="@r.id" class="btn btn-danger m-2">Удалить</a>
                         </td>
                     </tr>
                 }
             </thread>
         </table>
         <div class="align-self-start">
-            <a href="/Restaurant/CreateRest" class="btn btn-success">Создать ресторан</a>
+            <a asp-controller="Restaurant" asp-action="CreateRest" class="btn btn-success">Создать ресторан</a>
         </div>
     </div>  
     

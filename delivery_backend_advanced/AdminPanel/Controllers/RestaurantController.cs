@@ -19,7 +19,6 @@ public class RestaurantController : Controller
 
     public IActionResult Index()
     {
-        ViewBag.hi = "sssss";
         return View();
     }
 
@@ -43,13 +42,48 @@ public class RestaurantController : Controller
             return View(rest);
         }
         
-        return RedirectToAction("Index");
+        return RedirectToAction("RestaurantList");
     }
 
+    
+    
     public async Task<ActionResult<RestaurantListElement>> RestaurantList()
     {
         var rests = await _restaurantService.GetRestaurantList();
 
         return View(rests);
+    }
+
+    public async Task<IActionResult> DeleteRest(Guid Id)
+    {
+        await _restaurantService.DeleteRest(Id);
+
+        return RedirectToAction("RestaurantList");
+    }
+    
+    
+    
+    public async Task<IActionResult> EditRest(Guid Id)
+    {
+        var rest = await _restaurantService.GetRestInfo(Id);
+        return View(rest);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> EditRest(Guid Id, EditRest editRest)
+    {
+        if(!ModelState.IsValid)
+        {
+            return View();
+        }
+
+        await _restaurantService.EditRest(Id, editRest, ModelState);
+
+        if(!ModelState.IsValid)
+        {
+            return View();
+        }
+        
+        return RedirectToAction("RestaurantList");
     }
 }
