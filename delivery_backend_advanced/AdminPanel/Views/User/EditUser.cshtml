@@ -1,5 +1,6 @@
 ﻿@using AuthApi.Common.Enums
 @model UserInfo
+
 <!DOCTYPE html>
 
 <html>
@@ -39,50 +40,57 @@
             <span class="text-danger" asp-validation-for="phoneNumber"></span>
         </div>
         <div class="d-flex flex-row">
-            <div class="mb-3 me-3">
+            @for(int i = 0; i < Model.roles.Count; i++)
+            {
+                var role = Model.roles[i];
+                @Html.HiddenFor(r => r.roles[i].id)
+                @Html.CheckBoxFor(r => r.roles[i].selected)
+                @Html.LabelFor(r => r.roles[i].name, role.name.ToString())
+            }
+            @*<div class="mb-3 me-3">
                 <label class="form-check-label" for="input-manager">Cook</label>
                 @if (Model.roles.Any(r => r.name == UserRole.Cook))
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-cook" checked>
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="3" id="input-cook" checked>
                 }
                 else
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-cook">
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="3" id="input-cook">
                 }
             </div>
             <div class="mb-3 me-3">
                 <label class="form-check-label" for="input-manager">Courier</label>
                 @if (Model.roles.Any(r => r.name == UserRole.Courier))
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-courier" checked>
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="2" id="input-courier" checked>
                 }
                 else
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-courier">
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="2" id="input-courier">
                 }
             </div>
             <div class="mb-3 me-3">
                 <label class="form-check-label" for="input-customer">Customer</label>
                 @if (Model.roles.Any(r => r.name == UserRole.Customer))
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-customer" checked>
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="1" id="input-customer" checked>
                 }
                 else
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-customer">
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="1" id="input-customer">
                 }
             </div>
             <div class="mb-3 me-3">
                 <label class="form-check-label" for="input-manager">Manager</label>
                 @if (Model.roles.Any(r => r.name == UserRole.Manager))
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-manager" checked>
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="0" id="input-manager" checked>
                 }
                 else
                 {
-                    <input class="form-check-input" type="checkbox" value="" id="input-manager">
+                    <input asp-for="roles" class="form-check-input" type="checkbox" value="0" id="input-manager">
                 }
-            </div>
+            </div>*@
         </div>
         <button type="submit" class="btn btn-success">Редактировать</button>
         <a asp-controller="User" asp-action="UserList" class="btn btn-secondary">Список пользователей</a>

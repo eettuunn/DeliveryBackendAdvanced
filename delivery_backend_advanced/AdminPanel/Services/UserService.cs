@@ -66,7 +66,7 @@ public class UserService : IUserService
 
         user.Email = editUser.email ?? user.Email;
         user.PhoneNumber = editUser.phoneNumber ?? user.PhoneNumber;
-        user.BirthDate = editUser.birthDate;
+        user.BirthDate = editUser.birthDate.ToUniversalTime();
         user.UserName = editUser.userName ?? user.UserName;
         user.Gender = editUser.gender;
 
@@ -78,23 +78,31 @@ public class UserService : IUserService
 
     private async Task<List<Role>> GetUserRoles(Guid userId)
     {
-        var rolesId = await _context
+        var roles = await _context
+            .Roles
+            .ToListAsync();
+        var userRolesId = await _context
             .UserRoles
             .Where(role => role.UserId == userId.ToString())
             .ToListAsync();
         
-        var roles = new List<Role>();
-        foreach (var roleId in rolesId)
+        var userRoles = new List<Role>();
+        foreach (var role in roles)
         {
-            var identityRole = await _context
-                .Roles
-                .FirstOrDefaultAsync(r => r.Id == roleId.RoleId);
-            var role = _mapper.Map<Role>(identityRole);
+            var userRole = _mapper.Map<Role>(role);
+            if (userRolesId.Any(r => r.RoleId == role.Id))
+            {
+                userRole.selected = true;
+            }
+            else
+            {
+                userRole.selected = false;
+            }
             
-            roles.Add(role);
+            userRoles.Add(userRole);
         }
 
-        return roles;
+        return userRoles;
     }
 
     private async Task<bool> CheckEditValidation(EditUser editUser, ModelStateDictionary modelState)

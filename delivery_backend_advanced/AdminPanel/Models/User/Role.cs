@@ -7,4 +7,6 @@ public class Role
     public Guid id { get; set; }
     
     public UserRole name { get; set; }
+    
+    public bool selected { get; set; }
 }
