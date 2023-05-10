@@ -108,9 +108,15 @@ public class UserService : IUserService
     private async Task<bool> CheckEditValidation(EditUser editUser, ModelStateDictionary modelState)
     {
         bool alright = true;
-        if (await _context.Users.AnyAsync(user => user.Email == editUser.email))
+        if (await _context.Users.AnyAsync(user => user.Email == editUser.email && user.Id != editUser.id.ToString()))
         {
             modelState.AddModelError(nameof(editUser.email), $"User with email {editUser.email} already exists");
+            alright = false;
+        }
+
+        if (DateTime.UtcNow.Year - editUser.birthDate.Year is < 7 or > 80)
+        {
+            modelState.AddModelError(nameof(editUser.birthDate), $"User birthDate must be in range 7 to 80");
             alright = false;
         }
 
@@ -123,12 +129,21 @@ public class UserService : IUserService
             .UserRoles
             .Where(r => r.UserId == user.Id)
             .ToListAsync();
+        foreach (var prR in prevUserRoles.ToList())
+        {
+            var role = roles.FirstOrDefault(r => r.id.ToString() == prR.RoleId);
+            if (role.selected)
+            {
+                roles.Remove(role);
+                prevUserRoles.Remove(prR);
+            }
+        }
 
         await DeletePrevRoles(prevUserRoles, user);
         
         foreach (var role in roles)
         {
-            if (prevUserRoles.All(r => r.RoleId != role.id.ToString()))
+            if (prevUserRoles.All(r => r.RoleId != role.id.ToString()) && role.selected)
             {
                 switch (role.name)
                 {

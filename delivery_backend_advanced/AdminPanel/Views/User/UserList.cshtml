@@ -21,7 +21,10 @@
                     <div>ДР: @user.birthDate.ToShortDateString()</div>
                     <div class="d-flex flex-row">Роли:\@foreach (var role in user.roles)
                                {
-                                   <div>@role.name\</div>
+                                   @if (role.selected)
+                                   {
+                                       <div>@role.name\</div>
+                                   }
                                }
                         </div>
                 </div>

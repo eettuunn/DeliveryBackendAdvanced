@@ -3,6 +3,7 @@ using AuthApi.DAL;
 using delivery_backend_advanced.Models;
 using delivery_backend_advanced.Models.Entities;
 using AdminPanel.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

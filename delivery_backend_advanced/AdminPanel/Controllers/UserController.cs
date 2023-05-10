@@ -1,5 +1,6 @@
 ﻿using AdminPanel.Interfaces;
 using AdminPanel.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminPanel.Controllers;
@@ -7,10 +8,12 @@ namespace AdminPanel.Controllers;
 public class UserController : Controller
 {
     private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IMapper mapper)
     {
         _userService = userService;
+        _mapper = mapper;
     }
 
     public async Task<IActionResult> UserList()
@@ -32,14 +35,16 @@ public class UserController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View();
+            var userInfo = _mapper.Map<UserInfo>(editUser);
+            return View(userInfo);
         }
 
         await _userService.EditUser(editUser, ModelState);
 
         if (!ModelState.IsValid)
         {
-            return View();
+            var userInfo = _mapper.Map<UserInfo>(editUser);
+            return View(userInfo);
         }
 
         return RedirectToAction("UserList");

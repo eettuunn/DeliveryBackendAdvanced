@@ -16,5 +16,6 @@ public class AppMappingProfile : Profile
         CreateMap<AppUser, UserListElement>();
         CreateMap<AppUser, UserInfo>();
         CreateMap<IdentityRole, Role>();
+        CreateMap<EditUser, UserInfo>();
     }
 }
