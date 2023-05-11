@@ -30,7 +30,6 @@ public class CookService : ICookService
         {
             throw new ConflictException("Cook can take only orders with status created");
         }
-        //check if order is already taken
         //cook.Orders.Add(orderEntity);
 
         orderEntity.Status = OrderStatus.Kitchen;

@@ -49,4 +49,10 @@ public class UserController : Controller
 
         return RedirectToAction("UserList");
     }
+
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        await _userService.DeleteUser(id);
+        return RedirectToAction("UserList");
+    }
 }

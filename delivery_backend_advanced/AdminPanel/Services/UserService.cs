@@ -75,7 +75,21 @@ public class UserService : IUserService
         await _context.SaveChangesAsync();
     }
 
+    public async Task DeleteUser(Guid id)
+    {
+        var user = await _userManager
+            .Users
+            .FirstOrDefaultAsync(u => u.Id == id.ToString());
+        var roles = await _userManager.GetRolesAsync(user);
+        await DeleteRolesEntities(user);
+        
+        await _userManager.RemoveFromRolesAsync(user, roles);
+        await _userManager.DeleteAsync(user);
+    }
 
+
+    
+    
     private async Task<List<Role>> GetUserRoles(Guid userId)
     {
         var roles = await _context
@@ -236,5 +250,43 @@ public class UserService : IUserService
                     break;
             }
         }
+    }
+
+    private async Task DeleteRolesEntities(AppUser user)
+    {
+        if (user.Manager != null)
+        {
+            var manager = await _context
+                .Managers
+                .Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.User == user);
+            _context.Managers.Remove(manager);
+        }
+        if (user.Courier != null)
+        {
+            var courier = await _context
+                .Couriers
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.User == user);
+            _context.Couriers.Remove(courier);
+        }
+        if (user.Customer != null)
+        {
+            var customer = await _context
+                .Customers
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.User == user);
+            _context.Customers.Remove(customer);
+        }
+        if (user.Cook != null)
+        {
+            var cook = await _context
+                .Cooks
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.User == user);
+            _context.Cooks.Remove(cook);
+        }
+
+        await _context.SaveChangesAsync();
     }
 }

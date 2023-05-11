@@ -30,7 +30,7 @@
                 </div>
                 <div class="">
                     <a asp-controller="User" asp-action="EditUser" asp-route-Id="@user.id.ToString()" class="btn btn-warning m-1">Изменить</a>
-                    <a class="btn btn-danger m-1 me-3">Удалить</a>
+                    <a asp-controller="User" asp-action="DeleteUser" asp-route-id="@user.id" class="btn btn-danger m-1 me-3">Удалить</a>
                 </div>
             </div>
         }

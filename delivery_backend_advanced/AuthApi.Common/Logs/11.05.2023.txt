@@ -1,0 +1,4 @@
+17:52:50.0822381   URL: http://localhost:5179/auth/register   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:53:44.3050998   URL: http://localhost:5179/auth/register   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
