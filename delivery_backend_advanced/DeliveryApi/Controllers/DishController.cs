@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,8 @@ public class DishController : ControllerBase
     [Route("{dishId}/rating/check")]
     public async Task<bool> CheckAbilityToRate(Guid dishId)
     {
-        return await _dishService.CheckAbilityToRate(dishId);
+        var userInfo = GetCustomerInfo(HttpContext.User);
+        return await _dishService.CheckAbilityToRate(dishId, userInfo);
     }
 
     /// <summary>
@@ -44,12 +46,28 @@ public class DishController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            await _dishService.RateDish(dishId, value);
+            var userInfo = GetCustomerInfo(HttpContext.User);
+            await _dishService.RateDish(dishId, value, userInfo);
             return Ok();
         }
         else
         {
             return BadRequest(ModelState);
         }
+    }
+    
+    
+    
+    private CustomerInfoDto GetCustomerInfo(ClaimsPrincipal user)
+    {
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userAddress = user.FindFirst("address")?.Value;
+        var userInfo = new CustomerInfoDto()
+        {
+            id = Guid.Parse(userId),
+            address = userAddress
+        };
+
+        return userInfo;
     }
 }

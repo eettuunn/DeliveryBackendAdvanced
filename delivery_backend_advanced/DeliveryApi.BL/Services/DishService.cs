@@ -32,28 +32,27 @@ public class DishService : IDishService
         return dishDto;
     }
 
-    public async Task<bool> CheckAbilityToRate(Guid dishId)
+    public async Task<bool> CheckAbilityToRate(Guid dishId, CustomerInfoDto customerInfoDto)
     {
-        //todo: do when add users
-        var dishEntity = await _context
-            .Dishes
-            .Where(dish => dish.Id == dishId)
-            .FirstOrDefaultAsync() ?? throw new CantFindByIdException("dish", dishId);
+        await CreateCustomerIfNull(customerInfoDto);
+
+        if (!await _context.Dishes.AnyAsync(d => d.Id == dishId))
+        {
+            throw new CantFindByIdException("dish", dishId);
+        }
         
-        /*var dishBasketEntities = await _context
+        var dishBasketEntities = await _context
             .DishesInBasket
-            .Include(dish => dish.Dish)
-            .Where(dish => dish.Dish.Id == dishId)
+            .Where(dib => dib.Dish.Id == dishId && dib.Customer.Id == customerInfoDto.id)
             .ToListAsync();
         if (dishBasketEntities.Count == 0)
         {
             return false;
-        }*/
+        }
 
         var userOrders = await _context
             .Orders
-            /*.Include(order => order.Customer)
-            .Where(order => order.Customer.Email == email)*/
+            .Where(order => order.Customer.Id == customerInfoDto.id)
             .Include(order => order.Dishes)
             .ThenInclude(dish => dish.Dish)
             .Where(order => order.Status == OrderStatus.Delivered)
@@ -62,25 +61,36 @@ public class DishService : IDishService
         return CheckDishInOrder(userOrders, dishId);
     }
 
-    public async Task RateDish(Guid dishId, int value)
+    public async Task RateDish(Guid dishId, int value, CustomerInfoDto customerInfoDto)
     {
-        var canRate = await CheckAbilityToRate(dishId);
-
+        var canRate = await CheckAbilityToRate(dishId, customerInfoDto);
+        
         if (canRate)
         {
+            var customer = await CreateCustomerIfNull(customerInfoDto);
+            
             var dishEntity = await _context
                 .Dishes
                 .Include(dish => dish.Ratings)
                 .FirstOrDefaultAsync(dish => dish.Id == dishId) ?? throw new CantFindByIdException("dish", dishId);
-          
-            //todo: add change rating when user already rated this dish
-            
-            RatingEntity ratingEntity = new RatingEntity()
+
+            var ratingEntity = await _context
+                .Ratings
+                .FirstOrDefaultAsync(rat => rat.Customer.Id == customerInfoDto.id);
+            if (ratingEntity == null)
             {
-                Id = new Guid(),
-                Value = value,
-                Dish = dishEntity
-            };
+                ratingEntity = new RatingEntity()
+                {
+                    Id = new Guid(),
+                    Value = value,
+                    Dish = dishEntity,
+                    Customer = customer
+                };
+            }
+            else
+            {
+                ratingEntity.Value = value;
+            }
 
             await _context.Ratings.AddAsync(ratingEntity);
             RecalculateAverageRating(ref dishEntity);
@@ -113,5 +123,26 @@ public class DishService : IDishService
         int count = dishEntity.Ratings.Count;
 
         dishEntity.AverageRating = Math.Round((double)sum / count, 1);
+    }
+    
+    private async Task<CustomerEntity> CreateCustomerIfNull(CustomerInfoDto customerInfoDto)
+    {
+        var customer = await _context
+            .Customers
+            .FirstOrDefaultAsync(c => c.Id == customerInfoDto.id);
+        if (customer == null)
+        {
+            var newCustomer = new CustomerEntity()
+            {
+                Id = customerInfoDto.id,
+                Address = customerInfoDto.address
+            };
+            
+            await _context.Customers.AddAsync(newCustomer);
+            await _context.SaveChangesAsync();
+            customer = newCustomer;
+        }
+
+        return customer;
     }
 }
