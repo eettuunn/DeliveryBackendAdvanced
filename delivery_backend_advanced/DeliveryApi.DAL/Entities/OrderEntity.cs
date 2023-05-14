@@ -30,10 +30,10 @@ public class OrderEntity
 
     public List<DishBasketEntity> Dishes { get; set; } = new();
     
-    // [Required]
-    // public CustomerEntity Customer { get; set; }
-    
-    // public CookEntity? Cook { get; set; }
+    [Required]
+    public CustomerEntity Customer { get; set; }
 
-    // public CourierEntity? Courier { get; set; }
+    public List<CookEntity> Cook { get; set; } = new();
+
+    public List<CourierEntity> Courier { get; set; } = new();
 }

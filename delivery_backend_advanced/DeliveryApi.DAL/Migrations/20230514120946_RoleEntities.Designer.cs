@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using delivery_backend_advanced.Models;
 
 #nullable disable
 
-namespace delivery_backend_advanced.Migrations
+namespace DeliveryApi.DAL.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230514120946_RoleEntities")]
+    partial class RoleEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,48 +25,13 @@ namespace delivery_backend_advanced.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CookEntityOrderEntity", b =>
-                {
-                    b.Property<Guid>("CookId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("OrdersId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CookId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("CookEntityOrderEntity");
-                });
-
-            modelBuilder.Entity("CourierEntityOrderEntity", b =>
-                {
-                    b.Property<Guid>("CourierId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("OrdersId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CourierId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("CourierEntityOrderEntity");
-                });
-
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CookEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Cooks");
                 });
@@ -102,9 +70,6 @@ namespace delivery_backend_advanced.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("DishId")
                         .HasColumnType("uuid");
 
@@ -118,8 +83,6 @@ namespace delivery_backend_advanced.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DishId");
 
@@ -175,12 +138,7 @@ namespace delivery_backend_advanced.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Managers");
                 });
@@ -218,9 +176,6 @@ namespace delivery_backend_advanced.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("DeliveryTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -241,8 +196,6 @@ namespace delivery_backend_advanced.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Orders");
@@ -254,9 +207,6 @@ namespace delivery_backend_advanced.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("DishId")
                         .HasColumnType("uuid");
 
@@ -264,8 +214,6 @@ namespace delivery_backend_advanced.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DishId");
 
@@ -287,55 +235,8 @@ namespace delivery_backend_advanced.Migrations
                     b.ToTable("Restaurants");
                 });
 
-            modelBuilder.Entity("CookEntityOrderEntity", b =>
-                {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.CookEntity", null)
-                        .WithMany()
-                        .HasForeignKey("CookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("delivery_backend_advanced.Models.Entities.OrderEntity", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CourierEntityOrderEntity", b =>
-                {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.CourierEntity", null)
-                        .WithMany()
-                        .HasForeignKey("CourierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("delivery_backend_advanced.Models.Entities.OrderEntity", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CookEntity", b =>
-                {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
-                        .WithMany("Cooks")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
-                });
-
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishBasketEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.CustomerEntity", "Customer")
-                        .WithMany("DishesInBasket")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("delivery_backend_advanced.Models.Entities.DishEntity", "Dish")
                         .WithMany()
                         .HasForeignKey("DishId")
@@ -352,8 +253,6 @@ namespace delivery_backend_advanced.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
                     b.Navigation("Dish");
 
                     b.Navigation("Restaurant");
@@ -364,17 +263,6 @@ namespace delivery_backend_advanced.Migrations
                     b.HasOne("delivery_backend_advanced.Models.Entities.MenuEntity", null)
                         .WithMany("Dishes")
                         .HasForeignKey("MenuEntityId");
-                });
-
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.ManagerEntity", b =>
-                {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
-                        .WithMany("Managers")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.MenuEntity", b =>
@@ -390,49 +278,24 @@ namespace delivery_backend_advanced.Migrations
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.OrderEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.CustomerEntity", "Customer")
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("delivery_backend_advanced.Models.Entities.RestaurantEntity", "Restaurant")
                         .WithMany("Orders")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
                     b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.RatingEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.CustomerEntity", "Customer")
-                        .WithMany("Ratings")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("delivery_backend_advanced.Models.Entities.DishEntity", "Dish")
                         .WithMany("Ratings")
                         .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
                     b.Navigation("Dish");
-                });
-
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CustomerEntity", b =>
-                {
-                    b.Navigation("DishesInBasket");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishEntity", b =>
@@ -452,10 +315,6 @@ namespace delivery_backend_advanced.Migrations
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.RestaurantEntity", b =>
                 {
-                    b.Navigation("Cooks");
-
-                    b.Navigation("Managers");
-
                     b.Navigation("Menus");
 
                     b.Navigation("Orders");

@@ -4,8 +4,8 @@ namespace delivery_backend_advanced.Services.Interfaces;
 
 public interface IBasketService
 {
-    public Task AddDishToBasket(Guid dishId, Guid restaurantId);
-    public Task<BasketDto> GetUserBasket();
-    public Task DeleteDishFromBasket(Guid dishBasketId);
-    public Task ReduceDishInBasket(Guid dishBasketId);
+    public Task AddDishToBasket(Guid dishId, Guid restaurantId, CustomerInfoDto customerInfoDto);
+    public Task<BasketDto> GetUserBasket(Guid userId);
+    public Task DeleteDishFromBasket(Guid dishBasketId, Guid userId);
+    public Task ReduceDishInBasket(Guid dishBasketId, Guid userId);
 }

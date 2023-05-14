@@ -94,7 +94,7 @@ public class AuthService : IAuthService
         var roles = await GetUserRoles(user);
 
         var tokenUser = _mapper.Map<TokenUserDto>(user);
-        var accessToken = _tokenService.CreateToken(tokenUser, roles);
+        var accessToken = await _tokenService.CreateToken(tokenUser, roles);
         user.RefreshToken = _tokenService.GenerateRefreshToken();
       
         var jwtConfig = _configuration.GetSection("JwtConfig").Get<JwtConfig>();
@@ -130,7 +130,7 @@ public class AuthService : IAuthService
         var tokenUser = _mapper.Map<TokenUserDto>(userEntity);
         var roles = await GetUserRoles(userEntity);
         
-        var newAccess = _tokenService.CreateToken(tokenUser, roles);
+        var newAccess = await _tokenService.CreateToken(tokenUser, roles);
         var newRefresh = _tokenService.GenerateRefreshToken();
 
         userEntity.RefreshToken = newRefresh;

@@ -5,9 +5,13 @@ using System.Security.Cryptography;
 using System.Text;
 using AuthApi.Common.ConfigClasses;
 using AuthApi.Common.Dtos;
+using AuthApi.Common.Enums;
 using AuthApi.Common.Interfaces;
+using AuthApi.DAL;
+using AuthApi.DAL.Entities;
 using Common.Configurations;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,15 +20,17 @@ namespace AuthApi.BL.Services;
 public class TokenService : ITokenService
 {
     private readonly IConfiguration _configuration;
+    private readonly AuthDbContext _context;
 
-    public TokenService(IConfiguration configuration)
+    public TokenService(IConfiguration configuration, AuthDbContext context)
     {
         _configuration = configuration;
+        _context = context;
     }
 
-    public string CreateToken(TokenUserDto tokenUserDto, List<IdentityRole> roles)
+    public async Task<string> CreateToken(TokenUserDto tokenUserDto, List<IdentityRole> roles)
     {
-        var newToken = CreateJwtToken(CreateClaims(tokenUserDto, roles));
+        var newToken = CreateJwtToken(await CreateClaims(tokenUserDto, roles));
         var tokenHandler = new JwtSecurityTokenHandler();
         
         return tokenHandler.WriteToken(newToken);
@@ -40,7 +46,7 @@ public class TokenService : ITokenService
     
     
     
-    private static List<Claim> CreateClaims(TokenUserDto user, List<IdentityRole> roles)
+    private async Task<List<Claim>> CreateClaims(TokenUserDto user, List<IdentityRole> roles)
     {
         var claims = new List<Claim>
         {
@@ -54,6 +60,15 @@ public class TokenService : ITokenService
         foreach (var r in roles)
         {
             claims.Add(new(ClaimTypes.Role, r.Name));
+        }
+
+        if (roles.Any(r => r.Name == UserRole.Customer.ToString()))
+        {
+            var customer = await _context
+                .Customers
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.User.Id == user.id.ToString());
+            claims.Add(new ("address", customer.Address));
         }
         return claims;
     }

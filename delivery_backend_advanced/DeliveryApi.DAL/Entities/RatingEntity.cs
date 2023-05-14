@@ -12,6 +12,7 @@ public class RatingEntity
 
     [Required]
     public DishEntity Dish { get; set; }
-    
-    // public CustomerEntity Customer { get; set; }
+ 
+    [Required]
+    public CustomerEntity Customer { get; set; }
 }

@@ -19,24 +19,39 @@ public class BasketService : IBasketService
         _mapper = mapper;
     }
 
-    //todo: check for user
-    public async Task AddDishToBasket(Guid dishId, Guid restaurantId)
+    public async Task AddDishToBasket(Guid dishId, Guid restaurantId, CustomerInfoDto customerInfoDto)
     {
+        var customer = await _context
+            .Customers
+            .FirstOrDefaultAsync(c => c.Id == customerInfoDto.id);
+        if (customer == null)
+        {
+            var newCustomer = new CustomerEntity()
+            {
+                Id = customerInfoDto.id,
+                Address = customerInfoDto.address
+            };
+            
+            await _context.Customers.AddAsync(newCustomer);
+            await _context.SaveChangesAsync();
+            customer = newCustomer;
+        }
+        
         var dishEntity = await _context
             .Dishes
             .FirstOrDefaultAsync(dish => dish.Id == dishId) ??
                          throw new CantFindByIdException("dish", dishId);
-        
         var restaurantEntity = await _context
-            .Restaurants
-            .FirstOrDefaultAsync(r => r.Id == restaurantId) ?? 
+                                   .Restaurants
+                                   .FirstOrDefaultAsync(r => r.Id == restaurantId) ?? 
                                throw new CantFindByIdException("restaurant", restaurantId);
         
         var dishBasketEntity = await _context
             .DishesInBasket
             .Include(dib => dib.Dish)
             .Include(dib => dib.Restaurant)
-            .Where(dib => dib.Restaurant == restaurantEntity && dib.Dish == dishEntity && !dib.IsInOrder)
+            .Include(dib => dib.Customer)
+            .Where(dib => dib.Restaurant == restaurantEntity && dib.Dish == dishEntity && !dib.IsInOrder && dib.Customer.Id == customerInfoDto.id)
             .FirstOrDefaultAsync();
         
         
@@ -52,7 +67,8 @@ public class BasketService : IBasketService
                 Dish = dishEntity,
                 Amount = 1,
                 Restaurant = restaurantEntity,
-                IsInOrder = false
+                IsInOrder = false,
+                Customer = customer
             };
             await _context.DishesInBasket.AddAsync(dishBasketEntity);
         }
@@ -60,14 +76,14 @@ public class BasketService : IBasketService
         await _context.SaveChangesAsync();
     }
 
-    //todo: take only users dishes
-    public async Task<BasketDto> GetUserBasket()
+    public async Task<BasketDto> GetUserBasket(Guid userId)
     {
         var dishesInBasket = await _context
             .DishesInBasket
             .Include(dib => dib.Dish)
             .Include(dib => dib.Restaurant)
-            .Where(dib => !dib.IsInOrder)
+            .Include(dib => dib.Customer)
+            .Where(dib => !dib.IsInOrder && dib.Customer.Id == userId)
             .ToListAsync();
         
         List<RestaurantBasketDto> restaurants = FillRestaurantsInBasket(dishesInBasket);
@@ -80,29 +96,29 @@ public class BasketService : IBasketService
         return basketDto;
     }
 
-    public async Task DeleteDishFromBasket(Guid dishBasketId)
+    public async Task DeleteDishFromBasket(Guid dishBasketId, Guid userId)
     {
-        //todo: add dib.User == ...
         var dishInBasketEntity = await _context
                                      .DishesInBasket
-                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder) ??
+                                     .Include(dib => dib.Customer)
+                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder && dib.Customer.Id == userId) ??
                                  throw new CantFindByIdException("dish in your basket", dishBasketId);
 
         _context.DishesInBasket.Remove(dishInBasketEntity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task ReduceDishInBasket(Guid dishBasketId)
+    public async Task ReduceDishInBasket(Guid dishBasketId, Guid userId)
     {
-        //todo: add dib.User == ...
         var dishInBasketEntity = await _context
                                      .DishesInBasket
-                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder) ??
+                                     .Include(dib => dib.Customer)
+                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder && dib.Customer.Id == userId) ??
                                  throw new CantFindByIdException("dish in your basket", dishBasketId);
 
         if (dishInBasketEntity.Amount == 1)
         {
-            await DeleteDishFromBasket(dishBasketId);
+            await DeleteDishFromBasket(dishBasketId, userId);
         }
         else
         {
