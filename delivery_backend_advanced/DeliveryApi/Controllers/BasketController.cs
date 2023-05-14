@@ -25,8 +25,8 @@ public class BasketController : ControllerBase
     [Authorize]
     public async Task<BasketDto> GetUserBasket()
     {
-        var userId = Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        return await _basketService.GetUserBasket(userId);
+        var userInfo = GetCustomerInfo(HttpContext.User);
+        return await _basketService.GetUserBasket(userInfo);
     }
     
     /// <summary>
@@ -49,8 +49,8 @@ public class BasketController : ControllerBase
     [Route("reduce/{dishBasketId}")]
     public async Task ReduceDishNumber(Guid dishBasketId)
     {
-        var userId = Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        await _basketService.ReduceDishInBasket(dishBasketId, userId);
+        var userInfo = GetCustomerInfo(HttpContext.User);
+        await _basketService.ReduceDishInBasket(dishBasketId, userInfo);
     }
 
     /// <summary>
@@ -61,8 +61,8 @@ public class BasketController : ControllerBase
     [Route("delete/{dishBasketId}")]
     public async Task DeleteDishFromBasket(Guid dishBasketId)
     {
-        var userId = Guid.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-        await _basketService.DeleteDishFromBasket(dishBasketId, userId);
+        var userInfo = GetCustomerInfo(HttpContext.User);
+        await _basketService.DeleteDishFromBasket(dishBasketId, userInfo);
     }
 
 

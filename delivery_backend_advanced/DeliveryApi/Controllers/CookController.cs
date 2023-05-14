@@ -18,7 +18,7 @@ public class CookController : ControllerBase
         _orderService = orderService;
     }
 
-    /// <summary>
+    /*/// <summary>
     /// Get list of orders for cook (current == true => taken, else => available)
     /// </summary>
     [HttpGet]
@@ -26,7 +26,7 @@ public class CookController : ControllerBase
     public async Task<OrdersPageDto> GetCookOrders([FromQuery] OrderQueryModel query)
     {
         return await _orderService.GetOrders(query, UserRole.Cook);
-    }
+    }*/
 
     /// <summary>
     /// Change status of order when cooked or packaged

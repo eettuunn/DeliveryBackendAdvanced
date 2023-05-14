@@ -17,7 +17,7 @@ public class CourierController : ControllerBase
         _courierService = courierService;
     }
 
-    /// <summary>
+    /*/// <summary>
     /// Get list of courier's orders (current == true => taken, else => available)
     /// </summary>
     [HttpGet]
@@ -25,7 +25,7 @@ public class CourierController : ControllerBase
     public async Task<OrdersPageDto> GetCourierOrders([FromQuery] OrderQueryModel query)
     {
         return await _orderService.GetOrders(query, UserRole.Courier);
-    }
+    }*/
 
     /// <summary>
     /// Change order status when delivered it

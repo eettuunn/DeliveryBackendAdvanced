@@ -37,7 +37,7 @@ public class RestaurantController : ControllerBase
         return await _restaurantService.GetRestaurantDetails(restaurantId, query);
     }
     
-    /// <summary>
+    /*/// <summary>
     /// Get restaurant's orders
     /// </summary>
     [HttpGet]
@@ -45,5 +45,5 @@ public class RestaurantController : ControllerBase
     public async Task<OrdersPageDto> GetRestaurantOrders([FromQuery] OrderQueryModel query)
     {
         return await _orderService.GetOrders(query, UserRole.Manager);
-    }
+    }*/
 }
