@@ -17,4 +17,8 @@ public class UserInfo
     public string phoneNumber { get; set; }
 
     public List<Role> roles { get; set; } = new();
+
+    public Guid? restaurantId { get; set; }
+    
+    public string? address { get; set; }
 }
