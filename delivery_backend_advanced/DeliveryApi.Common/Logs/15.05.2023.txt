@@ -126,3 +126,29 @@
 
 17:32:21.9265167   URL: http://localhost:5125/api/manager/menu/b6abae81-c7f0-49d8-91bc-d32dfa05dc41   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+17:38:03.7896328   URL: http://localhost:5125/api/restaurant/orders?search=3&sort=DeliveryAsc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 401
+
+17:38:24.1724624   URL: http://localhost:5125/api/restaurant/orders?search=3&sort=DeliveryAsc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:39:14.9625081   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d2/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:39:17.2176109   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d2/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:39:45.3322514   URL: http://localhost:5125/api/order   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:39:52.4716723   URL: http://localhost:5125/api/order?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:00.3666869   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:10.8187244   URL: http://localhost:5125/api/order/repeat/6573edbb-c14a-481d-aff0-f1519a36e331   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:29.3756077   URL: http://localhost:5125/api/restaurant/orders?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:37.8525681   URL: http://localhost:5125/api/restaurant/orders?sort=DeliveryAsc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:45.7076873   URL: http://localhost:5125/api/restaurant/orders?sort=DeliveryAsc&status=5&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:49.0909135   URL: http://localhost:5125/api/restaurant/orders?sort=DeliveryAsc&status=1&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:52.0394500   URL: http://localhost:5125/api/restaurant/orders?sort=DeliveryAsc&status=0&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

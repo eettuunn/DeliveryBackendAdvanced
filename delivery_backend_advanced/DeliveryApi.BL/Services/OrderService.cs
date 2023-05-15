@@ -201,10 +201,11 @@ public class OrderService : IOrderService
                     .AsEnumerable();
                 break;
             case UserRole.Manager:
-                // var restaurantId = user.Restaurant.Id;
                 orders = _context
                     .Orders
-                    // .Where(order => order.Restaurant.Id == restaurantId)
+                    .Include(order => order.Restaurant)
+                    .ThenInclude(r => r.Managers)
+                    .Where(order => order.Restaurant.Managers.Any(m => m.Id == userId))
                     .AsEnumerable();
                 break;
             case UserRole.Cook:

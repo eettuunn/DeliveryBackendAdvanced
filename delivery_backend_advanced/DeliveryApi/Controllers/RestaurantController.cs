@@ -1,4 +1,5 @@
-﻿using delivery_backend_advanced.Models.Dtos;
+﻿using System.Security.Claims;
+using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Enums;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -37,13 +38,29 @@ public class RestaurantController : ControllerBase
         return await _restaurantService.GetRestaurantDetails(restaurantId, query);
     }
     
-    /*/// <summary>
+    /// <summary>
     /// Get restaurant's orders
     /// </summary>
     [HttpGet]
+    [Authorize]
+    [Authorize(Roles = "Manager")]
     [Route("orders")]
     public async Task<OrdersPageDto> GetRestaurantOrders([FromQuery] OrderQueryModel query)
     {
-        return await _orderService.GetOrders(query, UserRole.Manager);
-    }*/
+        var managerInfo = GetManagerInfo(HttpContext.User);
+        return await _orderService.GetOrders(query, UserRole.Manager, managerInfo);
+    }
+    
+    
+    
+    private UserInfoDto GetManagerInfo(ClaimsPrincipal user)
+    {
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userInfo = new UserInfoDto()
+        {
+            id = Guid.Parse(userId),
+        };
+
+        return userInfo;
+    }
 }
