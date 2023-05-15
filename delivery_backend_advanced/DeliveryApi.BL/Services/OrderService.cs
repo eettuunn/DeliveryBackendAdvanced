@@ -23,19 +23,19 @@ public class OrderService : IOrderService
         _configuration = configuration;
     }
 
-    public async Task CreateOrder(CreateOrderDto orderDto, CustomerInfoDto customerInfoDto)
+    public async Task CreateOrder(CreateOrderDto orderDto, UserInfoDto userInfoDto)
     {
-        CheckCreateOrderValidness(orderDto, customerInfoDto);
-        await CreateCustomerIfNull(customerInfoDto);
+        CheckCreateOrderValidness(orderDto, userInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
         
         var orderDishes = await _context
             .DishesInBasket
             .Include(dib => dib.Dish)
-            .Where(dib => !dib.IsInOrder && dib.Customer.Id == customerInfoDto.id)
+            .Where(dib => !dib.IsInOrder && dib.Customer.Id == userInfoDto.id)
             .ToListAsync();
         var customer = await _context
             .Customers
-            .FirstOrDefaultAsync(c => c.Id == customerInfoDto.id);
+            .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (orderDishes.Count == 0)
         {
             throw new ConflictException("There are no dishes in basket");
@@ -52,7 +52,7 @@ public class OrderService : IOrderService
             DeliveryTime = orderDto.deliveryTime ?? DateTime.UtcNow.AddHours(1),
             OrderTime = DateTime.UtcNow,
             Price = orderDishes.Sum(dib => dib.Dish.Price * dib.Amount),
-            Address = orderDto.address ?? customerInfoDto.address,
+            Address = orderDto.address ?? userInfoDto.address,
             Status = OrderStatus.Created,
             Restaurant = restaurantEntity,
             Dishes = orderDishes,
@@ -71,11 +71,11 @@ public class OrderService : IOrderService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<OrdersPageDto> GetOrders(OrderQueryModel query, UserRole role, CustomerInfoDto customerInfoDto)
+    public async Task<OrdersPageDto> GetOrders(OrderQueryModel query, UserRole role, UserInfoDto userInfoDto)
     {
-        await CreateCustomerIfNull(customerInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
         
-        var orderEn = OrdersRoleDepend(role, query.current, customerInfoDto.id);
+        var orderEn = OrdersRoleDepend(role, query.current, userInfoDto.id);
         
         var page = query.page ?? 1;
         var pageOrderCount = _configuration.GetValue<double>("PageSize");
@@ -116,16 +116,16 @@ public class OrderService : IOrderService
         return ordersPage;
     }
 
-    public async Task<OrderDto> GetOrderDetails(Guid orderId, CustomerInfoDto customerInfoDto)
+    public async Task<OrderDto> GetOrderDetails(Guid orderId, UserInfoDto userInfoDto)
     {
-        await CreateCustomerIfNull(customerInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
         
         var orderEntity = await _context
             .Orders
             .Include(order => order.Restaurant)
             .Include(order => order.Dishes)
             .ThenInclude(dish => dish.Dish)
-            .FirstOrDefaultAsync(order => order.Id == orderId && order.Customer.Id == customerInfoDto.id) ?? throw new CantFindByIdException("order", orderId);
+            .FirstOrDefaultAsync(order => order.Id == orderId && order.Customer.Id == userInfoDto.id) ?? throw new CantFindByIdException("order", orderId);
         
         OrderDto orderDto = _mapper.Map<OrderDto>(orderEntity);
         orderDto.dishes = _mapper.Map<List<DishInOrderDto>>(orderEntity.Dishes.Select(d => d.Dish));
@@ -138,13 +138,13 @@ public class OrderService : IOrderService
 
     }
 
-    public async Task CancelOrder(Guid orderId, CustomerInfoDto customerInfoDto)
+    public async Task CancelOrder(Guid orderId, UserInfoDto userInfoDto)
     {
-        await CreateCustomerIfNull(customerInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
         
         var orderEntity = await _context
             .Orders
-            .FirstOrDefaultAsync(order => order.Id == orderId && order.Customer.Id == customerInfoDto.id) ?? throw new CantFindByIdException("order", orderId);
+            .FirstOrDefaultAsync(order => order.Id == orderId && order.Customer.Id == userInfoDto.id) ?? throw new CantFindByIdException("order", orderId);
         if (orderEntity.Status != OrderStatus.Created)
         {
             throw new ConflictException("You cant cancel order, that is already taken by cook");
@@ -154,9 +154,9 @@ public class OrderService : IOrderService
         await _context.SaveChangesAsync();
     }
 
-    public async Task RepeatOrder(RepeatOrderDto repOrder, Guid orderId, CustomerInfoDto customerInfoDto)
+    public async Task RepeatOrder(RepeatOrderDto repOrder, Guid orderId, UserInfoDto userInfoDto)
     {
-        var customer = await CreateCustomerIfNull(customerInfoDto);
+        var customer = await CreateCustomerIfNull(userInfoDto);
         
         if (repOrder.deliveryTime < DateTime.UtcNow.AddHours(1) && repOrder.deliveryTime != null)
         {
@@ -167,7 +167,7 @@ public class OrderService : IOrderService
             .Orders
             .Include(order => order.Dishes)
             .Include(order => order.Restaurant)
-            .FirstOrDefaultAsync(order => order.Id == orderId && order.Customer.Id == customerInfoDto.id) ?? throw new CantFindByIdException("order", orderId);
+            .FirstOrDefaultAsync(order => order.Id == orderId && order.Customer.Id == userInfoDto.id) ?? throw new CantFindByIdException("order", orderId);
 
         OrderEntity newOrder = new OrderEntity()
         {
@@ -211,8 +211,8 @@ public class OrderService : IOrderService
                 orders = _context
                     .Orders
                     .Where(
-                        order => !current &&
-                                 order.Status == OrderStatus.Created || current/* && cook.Orders.Contains(order)*/)
+                        order => (!current &&
+                                 order.Status == OrderStatus.Created || current) && order.Cook.Id == userId)
                     .AsEnumerable();
                 break;
             case UserRole.Courier:
@@ -262,9 +262,9 @@ public class OrderService : IOrderService
         return orders.ToList();
     }
 
-    private void CheckCreateOrderValidness(CreateOrderDto orderDto, CustomerInfoDto customerInfoDto)
+    private void CheckCreateOrderValidness(CreateOrderDto orderDto, UserInfoDto userInfoDto)
     {
-        if (orderDto.address == null && customerInfoDto.address == null)
+        if (orderDto.address == null && userInfoDto.address == null)
         {
             throw new BadRequestException("You need to write address in request body or in your profile");
         }
@@ -274,23 +274,24 @@ public class OrderService : IOrderService
         }
     }
     
-    private async Task<CustomerEntity> CreateCustomerIfNull(CustomerInfoDto customerInfoDto)
+    private async Task<CustomerEntity> CreateCustomerIfNull(UserInfoDto userInfoDto)
     {
         var customer = await _context
             .Customers
-            .FirstOrDefaultAsync(c => c.Id == customerInfoDto.id);
+            .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (customer == null)
         {
             var newCustomer = new CustomerEntity()
             {
-                Id = customerInfoDto.id,
-                Address = customerInfoDto.address
+                Id = userInfoDto.id,
+                Address = userInfoDto.address
             };
             
             await _context.Customers.AddAsync(newCustomer);
             await _context.SaveChangesAsync();
             customer = newCustomer;
         }
+        customer.Address = userInfoDto.address ?? customer.Address;
 
         return customer;
     }

@@ -6,5 +6,5 @@ public class ManagerEntity
 {
     public Guid Id { get; set; }
     
-    public RestaurantEntity Restaurant { get; set; }
+    public RestaurantEntity? Restaurant { get; set; }
 }

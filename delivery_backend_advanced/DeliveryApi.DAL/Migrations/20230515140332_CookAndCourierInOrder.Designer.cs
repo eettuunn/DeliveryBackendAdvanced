@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using delivery_backend_advanced.Models;
 
 #nullable disable
 
-namespace delivery_backend_advanced.Migrations
+namespace DeliveryApi.DAL.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230515140332_CookAndCourierInOrder")]
+    partial class CookAndCourierInOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,10 +191,10 @@ namespace delivery_backend_advanced.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("CookId")
+                    b.Property<Guid>("CookId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CourierId")
+                    b.Property<Guid>("CourierId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CustomerId")
@@ -338,11 +341,15 @@ namespace delivery_backend_advanced.Migrations
                 {
                     b.HasOne("delivery_backend_advanced.Models.Entities.CookEntity", "Cook")
                         .WithMany("Orders")
-                        .HasForeignKey("CookId");
+                        .HasForeignKey("CookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("delivery_backend_advanced.Models.Entities.CourierEntity", "Courier")
                         .WithMany("Orders")
-                        .HasForeignKey("CourierId");
+                        .HasForeignKey("CourierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("delivery_backend_advanced.Models.Entities.CustomerEntity", "Customer")
                         .WithMany("Orders")

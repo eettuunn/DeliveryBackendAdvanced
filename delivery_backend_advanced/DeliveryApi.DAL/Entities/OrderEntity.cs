@@ -33,7 +33,7 @@ public class OrderEntity
     [Required]
     public CustomerEntity Customer { get; set; }
 
-    public List<CookEntity> Cook { get; set; } = new();
+    public CookEntity? Cook { get; set; }
 
-    public List<CourierEntity> Courier { get; set; } = new();
+    public CourierEntity? Courier { get; set; }
 }

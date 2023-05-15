@@ -8,5 +8,5 @@ public class CookEntity
     
     public List<OrderEntity> Orders { get; set; }
     
-    public RestaurantEntity Restaurant { get; set; }
+    public RestaurantEntity? Restaurant { get; set; }
 }

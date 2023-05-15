@@ -8,6 +8,4 @@ public interface IRestaurantService
     public Task<RestListPageDto> GetRestaurantList(string? search, int? page);
 
     public Task<RestaurantPageDto> GetRestaurantDetails(Guid restaurantId, DishesQueryModel query);
-
-    // public Task<OrdersPageDto> GetRestaurantOrders(Guid restaurantId, OrderQueryModel query);
 }

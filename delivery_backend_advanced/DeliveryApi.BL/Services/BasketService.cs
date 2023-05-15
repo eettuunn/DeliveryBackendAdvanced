@@ -19,9 +19,9 @@ public class BasketService : IBasketService
         _mapper = mapper;
     }
 
-    public async Task AddDishToBasket(Guid dishId, Guid restaurantId, CustomerInfoDto customerInfoDto)
+    public async Task AddDishToBasket(Guid dishId, Guid restaurantId, UserInfoDto userInfoDto)
     {
-        var customer = await CreateCustomerIfNull(customerInfoDto);
+        var customer = await CreateCustomerIfNull(userInfoDto);
         
         var dishEntity = await _context
             .Dishes
@@ -36,7 +36,7 @@ public class BasketService : IBasketService
             .DishesInBasket
             .Include(dib => dib.Dish)
             .Include(dib => dib.Restaurant)
-            .Where(dib => dib.Restaurant == restaurantEntity && dib.Dish == dishEntity && !dib.IsInOrder && dib.Customer.Id == customerInfoDto.id)
+            .Where(dib => dib.Restaurant == restaurantEntity && dib.Dish == dishEntity && !dib.IsInOrder && dib.Customer.Id == userInfoDto.id)
             .FirstOrDefaultAsync();
         
         
@@ -61,15 +61,15 @@ public class BasketService : IBasketService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<BasketDto> GetUserBasket(CustomerInfoDto customerInfoDto)
+    public async Task<BasketDto> GetUserBasket(UserInfoDto userInfoDto)
     {
-        await CreateCustomerIfNull(customerInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
         
         var dishesInBasket = await _context
             .DishesInBasket
             .Include(dib => dib.Dish)
             .Include(dib => dib.Restaurant)
-            .Where(dib => !dib.IsInOrder && dib.Customer.Id == customerInfoDto.id)
+            .Where(dib => !dib.IsInOrder && dib.Customer.Id == userInfoDto.id)
             .ToListAsync();
         
         List<RestaurantBasketDto> restaurants = FillRestaurantsInBasket(dishesInBasket);
@@ -82,31 +82,31 @@ public class BasketService : IBasketService
         return basketDto;
     }
 
-    public async Task DeleteDishFromBasket(Guid dishBasketId, CustomerInfoDto customerInfoDto)
+    public async Task DeleteDishFromBasket(Guid dishBasketId, UserInfoDto userInfoDto)
     {
-        await CreateCustomerIfNull(customerInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
         
         var dishInBasketEntity = await _context
                                      .DishesInBasket
-                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder && dib.Customer.Id == customerInfoDto.id) ??
+                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder && dib.Customer.Id == userInfoDto.id) ??
                                  throw new CantFindByIdException("dish in your basket", dishBasketId);
 
         _context.DishesInBasket.Remove(dishInBasketEntity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task ReduceDishInBasket(Guid dishBasketId, CustomerInfoDto customerInfoDto)
+    public async Task ReduceDishInBasket(Guid dishBasketId, UserInfoDto userInfoDto)
     {
-        await CreateCustomerIfNull(customerInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
         
         var dishInBasketEntity = await _context
                                      .DishesInBasket
-                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder && dib.Customer.Id == customerInfoDto.id) ??
+                                     .FirstOrDefaultAsync(dib => dib.Id == dishBasketId && !dib.IsInOrder && dib.Customer.Id == userInfoDto.id) ??
                                  throw new CantFindByIdException("dish in your basket", dishBasketId);
 
         if (dishInBasketEntity.Amount == 1)
         {
-            await DeleteDishFromBasket(dishBasketId, customerInfoDto);
+            await DeleteDishFromBasket(dishBasketId, userInfoDto);
         }
         else
         {
@@ -160,23 +160,24 @@ public class BasketService : IBasketService
         return totalPrice;
     }
 
-    private async Task<CustomerEntity> CreateCustomerIfNull(CustomerInfoDto customerInfoDto)
+    private async Task<CustomerEntity> CreateCustomerIfNull(UserInfoDto userInfoDto)
     {
         var customer = await _context
             .Customers
-            .FirstOrDefaultAsync(c => c.Id == customerInfoDto.id);
+            .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (customer == null)
         {
             var newCustomer = new CustomerEntity()
             {
-                Id = customerInfoDto.id,
-                Address = customerInfoDto.address
+                Id = userInfoDto.id,
+                Address = userInfoDto.address
             };
             
             await _context.Customers.AddAsync(newCustomer);
             await _context.SaveChangesAsync();
             customer = newCustomer;
         }
+        customer.Address = userInfoDto.address ?? customer.Address;
 
         return customer;
     }

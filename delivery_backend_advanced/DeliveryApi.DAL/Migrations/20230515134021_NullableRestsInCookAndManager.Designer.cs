@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using delivery_backend_advanced.Models;
 
 #nullable disable
 
-namespace delivery_backend_advanced.Migrations
+namespace DeliveryApi.DAL.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230515134021_NullableRestsInCookAndManager")]
+    partial class NullableRestsInCookAndManager
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,36 @@ namespace delivery_backend_advanced.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CookEntityOrderEntity", b =>
+                {
+                    b.Property<Guid>("CookId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CookId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("CookEntityOrderEntity");
+                });
+
+            modelBuilder.Entity("CourierEntityOrderEntity", b =>
+                {
+                    b.Property<Guid>("CourierId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OrdersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CourierId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("CourierEntityOrderEntity");
+                });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CookEntity", b =>
                 {
@@ -188,12 +221,6 @@ namespace delivery_backend_advanced.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("CookId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CourierId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
@@ -216,10 +243,6 @@ namespace delivery_backend_advanced.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CookId");
-
-                    b.HasIndex("CourierId");
 
                     b.HasIndex("CustomerId");
 
@@ -265,6 +288,36 @@ namespace delivery_backend_advanced.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurants");
+                });
+
+            modelBuilder.Entity("CookEntityOrderEntity", b =>
+                {
+                    b.HasOne("delivery_backend_advanced.Models.Entities.CookEntity", null)
+                        .WithMany()
+                        .HasForeignKey("CookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("delivery_backend_advanced.Models.Entities.OrderEntity", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CourierEntityOrderEntity", b =>
+                {
+                    b.HasOne("delivery_backend_advanced.Models.Entities.CourierEntity", null)
+                        .WithMany()
+                        .HasForeignKey("CourierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("delivery_backend_advanced.Models.Entities.OrderEntity", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CookEntity", b =>
@@ -336,14 +389,6 @@ namespace delivery_backend_advanced.Migrations
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.OrderEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.CookEntity", "Cook")
-                        .WithMany("Orders")
-                        .HasForeignKey("CookId");
-
-                    b.HasOne("delivery_backend_advanced.Models.Entities.CourierEntity", "Courier")
-                        .WithMany("Orders")
-                        .HasForeignKey("CourierId");
-
                     b.HasOne("delivery_backend_advanced.Models.Entities.CustomerEntity", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
@@ -355,10 +400,6 @@ namespace delivery_backend_advanced.Migrations
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cook");
-
-                    b.Navigation("Courier");
 
                     b.Navigation("Customer");
 
@@ -382,16 +423,6 @@ namespace delivery_backend_advanced.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Dish");
-                });
-
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CookEntity", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CourierEntity", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.CustomerEntity", b =>

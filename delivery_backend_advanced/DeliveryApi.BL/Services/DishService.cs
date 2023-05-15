@@ -32,9 +32,9 @@ public class DishService : IDishService
         return dishDto;
     }
 
-    public async Task<bool> CheckAbilityToRate(Guid dishId, CustomerInfoDto customerInfoDto)
+    public async Task<bool> CheckAbilityToRate(Guid dishId, UserInfoDto userInfoDto)
     {
-        await CreateCustomerIfNull(customerInfoDto);
+        await CreateCustomerIfNull(userInfoDto);
 
         if (!await _context.Dishes.AnyAsync(d => d.Id == dishId))
         {
@@ -43,7 +43,7 @@ public class DishService : IDishService
         
         var dishBasketEntities = await _context
             .DishesInBasket
-            .Where(dib => dib.Dish.Id == dishId && dib.Customer.Id == customerInfoDto.id)
+            .Where(dib => dib.Dish.Id == dishId && dib.Customer.Id == userInfoDto.id)
             .ToListAsync();
         if (dishBasketEntities.Count == 0)
         {
@@ -52,7 +52,7 @@ public class DishService : IDishService
 
         var userOrders = await _context
             .Orders
-            .Where(order => order.Customer.Id == customerInfoDto.id)
+            .Where(order => order.Customer.Id == userInfoDto.id)
             .Include(order => order.Dishes)
             .ThenInclude(dish => dish.Dish)
             .Where(order => order.Status == OrderStatus.Delivered)
@@ -61,13 +61,13 @@ public class DishService : IDishService
         return CheckDishInOrder(userOrders, dishId);
     }
 
-    public async Task RateDish(Guid dishId, int value, CustomerInfoDto customerInfoDto)
+    public async Task RateDish(Guid dishId, int value, UserInfoDto userInfoDto)
     {
-        var canRate = await CheckAbilityToRate(dishId, customerInfoDto);
+        var canRate = await CheckAbilityToRate(dishId, userInfoDto);
         
         if (canRate)
         {
-            var customer = await CreateCustomerIfNull(customerInfoDto);
+            var customer = await CreateCustomerIfNull(userInfoDto);
             
             var dishEntity = await _context
                 .Dishes
@@ -76,7 +76,7 @@ public class DishService : IDishService
 
             var ratingEntity = await _context
                 .Ratings
-                .FirstOrDefaultAsync(rat => rat.Customer.Id == customerInfoDto.id);
+                .FirstOrDefaultAsync(rat => rat.Customer.Id == userInfoDto.id);
             if (ratingEntity == null)
             {
                 ratingEntity = new RatingEntity()
@@ -125,23 +125,24 @@ public class DishService : IDishService
         dishEntity.AverageRating = Math.Round((double)sum / count, 1);
     }
     
-    private async Task<CustomerEntity> CreateCustomerIfNull(CustomerInfoDto customerInfoDto)
+    private async Task<CustomerEntity> CreateCustomerIfNull(UserInfoDto userInfoDto)
     {
         var customer = await _context
             .Customers
-            .FirstOrDefaultAsync(c => c.Id == customerInfoDto.id);
+            .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (customer == null)
         {
             var newCustomer = new CustomerEntity()
             {
-                Id = customerInfoDto.id,
-                Address = customerInfoDto.address
+                Id = userInfoDto.id,
+                Address = userInfoDto.address
             };
             
             await _context.Customers.AddAsync(newCustomer);
             await _context.SaveChangesAsync();
             customer = newCustomer;
         }
+        customer.Address = userInfoDto.address ?? customer.Address;
 
         return customer;
     }

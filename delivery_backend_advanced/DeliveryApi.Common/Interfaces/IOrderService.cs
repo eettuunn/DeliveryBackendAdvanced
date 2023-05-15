@@ -5,13 +5,13 @@ namespace delivery_backend_advanced.Services.Interfaces;
 
 public interface IOrderService
 {
-    public Task CreateOrder(CreateOrderDto orderDto, CustomerInfoDto customerInfoDto);
+    public Task CreateOrder(CreateOrderDto orderDto, UserInfoDto userInfoDto);
 
-    public Task<OrdersPageDto> GetOrders(OrderQueryModel orderQueryModel, UserRole roles, CustomerInfoDto customerInfoDto);
+    public Task<OrdersPageDto> GetOrders(OrderQueryModel orderQueryModel, UserRole roles, UserInfoDto userInfoDto);
     
-    public Task<OrderDto> GetOrderDetails(Guid orderId, CustomerInfoDto customerInfoDto);
+    public Task<OrderDto> GetOrderDetails(Guid orderId, UserInfoDto userInfoDto);
 
-    public Task CancelOrder(Guid orderId, CustomerInfoDto customerInfoDto);
+    public Task CancelOrder(Guid orderId, UserInfoDto userInfoDto);
 
-    public Task RepeatOrder(RepeatOrderDto repOrder, Guid orderId, CustomerInfoDto customerInfoDto);
+    public Task RepeatOrder(RepeatOrderDto repOrder, Guid orderId, UserInfoDto userInfoDto);
 }

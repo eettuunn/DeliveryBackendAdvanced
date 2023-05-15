@@ -67,11 +67,11 @@ public class BasketController : ControllerBase
 
 
 
-    private CustomerInfoDto GetCustomerInfo(ClaimsPrincipal user)
+    private UserInfoDto GetCustomerInfo(ClaimsPrincipal user)
     {
         var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userAddress = user.FindFirst("address")?.Value;
-        var userInfo = new CustomerInfoDto()
+        var userInfo = new UserInfoDto()
         {
             id = Guid.Parse(userId),
             address = userAddress

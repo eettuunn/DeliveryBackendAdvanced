@@ -1,6 +1,6 @@
 ﻿namespace delivery_backend_advanced.Models.Dtos;
 
-public class CustomerInfoDto
+public class UserInfoDto
 {
     public Guid id { get; set; }
     
