@@ -118,7 +118,7 @@ namespace delivery_backend_advanced.Migrations
                     b.Property<bool>("IsVegetarian")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("MenuEntityId")
+                    b.Property<Guid?>("MenuId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -134,7 +134,7 @@ namespace delivery_backend_advanced.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MenuEntityId");
+                    b.HasIndex("MenuId");
 
                     b.ToTable("Dishes");
                 });
@@ -309,9 +309,11 @@ namespace delivery_backend_advanced.Migrations
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.DishEntity", b =>
                 {
-                    b.HasOne("delivery_backend_advanced.Models.Entities.MenuEntity", null)
+                    b.HasOne("delivery_backend_advanced.Models.Entities.MenuEntity", "Menu")
                         .WithMany("Dishes")
-                        .HasForeignKey("MenuEntityId");
+                        .HasForeignKey("MenuId");
+
+                    b.Navigation("Menu");
                 });
 
             modelBuilder.Entity("delivery_backend_advanced.Models.Entities.ManagerEntity", b =>

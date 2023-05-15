@@ -1,10 +1,14 @@
-﻿using delivery_backend_advanced.Models.Dtos;
+﻿using System.Security.Claims;
+using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace delivery_backend_advanced.Controllers;
 
 [Route("api/manager")]
+[Authorize]
+[Authorize(Roles = "Manager")]
 public class ManagerController : ControllerBase
 {
     private readonly IManagerService _managerService;
@@ -21,14 +25,14 @@ public class ManagerController : ControllerBase
     [Route("menu/new")]
     public async Task<IActionResult> CreateMenu([FromBody] CreateMenuDto createMenuDto)
     {
-        //todo: then there will be no rId
         if (createMenuDto.restaurantId == Guid.Empty)
         {
             ModelState.AddModelError("restaurantId", "restaurantId field is required");
         }
         if (ModelState.IsValid)
         {
-            await _managerService.CreateMenu(createMenuDto);
+            var managerInfo = GetManagerInfo(HttpContext.User);
+            await _managerService.CreateMenu(createMenuDto, managerInfo);
             return Ok();
         }
         else
@@ -44,7 +48,8 @@ public class ManagerController : ControllerBase
     [Route("menu/{menuId}/{dishId}")]
     public async Task AddDishToMenu(Guid menuId, Guid dishId)
     {
-        await _managerService.AddDishToMenu(menuId, dishId);
+        var managerInfo = GetManagerInfo(HttpContext.User);
+        await _managerService.AddDishToMenu(menuId, dishId, managerInfo);
     }
     
     /// <summary>
@@ -54,7 +59,8 @@ public class ManagerController : ControllerBase
     [Route("menu/{menuId}/{dishId}")]
     public async Task DeleteDishMenu(Guid menuId, Guid dishId)
     {
-        await _managerService.DeleteDishFromMenu(menuId, dishId);
+        var managerInfo = GetManagerInfo(HttpContext.User);
+        await _managerService.DeleteDishFromMenu(menuId, dishId, managerInfo);
     }
     
     /// <summary>
@@ -64,7 +70,8 @@ public class ManagerController : ControllerBase
     [Route("menu/{menuId}")]
     public async Task DeleteMenu(Guid menuId)
     {
-        await _managerService.DeleteMenu(menuId);
+        var managerInfo = GetManagerInfo(HttpContext.User);
+        await _managerService.DeleteMenu(menuId, managerInfo);
     }
     
     
@@ -76,7 +83,8 @@ public class ManagerController : ControllerBase
     [Route("{restaurantId}/menu/{menuId}")]
     public async Task SetMenuMain(Guid restaurantId, Guid menuId)
     {
-        await _managerService.SetMenuMain(restaurantId, menuId);
+        var managerInfo = GetManagerInfo(HttpContext.User);
+        await _managerService.SetMenuMain(restaurantId, menuId, managerInfo);
     }
     
     /// <summary>
@@ -86,6 +94,20 @@ public class ManagerController : ControllerBase
     [Route("menu/{menuId}")]
     public async Task EditMenu(Guid menuId, [FromBody] EditMenuDto editMenuDto)
     {
-        await _managerService.EditMenu(menuId, editMenuDto);
+        var managerInfo = GetManagerInfo(HttpContext.User);
+        await _managerService.EditMenu(menuId, editMenuDto, managerInfo);
+    }
+    
+    
+    
+    private UserInfoDto GetManagerInfo(ClaimsPrincipal user)
+    {
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userInfo = new UserInfoDto()
+        {
+            id = Guid.Parse(userId),
+        };
+
+        return userInfo;
     }
 }

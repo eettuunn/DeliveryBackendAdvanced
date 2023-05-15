@@ -74,3 +74,55 @@
 
 15:34:03.4745353   URL: http://localhost:5125/api/courier/cancel/09241acd-a978-446d-90b5-233e6733fd93   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+15:59:57.9258337   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 400
+
+16:00:35.9849802   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 400
+
+16:00:48.4122825   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:07:18.5908615   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:07:45.4800575   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?menu=provoda&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:08:15.2530473   URL: http://localhost:5125/api/manager/menu/48037f64-946c-422a-a664-ac3eb26f7ff1/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 400
+
+17:08:18.3757348   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 409
+
+17:10:28.1589526   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd/fffa7768-3b70-4894-b3ab-a40b131586bd   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 404
+
+17:10:45.8275985   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:10:48.3054159   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?menu=provoda&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:10:50.9076486   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:15:52.0550732   URL: http://localhost:5125/api/manager/8888c030-340b-481c-8e05-cc7acf12b0d2/menu/fffa7768-3b70-4894-b3ab-a40b131586bd   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:17:44.2716814   URL: http://localhost:5125/api/manager/menu/48037f64-946c-422a-a664-ac3eb26f7ff1   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 401
+
+17:17:56.0024288   URL: http://localhost:5125/api/manager/menu/48037f64-946c-422a-a664-ac3eb26f7ff1   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 400
+
+17:24:00.0432555   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?menu=provoda&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:24:07.7679662   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:24:10.0698235   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?menu=provoda&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:24:11.8532674   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:24:20.8714715   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:24:22.9373974   URL: http://localhost:5125/api/manager/menu/fffa7768-3b70-4894-b3ab-a40b131586bd/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 404
+
+17:24:32.2266072   URL: http://localhost:5125/api/manager/menu/b55baec9-f776-44c6-90e0-49495edacc27/6666c031-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:27:59.1518208   URL: http://localhost:5125/api/manager/menu/b55baec9-f776-44c6-90e0-49495edacc27   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 401
+
+17:29:13.3244108   URL: http://localhost:5125/api/manager/menu/b55baec9-f776-44c6-90e0-49495edacc27   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:29:39.0173471   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:32:11.4875362   URL: http://localhost:5125/api/manager/menu/b6abae81-c7f0-49d8-91bc-d32dfa05dc41   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:32:21.9265167   URL: http://localhost:5125/api/manager/menu/b6abae81-c7f0-49d8-91bc-d32dfa05dc41   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

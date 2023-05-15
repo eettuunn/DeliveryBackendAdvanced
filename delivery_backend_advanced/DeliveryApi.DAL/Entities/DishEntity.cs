@@ -27,4 +27,6 @@ public class DishEntity
     public DishCategory Category { get; set; }
 
     public List<RatingEntity> Ratings { get; set; } = new();
+    
+    public MenuEntity? Menu { get; set; }
 }
