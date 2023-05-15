@@ -211,16 +211,16 @@ public class OrderService : IOrderService
                 orders = _context
                     .Orders
                     .Where(
-                        order => (!current &&
-                                 order.Status == OrderStatus.Created || current) && order.Cook.Id == userId)
+                        order => !current &&
+                                 order.Status == OrderStatus.Created || current && order.Cook.Id == userId)
                     .AsEnumerable();
                 break;
             case UserRole.Courier:
                 orders = _context
                     .Orders
                     .Where(
-                        order => !current &&
-                                 order.Status == OrderStatus.Delivery || current/* && courier.Orders.Contains(order)*/)
+                        order => !current  &&
+                                 order.Status == OrderStatus.Delivery || current && order.Courier.Id == userId)
                     .AsEnumerable();
                 break;
         }

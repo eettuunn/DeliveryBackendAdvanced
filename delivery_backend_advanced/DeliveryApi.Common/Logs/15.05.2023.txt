@@ -44,3 +44,33 @@
 
 15:10:49.9707538   URL: http://localhost:5125/api/cook/orders?current=true&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+15:28:14.5726394   URL: http://localhost:5125/api/courier/orders?current=false   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 401
+
+15:28:21.3711777   URL: http://localhost:5125/api/courier/orders?current=false   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:28:26.2863117   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:28:55.7475978   URL: http://localhost:5125/api/cook/09241acd-a978-446d-90b5-233e6733fd93   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:28:59.4450494   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:29:03.3832265   URL: http://localhost:5125/api/courier/orders?current=false   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:29:50.3483110   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:30:53.0270613   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:30:56.5879067   URL: http://localhost:5125/api/courier/orders?current=false   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:31:51.4081296   URL: http://localhost:5125/api/courier/09241acd-a978-446d-90b5-233e6733fd93   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:32:22.0050028   URL: http://localhost:5125/api/courier/orders?current=false   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:32:26.0178784   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:32:46.7479094   URL: http://localhost:5125/api/courier/09241acd-a978-446d-90b5-233e6733fd93   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:33:45.7919558   URL: http://localhost:5125/api/courier/cancel/09241acd-a978-446d-90b5-233e6733fd93   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 409
+
+15:34:03.4745353   URL: http://localhost:5125/api/courier/cancel/09241acd-a978-446d-90b5-233e6733fd93   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
