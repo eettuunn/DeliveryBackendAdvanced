@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace delivery_backend_advanced.Controllers;
 
 [Route("api/order")]
+[Authorize]
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
@@ -23,7 +24,6 @@ public class OrderController : ControllerBase
     /// Create order from the dishes in basket
     /// </summary>
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
     {
         if (orderDto.restaurantId == Guid.Empty)
@@ -46,7 +46,6 @@ public class OrderController : ControllerBase
     /// Cancel order
     /// </summary>
     [HttpPut]
-    [Authorize]
     [Route("cancel/{orderId}")]
     public async Task CancelOrder(Guid orderId)
     {
@@ -58,7 +57,6 @@ public class OrderController : ControllerBase
     /// Repeat order
     /// </summary>
     [HttpPost]
-    [Authorize]
     [Route("repeat/{orderId}")]
     public async Task<IActionResult> RepeatOrder([FromBody] RepeatOrderDto repeatOrderDto, Guid orderId)
     {
@@ -78,7 +76,6 @@ public class OrderController : ControllerBase
     /// Get order details
     /// </summary>
     [HttpGet]
-    [Authorize]
     [Route("{orderId}")]
     public async Task<OrderDto> GetOrderDetails(Guid orderId)
     {
@@ -90,7 +87,6 @@ public class OrderController : ControllerBase
     /// Get list of orders
     /// </summary>
     [HttpGet]
-    [Authorize]
     public async Task<OrdersPageDto> GetListOfOrders([FromQuery] OrderQueryModel query)
     {
         var userInfo = GetCustomerInfo(HttpContext.User);

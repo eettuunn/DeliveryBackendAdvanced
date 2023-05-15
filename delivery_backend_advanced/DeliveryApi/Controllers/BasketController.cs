@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace delivery_backend_advanced.Controllers;
 
 [Route("api/basket")]
+[Authorize]
 public class BasketController : ControllerBase
 {
     private readonly IBasketService _basketService;
@@ -22,7 +23,6 @@ public class BasketController : ControllerBase
     /// Get user's basket
     /// </summary>
     [HttpGet]
-    [Authorize]
     public async Task<BasketDto> GetUserBasket()
     {
         var userInfo = GetCustomerInfo(HttpContext.User);
@@ -33,7 +33,6 @@ public class BasketController : ControllerBase
     /// Add dish to basket
     /// </summary>
     [HttpPost]
-    [Authorize]
     [Route("{dishId}/{restaurantId}")]
     public async Task AddDishToBasket(Guid dishId, Guid restaurantId)
     {
@@ -45,7 +44,6 @@ public class BasketController : ControllerBase
     /// Reduce number of dishes in basket
     /// </summary>
     [HttpPatch]
-    [Authorize]
     [Route("reduce/{dishBasketId}")]
     public async Task ReduceDishNumber(Guid dishBasketId)
     {
@@ -57,7 +55,6 @@ public class BasketController : ControllerBase
     /// Delete dish from basket completely 
     /// </summary>
     [HttpDelete]
-    [Authorize]
     [Route("delete/{dishBasketId}")]
     public async Task DeleteDishFromBasket(Guid dishBasketId)
     {
