@@ -2,7 +2,7 @@
 
 namespace delivery_backend_advanced.Models.Entities;
 
-public class ManagerEntity
+public class Manager
 {
     public Guid Id { get; set; }
     

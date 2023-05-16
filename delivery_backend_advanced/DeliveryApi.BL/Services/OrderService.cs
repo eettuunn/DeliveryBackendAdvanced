@@ -275,14 +275,14 @@ public class OrderService : IOrderService
         }
     }
     
-    private async Task<CustomerEntity> CreateCustomerIfNull(UserInfoDto userInfoDto)
+    private async Task<Customer> CreateCustomerIfNull(UserInfoDto userInfoDto)
     {
         var customer = await _context
             .Customers
             .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (customer == null)
         {
-            var newCustomer = new CustomerEntity()
+            var newCustomer = new Customer()
             {
                 Id = userInfoDto.id,
                 Address = userInfoDto.address

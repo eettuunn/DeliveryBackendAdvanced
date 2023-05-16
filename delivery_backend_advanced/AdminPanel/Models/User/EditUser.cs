@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AuthApi.Common.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AdminPanel.Models;
 
@@ -19,8 +20,8 @@ public class EditUser
     public string phoneNumber { get; set; }
 
     public List<Role> roles { get; set; } = new();
-    
-    public Guid? restaurantId { get; set; }
+
+    public string? selectedRestaurantValue { get; set; }
     
     public string? address { get; set; }
 }

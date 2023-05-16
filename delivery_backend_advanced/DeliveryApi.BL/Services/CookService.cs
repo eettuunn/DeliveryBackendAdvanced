@@ -68,7 +68,7 @@ public class CookService : ICookService
     
     
     
-    private async Task<CookEntity> CreateCookIfNull(UserInfoDto userInfoDto)
+    private async Task<Cook> CreateCookIfNull(UserInfoDto userInfoDto)
     {
         var cook = await _context
             .Cooks
@@ -76,7 +76,7 @@ public class CookService : ICookService
             .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (cook == null)
         {
-            var newCook = new CookEntity()
+            var newCook = new Cook()
             {
                 Id = userInfoDto.id,
             };

@@ -13,7 +13,7 @@ public class RestaurantEntity
 
     public List<MenuEntity> Menus { get; set; } = new();
 
-    public List<CookEntity> Cooks { get; set; } = new();
+    public List<Cook> Cooks { get; set; } = new();
 
-    public List<ManagerEntity> Managers { get; set; } = new();
+    public List<Manager> Managers { get; set; } = new();
 }

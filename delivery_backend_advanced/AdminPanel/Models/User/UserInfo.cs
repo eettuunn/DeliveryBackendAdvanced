@@ -1,4 +1,5 @@
 ﻿using AuthApi.Common.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AdminPanel.Models;
 
@@ -18,7 +19,9 @@ public class UserInfo
 
     public List<Role> roles { get; set; } = new();
 
-    public Guid? restaurantId { get; set; }
-    
+    public List<SelectListItem> restaurantIds { get; set; } = new();
+
+    public string? selectedRestaurantValue { get; set; }
+
     public string? address { get; set; }
 }

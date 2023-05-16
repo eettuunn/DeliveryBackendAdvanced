@@ -7,7 +7,7 @@ public class DishBasketEntity
     public Guid Id { get; set; }
     
     [Required]
-    public CustomerEntity Customer { get; set; }
+    public Customer Customer { get; set; }
     
     [Required]
     public DishEntity Dish { get; set; }

@@ -12,10 +12,10 @@ public class BackendDbContext : DbContext
     public DbSet<OrderEntity> Orders { get; set; }
     public DbSet<RatingEntity> Ratings { get; set; }
     public DbSet<RestaurantEntity> Restaurants { get; set; }
-    public DbSet<CustomerEntity> Customers { get; set; }
-    public DbSet<CookEntity> Cooks { get; set; }
-    public DbSet<CourierEntity> Couriers { get; set; }
-    public DbSet<ManagerEntity> Managers { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Cook> Cooks { get; set; }
+    public DbSet<Courier> Couriers { get; set; }
+    public DbSet<Manager> Managers { get; set; }
 
     public BackendDbContext(DbContextOptions<BackendDbContext> options) : base(options) { }
     /*public AppDbContext() { }

@@ -2,7 +2,7 @@
 
 namespace delivery_backend_advanced.Models.Entities;
 
-public class CustomerEntity
+public class Customer
 {
     public Guid Id { get; set; }
     

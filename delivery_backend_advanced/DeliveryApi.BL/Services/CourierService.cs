@@ -79,7 +79,7 @@ public class CourierService : ICourierService
     
     
     
-    private async Task<CourierEntity> CreateCourierIfNull(UserInfoDto userInfoDto)
+    private async Task<Courier> CreateCourierIfNull(UserInfoDto userInfoDto)
     {
         var courier = await _context
             .Couriers
@@ -87,7 +87,7 @@ public class CourierService : ICourierService
             .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (courier == null)
         {
-            var newCourier = new CourierEntity()
+            var newCourier = new Courier()
             {
                 Id = userInfoDto.id,
             };

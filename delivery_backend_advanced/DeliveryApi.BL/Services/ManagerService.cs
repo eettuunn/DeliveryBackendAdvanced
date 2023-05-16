@@ -184,14 +184,14 @@ public class ManagerService : IManagerService
     
     
     
-    private async Task<ManagerEntity> CreateManagerIfNull(UserInfoDto userInfoDto)
+    private async Task<Manager> CreateManagerIfNull(UserInfoDto userInfoDto)
     {
         var manager = await _context
             .Managers
             .FirstOrDefaultAsync(c => c.Id == userInfoDto.id);
         if (manager == null)
         {
-            var newManager = new ManagerEntity()
+            var newManager = new Manager()
             {
                 Id = userInfoDto.id,
             };

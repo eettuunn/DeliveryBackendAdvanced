@@ -55,9 +55,8 @@
             }
         </div>
         <div class="mb-3">
-            <label for="input-restaurant" class="form-label">Id ресторана</label>
-            <input asp-for="restaurantId" type="text" class="form-control" id="input-restaurant">
-            <span class="text-danger" asp-validation-for="restaurantId"></span>
+            @Html.LabelFor(m => m.selectedRestaurantValue, "Выберите ресторан")
+            @Html.DropDownListFor(m => m.selectedRestaurantValue, Model.restaurantIds)
         </div>
         <button type="submit" class="btn btn-success">Редактировать</button>
         <a asp-controller="User" asp-action="UserList" class="btn btn-secondary">Список пользователей</a>

@@ -4,11 +4,14 @@ using AdminPanel.Models;
 using AuthApi.Common.Enums;
 using AuthApi.DAL;
 using AuthApi.DAL.Entities;
+using DeliveryApi.DAL;
 using AutoMapper;
 using delivery_backend_advanced.Exceptions;
 using delivery_backend_advanced.Models;
+using delivery_backend_advanced.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Extensions;
 
@@ -53,35 +56,15 @@ public class UserService : IUserService
 
         var userInfo = _mapper.Map<UserInfo>(user);
         userInfo.roles = await GetUserRoles(userInfo.id);
+        userInfo.restaurantIds = await GetRestaurants(userInfo.id);
+        var selectedRest = userInfo.restaurantIds.FirstOrDefault(r => r.Selected);
+        userInfo.selectedRestaurantValue = selectedRest?.Value;
 
         var customer = await _backendDbContext
             .Customers
             .FirstOrDefaultAsync(c => c.Id == id);
-        var cook = await _backendDbContext
-            .Cooks
-            .Include(c => c.Restaurant)
-            .FirstOrDefaultAsync(c => c.Id == id);
-        var manager = await _backendDbContext
-            .Managers
-            .Include(m => m.Restaurant)
-            .FirstOrDefaultAsync(m => m.Id == id);
         userInfo.address = customer.Address;
-        if (manager != null)
-        {
-            userInfo.restaurantId = manager.Restaurant.Id;
-        }
-        else
-        {
-            if (cook != null)
-            {
-                userInfo.restaurantId = cook.Restaurant.Id;
-            }
-            else
-            {
-                userInfo.restaurantId = null;
-            }
-        }
-        
+
         return userInfo;
     }
 
@@ -101,9 +84,10 @@ public class UserService : IUserService
         user.UserName = editUser.userName ?? user.UserName;
         user.Gender = editUser.gender;
 
-        await ChangeUserRoles(user, editUser.roles, editUser.address);
+        var rolesClone = new List<Role>(editUser.roles);
+        await ChangeUserRoles(user, rolesClone, editUser.address);
         
-        if (editUser.restaurantId != null)
+        if (editUser.roles.Any(r => r.name is UserRole.Cook or UserRole.Manager))
         {
             await AddRestaurantsToRoles(editUser);
         }
@@ -198,43 +182,66 @@ public class UserService : IUserService
                 switch (role.name)
                 {
                     case UserRole.Customer:
-                        var customer = new CustomerEntity()
+                        var customerAuth = new CustomerEntity()
                         {
                             Id = new Guid(),
                             User = user,
                             Address = address
                         };
-                        await _authDbContext.Customers.AddAsync(customer);
+                        await _authDbContext.Customers.AddAsync(customerAuth);
+                        var customerBack = new Customer()
+                        {
+                            Id = Guid.Parse(user.Id),
+                            Address = address
+                        };
+                        await _backendDbContext.Customers.AddAsync(customerBack);
                         break;
                     
                     case UserRole.Cook:
-                        var cook = new CookEntity()
+                        var cookAuth = new CookEntity()
                         {
                             Id = new Guid(),
                             User = user
                         };
-                        await _authDbContext.Cooks.AddAsync(cook);
+                        await _authDbContext.Cooks.AddAsync(cookAuth);
+                        var cookBack = new Cook()
+                        {
+                            Id = Guid.Parse(user.Id),
+                        };
+                        await _backendDbContext.Cooks.AddAsync(cookBack);
                         break;
                     
                     case UserRole.Courier:
-                        var courier = new CourierEntity()
+                        var courierAuth = new CourierEntity()
                         {
                             Id = new Guid(),
                             User = user
                         };
-                        await _authDbContext.Couriers.AddAsync(courier);
+                        await _authDbContext.Couriers.AddAsync(courierAuth);
+                        var courierBack = new Courier()
+                        {
+                            Id = Guid.Parse(user.Id),
+                        };
+                        await _backendDbContext.Couriers.AddAsync(courierBack);
                         break;
                     
                     case UserRole.Manager:
-                        var manager = new ManagerEntity()
+                        var managerAuth = new ManagerEntity()
                         {
                             Id = new Guid(),
                             User = user
                         };
-                        await _authDbContext.Managers.AddAsync(manager);
+                        await _authDbContext.Managers.AddAsync(managerAuth);
+                        var managerBack = new Manager()
+                        {
+                            Id = Guid.Parse(user.Id),
+                        };
+                        await _backendDbContext.Managers.AddAsync(managerBack);
                         break;
                 }
 
+                await _authDbContext.SaveChangesAsync();
+                await _backendDbContext.SaveChangesAsync();
                 await _userManager.AddToRoleAsync(user, role.name.ToString());
             }
         }
@@ -249,46 +256,60 @@ public class UserService : IUserService
             switch (roleEnum)
             {
                 case UserRole.Cook:
-                    var cook = await _authDbContext
+                    var cookAuth = await _authDbContext
                         .Cooks
                         .Include(c => c.User)
                         .FirstOrDefaultAsync(cook => cook.User.Id == user.Id);
+                    var cookBack = await _backendDbContext
+                        .Cooks
+                        .FirstOrDefaultAsync(cook => cook.Id.ToString() == user.Id);
+                    _backendDbContext.Cooks.Remove(cookBack);
                     await _userManager.RemoveFromRoleAsync(user, UserRole.Cook.ToString());
-                    _authDbContext.Cooks.Remove(cook);
-                    await _authDbContext.SaveChangesAsync();
+                    _authDbContext.Cooks.Remove(cookAuth);
                     break;
                 
                 case UserRole.Customer:
-                    var customer = await _authDbContext
+                    var customerAuth = await _authDbContext
                         .Customers
                         .Include(c => c.User)
                         .FirstOrDefaultAsync(c => c.User.Id == user.Id);
+                    var customerBack = await _backendDbContext
+                        .Customers
+                        .FirstOrDefaultAsync(customer => customer.Id.ToString() == user.Id);
+                    _backendDbContext.Customers.Remove(customerBack);
                     await _userManager.RemoveFromRoleAsync(user, UserRole.Customer.ToString());
-                    _authDbContext.Customers.Remove(customer);
-                    await _authDbContext.SaveChangesAsync();
+                    _authDbContext.Customers.Remove(customerAuth);
                     break;
                 
                 case UserRole.Courier:
-                    var courier = await _authDbContext
+                    var courierAuth = await _authDbContext
                         .Couriers
                         .Include(c => c.User)
                         .FirstOrDefaultAsync(c => c.User.Id == user.Id);
+                    var courierBack = await _backendDbContext
+                        .Couriers
+                        .FirstOrDefaultAsync(courier => courier.Id.ToString() == user.Id);
+                    _backendDbContext.Couriers.Remove(courierBack);
                     await _userManager.RemoveFromRoleAsync(user, UserRole.Courier.ToString());
-                    _authDbContext.Couriers.Remove(courier);
-                    await _authDbContext.SaveChangesAsync();
+                    _authDbContext.Couriers.Remove(courierAuth);
                     break;
                 
                 case UserRole.Manager:
-                    var manager = await _authDbContext
+                    var managerAuth = await _authDbContext
                         .Managers
                         .Include(m => m.User)
                         .FirstOrDefaultAsync(m => m.User.Id == user.Id);
-                    
+                    var managerBack = await _backendDbContext
+                        .Managers
+                        .FirstOrDefaultAsync(manager => manager.Id.ToString() == user.Id);
+                    _backendDbContext.Managers.Remove(managerBack);
                     await _userManager.RemoveFromRoleAsync(user, UserRole.Manager.ToString());
-                    _authDbContext.Managers.Remove(manager);
-                    await _authDbContext.SaveChangesAsync();
+                    _authDbContext.Managers.Remove(managerAuth);
                     break;
             }
+            
+            await _backendDbContext.SaveChangesAsync();
+            await _authDbContext.SaveChangesAsync();
         }
     }
 
@@ -296,35 +317,51 @@ public class UserService : IUserService
     {
         if (user.Manager != null)
         {
-            var manager = await _authDbContext
+            var managerAuth = await _authDbContext
                 .Managers
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.User == user);
-            _authDbContext.Managers.Remove(manager);
+            _authDbContext.Managers.Remove(managerAuth);
+            var managerBack = await _backendDbContext
+                .Managers
+                .FirstOrDefaultAsync(m => m.Id.ToString() == user.Id);
+            _backendDbContext.Managers.Remove(managerBack);
         }
         if (user.Courier != null)
         {
-            var courier = await _authDbContext
+            var courierAuth = await _authDbContext
                 .Couriers
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.User == user);
-            _authDbContext.Couriers.Remove(courier);
+            _authDbContext.Couriers.Remove(courierAuth);
+            var courierBack = await _backendDbContext
+                .Couriers
+                .FirstOrDefaultAsync(c => c.Id.ToString() == user.Id);
+            _backendDbContext.Couriers.Remove(courierBack);
         }
         if (user.Customer != null)
         {
-            var customer = await _authDbContext
+            var customerAuth = await _authDbContext
                 .Customers
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.User == user);
-            _authDbContext.Customers.Remove(customer);
+            _authDbContext.Customers.Remove(customerAuth);
+            var customerBack = await _backendDbContext
+                .Customers
+                .FirstOrDefaultAsync(c => c.Id.ToString() == user.Id);
+            _backendDbContext.Customers.Remove(customerBack);
         }
         if (user.Cook != null)
         {
-            var cook = await _authDbContext
+            var cookAuth = await _authDbContext
                 .Cooks
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(c => c.User == user);
-            _authDbContext.Cooks.Remove(cook);
+            _authDbContext.Cooks.Remove(cookAuth);
+            var cookBack = await _backendDbContext
+                .Cooks
+                .FirstOrDefaultAsync(c => c.Id.ToString() == user.Id);
+            _backendDbContext.Cooks.Remove(cookBack);
         }
 
         await _authDbContext.SaveChangesAsync();
@@ -334,22 +371,68 @@ public class UserService : IUserService
     {
         var restaurant = await _backendDbContext
             .Restaurants
-            .FirstOrDefaultAsync(r => r.Id == editUser.restaurantId);
-        if (editUser.roles.Any(r => r.name == UserRole.Manager))
+            .FirstOrDefaultAsync(r => r.Id.ToString() == editUser.selectedRestaurantValue);
+        if (editUser.roles.Any(r => r.name == UserRole.Manager && r.selected))
         {
             var manager = await _backendDbContext
                 .Managers
                 .FirstOrDefaultAsync(m => m.Id == editUser.id);
-            manager.Restaurant = restaurant;
+            /*if (manager == null)
+            {
+                manager = new Manager
+                {
+                    Id = editUser.id,
+                    Restaurant = restaurant
+                };
+                await _backendDbContext.Managers.AddAsync(manager);
+            }
+            else
+            {*/
+                manager.Restaurant = restaurant;
+            // }
         }
-        if (editUser.roles.Any(r => r.name == UserRole.Cook))
+        if (editUser.roles.Any(r => r.name == UserRole.Cook && r.selected))
         {
             var cook = await _backendDbContext
                 .Cooks
                 .FirstOrDefaultAsync(c => c.Id == editUser.id);
-            cook.Restaurant = restaurant;
+            /*if (cook == null)
+            {
+                cook = new Cook
+                {
+                    Id = editUser.id,
+                    Restaurant = restaurant
+                };
+                await _backendDbContext.Cooks.AddAsync(cook);
+            }
+            else
+            {*/
+                cook.Restaurant = restaurant;
+            // }
+        }
+        await _backendDbContext.SaveChangesAsync();
+    }
+
+    private async Task<List<SelectListItem>> GetRestaurants(Guid userId)
+    {
+        var restaurantEntities = await _backendDbContext
+            .Restaurants
+            .Include(r => r.Managers)
+            .Include(r => r.Cooks)
+            .ToListAsync();
+
+        List<SelectListItem> rests = new List<SelectListItem>();
+        foreach (var rest in restaurantEntities)
+        {
+            var newRest = new SelectListItem()
+            {
+                Value = rest.Id.ToString(),
+                Text = rest.Name,
+                Selected = rest.Managers.Any(m => m.Id == userId) || rest.Cooks.Any(c => c.Id == userId)
+            };
+            rests.Add(newRest);
         }
 
-        await _backendDbContext.SaveChangesAsync();
+        return rests;
     }
 }

@@ -31,9 +31,9 @@ public class OrderEntity
     public List<DishBasketEntity> Dishes { get; set; } = new();
     
     [Required]
-    public CustomerEntity Customer { get; set; }
+    public Customer Customer { get; set; }
 
-    public CookEntity? Cook { get; set; }
+    public Cook? Cook { get; set; }
 
-    public CourierEntity? Courier { get; set; }
+    public Courier? Courier { get; set; }
 }

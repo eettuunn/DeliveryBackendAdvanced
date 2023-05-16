@@ -2,9 +2,11 @@
 
 namespace delivery_backend_advanced.Models.Entities;
 
-public class CourierEntity
+public class Cook
 {
     public Guid Id { get; set; }
     
     public List<OrderEntity> Orders { get; set; }
+    
+    public RestaurantEntity? Restaurant { get; set; }
 }
