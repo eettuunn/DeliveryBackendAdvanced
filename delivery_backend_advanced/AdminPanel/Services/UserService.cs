@@ -377,38 +377,14 @@ public class UserService : IUserService
             var manager = await _backendDbContext
                 .Managers
                 .FirstOrDefaultAsync(m => m.Id == editUser.id);
-            /*if (manager == null)
-            {
-                manager = new Manager
-                {
-                    Id = editUser.id,
-                    Restaurant = restaurant
-                };
-                await _backendDbContext.Managers.AddAsync(manager);
-            }
-            else
-            {*/
-                manager.Restaurant = restaurant;
-            // }
+            manager.Restaurant = restaurant;
         }
         if (editUser.roles.Any(r => r.name == UserRole.Cook && r.selected))
         {
             var cook = await _backendDbContext
                 .Cooks
                 .FirstOrDefaultAsync(c => c.Id == editUser.id);
-            /*if (cook == null)
-            {
-                cook = new Cook
-                {
-                    Id = editUser.id,
-                    Restaurant = restaurant
-                };
-                await _backendDbContext.Cooks.AddAsync(cook);
-            }
-            else
-            {*/
-                cook.Restaurant = restaurant;
-            // }
+            cook.Restaurant = restaurant;
         }
         await _backendDbContext.SaveChangesAsync();
     }

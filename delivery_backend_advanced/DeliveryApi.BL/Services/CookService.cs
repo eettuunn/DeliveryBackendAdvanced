@@ -13,12 +13,12 @@ namespace DeliveryApi.BL.Services;
 public class CookService : ICookService
 {
     private readonly BackendDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly IMessageProducer _messageProducer;
 
-    public CookService(BackendDbContext context, IMapper mapper)
+    public CookService(BackendDbContext context, IMessageProducer messageProducer)
     {
         _context = context;
-        _mapper = mapper;
+        _messageProducer = messageProducer;
     }
 
 
@@ -43,6 +43,8 @@ public class CookService : ICookService
         cook.Orders.Add(orderEntity);
         
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(orderEntity);
     }
 
     public async Task ChangeOrderStatus(Guid orderId, UserInfoDto userInfoDto)
@@ -64,6 +66,8 @@ public class CookService : ICookService
         orderEntity.Status += 1;
 
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(orderEntity);
     }
     
     
@@ -87,5 +91,18 @@ public class CookService : ICookService
         }
 
         return cook;
+    }
+
+    private void SendOrderStatusChangedMessage(OrderEntity orderEntity)
+    {
+        var orderStatusMessage = new OrderStatusMessage
+        {
+            orderId = orderEntity.Id,
+            newStatus = orderEntity.Status,
+            address = orderEntity.Address,
+            number = orderEntity.Number
+        };
+        
+        _messageProducer.SendMessage<OrderStatusMessage>(orderStatusMessage);
     }
 }

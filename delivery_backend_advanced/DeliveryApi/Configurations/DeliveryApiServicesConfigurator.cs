@@ -23,6 +23,7 @@ public static class DeliveryApiBLConfigurator
         builder.Services.AddScoped<ICookService, CookService>();
         builder.Services.AddScoped<ICourierService, CourierService>();
         builder.Services.AddScoped<IManagerService, ManagerService>();
+        builder.Services.AddScoped<IMessageProducer, MessageProducer>();
         
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

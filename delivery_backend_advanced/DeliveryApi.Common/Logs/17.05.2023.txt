@@ -1,0 +1,8 @@
+11:01:46.0883936   URL: http://localhost:5125/api/cook/6573edbb-c14a-481d-aff0-f1519a36e331   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:05:28.2135379   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:05:46.7491579   URL: http://localhost:5125/api/cook/6573edbb-c14a-481d-aff0-f1519a36e331   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:06:00.5779710   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
