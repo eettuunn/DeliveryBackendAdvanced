@@ -28,6 +28,7 @@ public class CookService : ICookService
         
         var orderEntity = await _context
             .Orders
+            .Include(order => order.Customer)
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
         
         if(orderEntity.Restaurant != cook.Restaurant)
@@ -52,6 +53,7 @@ public class CookService : ICookService
         var orderEntity = await _context
             .Orders
             .Include(order => order.Cook)
+            .Include(order => order.Customer)
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
 
         if (orderEntity.Cook.Id != userInfoDto.id)
@@ -97,10 +99,10 @@ public class CookService : ICookService
     {
         var orderStatusMessage = new OrderStatusMessage
         {
-            orderId = orderEntity.Id,
-            newStatus = orderEntity.Status,
-            address = orderEntity.Address,
-            number = orderEntity.Number
+            OrderId = orderEntity.Id,
+            UserId = orderEntity.Customer.Id,
+            Status = NotificationStatus.New,
+            Text = $@"Order number {orderEntity.Number} for address {orderEntity.Address} is on {orderEntity.Status.ToString()}"
         };
         
         _messageProducer.SendMessage(orderStatusMessage);

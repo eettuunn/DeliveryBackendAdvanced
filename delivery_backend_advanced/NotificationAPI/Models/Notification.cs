@@ -1,8 +1,8 @@
-﻿using delivery_backend_advanced.Models.Enums;
+﻿using NotificationAPI.Models.Enums;
 
-namespace delivery_backend_advanced.Models.Dtos;
+namespace NotificationAPI.Models;
 
-public class OrderStatusMessage
+public class Notification
 {
     public Guid UserId { get; set; }
     

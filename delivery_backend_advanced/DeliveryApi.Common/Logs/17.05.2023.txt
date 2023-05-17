@@ -44,3 +44,25 @@
 
 11:32:46.9812657   URL: http://localhost:5125/api/courier/cancel/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+15:53:06.1222840   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:54:19.3472316   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:55:05.6079121   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:56:35.8650519   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:00:03.8990406   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:06:36.2210297   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 401
+
+16:06:45.2490515   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:09:12.7960438   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:19:45.2510129   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 401
+
+16:20:08.5136852   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:25:16.0464220   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

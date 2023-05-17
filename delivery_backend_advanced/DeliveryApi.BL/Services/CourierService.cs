@@ -24,6 +24,7 @@ public class CourierService : ICourierService
         var orderEntity = await _context
             .Orders
             .Include(order => order.Courier)
+            .Include(order => order.Customer)
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
 
         if (orderEntity.Courier.Id != userInfoDto.id)
@@ -48,6 +49,7 @@ public class CourierService : ICourierService
         
         var orderEntity = await _context
             .Orders
+            .Include(order => order.Customer)
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
 
         if (orderEntity.Status != OrderStatus.Packaging)
@@ -68,6 +70,7 @@ public class CourierService : ICourierService
         var order = await _context
             .Orders
             .Include(order => order.Courier)
+            .Include(order => order.Customer)
             .FirstOrDefaultAsync(or => or.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
 
         if (order.Courier.Id != userInfoDto.id)
@@ -112,10 +115,10 @@ public class CourierService : ICourierService
     {
         var orderStatusMessage = new OrderStatusMessage
         {
-            orderId = orderEntity.Id,
-            newStatus = orderEntity.Status,
-            address = orderEntity.Address,
-            number = orderEntity.Number
+            OrderId = orderEntity.Id,
+            UserId = orderEntity.Customer.Id,
+            Status = NotificationStatus.New,
+            Text = $@"Order number {orderEntity.Number} for address {orderEntity.Address} is on {orderEntity.Status.ToString()}"
         };
         
         _messageProducer.SendMessage(orderStatusMessage);
