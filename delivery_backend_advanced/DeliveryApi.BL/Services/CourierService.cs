@@ -11,10 +11,12 @@ namespace DeliveryApi.BL.Services;
 public class CourierService : ICourierService
 {
     private readonly BackendDbContext _context;
+    private readonly IMessageProducer _messageProducer;
 
-    public CourierService(BackendDbContext context)
+    public CourierService(BackendDbContext context, IMessageProducer messageProducer)
     {
         _context = context;
+        _messageProducer = messageProducer;
     }
 
     public async Task SetOrderDelivered(Guid orderId, UserInfoDto userInfoDto)
@@ -36,6 +38,8 @@ public class CourierService : ICourierService
         orderEntity.Status = OrderStatus.Delivered;
 
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(orderEntity);
     }
 
     public async Task TakeOrder(Guid orderId, UserInfoDto userInfoDto)
@@ -46,15 +50,17 @@ public class CourierService : ICourierService
             .Orders
             .FirstOrDefaultAsync(order => order.Id == orderId) ?? throw new CantFindByIdException("order", orderId);
 
-        if (orderEntity.Status != OrderStatus.Delivery)
+        if (orderEntity.Status != OrderStatus.Packaging)
         {
-            throw new ConflictException("Courier only can take order with status Delivery");
+            throw new ConflictException("Courier only can take order with status Packaging");
         }
         
         orderEntity.Status = OrderStatus.Delivery;
         courier.Orders.Add(orderEntity);
 
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(orderEntity);
     }
 
     public async Task CancelOrder(Guid orderId, UserInfoDto userInfoDto)
@@ -75,6 +81,8 @@ public class CourierService : ICourierService
 
         order.Status = OrderStatus.Canceled;
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(order);
     }
     
     
@@ -98,5 +106,18 @@ public class CourierService : ICourierService
         }
 
         return courier;
+    }
+    
+    private void SendOrderStatusChangedMessage(OrderEntity orderEntity)
+    {
+        var orderStatusMessage = new OrderStatusMessage
+        {
+            orderId = orderEntity.Id,
+            newStatus = orderEntity.Status,
+            address = orderEntity.Address,
+            number = orderEntity.Number
+        };
+        
+        _messageProducer.SendMessage(orderStatusMessage);
     }
 }

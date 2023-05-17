@@ -15,12 +15,14 @@ public class OrderService : IOrderService
     private readonly BackendDbContext _context;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
+    private readonly IMessageProducer _messageProducer;
 
-    public OrderService(BackendDbContext context, IMapper mapper, IConfiguration configuration)
+    public OrderService(BackendDbContext context, IMapper mapper, IConfiguration configuration, IMessageProducer messageProducer)
     {
         _context = context;
         _mapper = mapper;
         _configuration = configuration;
+        _messageProducer = messageProducer;
     }
 
     public async Task CreateOrder(CreateOrderDto orderDto, UserInfoDto userInfoDto)
@@ -69,6 +71,8 @@ public class OrderService : IOrderService
 
         await _context.Orders.AddAsync(newOrder);
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(newOrder);
     }
 
     public async Task<OrdersPageDto> GetOrders(OrderQueryModel query, UserRole role, UserInfoDto userInfoDto)
@@ -152,6 +156,8 @@ public class OrderService : IOrderService
         orderEntity.Status = OrderStatus.Canceled;
 
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(orderEntity);
     }
 
     public async Task RepeatOrder(RepeatOrderDto repOrder, Guid orderId, UserInfoDto userInfoDto)
@@ -185,6 +191,8 @@ public class OrderService : IOrderService
 
         await _context.Orders.AddAsync(newOrder);
         await _context.SaveChangesAsync();
+        
+        SendOrderStatusChangedMessage(newOrder);
     }
 
 
@@ -295,5 +303,18 @@ public class OrderService : IOrderService
         customer.Address = userInfoDto.address ?? customer.Address;
 
         return customer;
+    }
+    
+    private void SendOrderStatusChangedMessage(OrderEntity orderEntity)
+    {
+        var orderStatusMessage = new OrderStatusMessage
+        {
+            orderId = orderEntity.Id,
+            newStatus = orderEntity.Status,
+            address = orderEntity.Address,
+            number = orderEntity.Number
+        };
+        
+        _messageProducer.SendMessage(orderStatusMessage);
     }
 }

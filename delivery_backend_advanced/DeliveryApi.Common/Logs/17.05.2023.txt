@@ -6,3 +6,41 @@
 
 11:06:00.5779710   URL: http://localhost:5125/api/cook/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+11:27:24.9055172   URL: http://localhost:5125/api/basket   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:27:30.9871686   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d2/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:27:32.9395899   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d2/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:27:33.7829953   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d2/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:28:04.1387464   URL: http://localhost:5125/api/order   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:28:22.9945056   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:28:34.1731192   URL: http://localhost:5125/api/order/cancel/f868f1ac-f19a-4b6a-90a7-0e0bdb189b27   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:28:46.1584368   URL: http://localhost:5125/api/order/repeat/f868f1ac-f19a-4b6a-90a7-0e0bdb189b27   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:29:01.1354662   URL: http://localhost:5125/api/cook/f868f1ac-f19a-4b6a-90a7-0e0bdb189b27   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 409
+
+11:29:07.1255599   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:29:16.3837860   URL: http://localhost:5125/api/cook/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:29:24.2486944   URL: http://localhost:5125/api/cook/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:29:46.2108456   URL: http://localhost:5125/api/courier/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 409
+
+11:29:55.4901022   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:30:49.6704065   URL: http://localhost:5125/api/courier/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 409
+
+11:31:39.6841230   URL: http://localhost:5125/api/courier/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:31:53.6757703   URL: http://localhost:5125/api/courier/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:32:19.6665461   URL: http://localhost:5125/api/courier/cancel/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 409
+
+11:32:46.9812657   URL: http://localhost:5125/api/courier/cancel/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

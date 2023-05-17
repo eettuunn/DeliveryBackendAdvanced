@@ -103,6 +103,6 @@ public class CookService : ICookService
             number = orderEntity.Number
         };
         
-        _messageProducer.SendMessage<OrderStatusMessage>(orderStatusMessage);
+        _messageProducer.SendMessage(orderStatusMessage);
     }
 }
