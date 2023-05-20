@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using NotificationAPI;
 using NotificationAPI.Hubs;
-using NotificationAPI.Interfaces;
 using NotificationAPI.Services;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,13 +25,23 @@ builder.Services.AddCors(options =>
         builder.AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
-            .WithOrigins("null");
+            .WithOrigins("http://localhost:63343");
     });
 });
 
 builder.Services.AddSignalR();
-builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
-builder.Services.AddScoped<INotificationService, NotificationService>();
+// builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
+// builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddSingleton<IConnection>(x =>
+    new ConnectionFactory
+    {
+        HostName = "localhost",
+        UserName = "user",
+        Password = "1234",
+        VirtualHost = "/"
+    }.CreateConnection()
+);
+builder.Services.AddHostedService<RabbitMqListener>();
 
 builder.Services.AddAuthentication(opt => {
         opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -96,6 +106,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<NotificationHub>("/notifications");
+app.MapHub<NotificationsHub>("/notifications");
 
 app.Run();

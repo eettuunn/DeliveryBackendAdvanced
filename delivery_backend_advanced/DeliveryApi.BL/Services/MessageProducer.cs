@@ -7,19 +7,16 @@ namespace DeliveryApi.BL.Services;
 
 public class MessageProducer : IMessageProducer
 {
+    private readonly IConnection _connection;
+
+    public MessageProducer(IConnection connection)
+    {
+        _connection = connection;
+    }
+
     public void SendMessage<T>(T message)
     {
-        var factory = new ConnectionFactory
-        {
-            HostName = "localhost",
-            UserName = "user",
-            Password = "1234",
-            VirtualHost = "/"
-        };
-
-        var connection = factory.CreateConnection();
-
-        using var channel = connection.CreateModel();
+        using var channel = _connection.CreateModel();
 
         channel.QueueDeclare("statuses", durable: true, exclusive: false);
 

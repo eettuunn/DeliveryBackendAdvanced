@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 
 namespace delivery_backend_advanced.Models;
 
@@ -24,6 +25,15 @@ public static class DeliveryApiBLConfigurator
         builder.Services.AddScoped<ICourierService, CourierService>();
         builder.Services.AddScoped<IManagerService, ManagerService>();
         builder.Services.AddScoped<IMessageProducer, MessageProducer>();
+        builder.Services.AddSingleton<IConnection>(x =>
+            new ConnectionFactory
+            {
+                HostName = "localhost",
+                UserName = "user",
+                Password = "1234",
+                VirtualHost = "/"
+            }.CreateConnection()
+        );
         
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
