@@ -1,10 +1,9 @@
 ﻿using NotificationAPI.Models.Enums;
 
-namespace NotificationAPI.Models;
+namespace NotificationAPI.Models.Dtos;
 
-public class Notification
+public class NotificationDto
 {
-    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     
     public Guid OrderId { get; set; }

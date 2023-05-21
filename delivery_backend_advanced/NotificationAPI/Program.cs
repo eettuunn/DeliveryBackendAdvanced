@@ -4,6 +4,7 @@ using Common.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NotificationAPI;
 using NotificationAPI.Hubs;
@@ -30,8 +31,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSignalR();
-// builder.Services.AddSingleton<IUserIdProvider, NameUserIdProvider>();
-// builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddSingleton<IConnection>(x =>
     new ConnectionFactory
     {
@@ -88,7 +87,11 @@ builder.Services.AddAuthorization(options => options.DefaultPolicy =
 
 builder.Services.AddControllersWithViews();
 
+builder.ConfigureNotificationDbContext();
+
 var app = builder.Build();
+
+app.ConfigureNotificationDbContext();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
