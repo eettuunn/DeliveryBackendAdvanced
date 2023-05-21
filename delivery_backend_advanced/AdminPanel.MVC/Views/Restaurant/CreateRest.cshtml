@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AdminPanel._Common.Models.Restaurant.CreateRest
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="container bg-light p-4 w-50">
+    <h2>Создание ресторана</h2>
+    <form asp-action="CreateRest">
+        <div class="mb-3">
+            <label for="input-name" class="form-label">Имя ресторана</label>
+            <input asp-for="name" type="text" class="form-control" id="input-name">
+            <span class="text-danger" asp-validation-for="name"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Создать</button>
+        <a asp-controller="Restaurant" asp-action="RestaurantList" class="btn btn-secondary">Список ресторанов</a>
+    </form>
+</div>
+</body>
+</html>

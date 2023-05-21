@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>AdminPanel</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="12.0.1" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.4" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.4" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
+      <_ContentIncludedByDefault Remove="AdminPanel.Common\bin\Debug\net7.0\AdminPanel.Common.deps.json" />
+      <_ContentIncludedByDefault Remove="AdminPanel.Common\obj\AdminPanel.Common.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="AdminPanel.Common\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="AdminPanel.Common\obj\project.packagespec.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AdminPanel.Common\AdminPanel.Common.csproj" />
+      <ProjectReference Include="..\AdminPanel.BL\AdminPanel.BL.csproj" />
+      <ProjectReference Include="..\AuthApi.DAL\AuthApi.DAL.csproj" />
+      <ProjectReference Include="..\Common\Common.csproj" />
+      <ProjectReference Include="..\DeliveryApi.DAL\DeliveryApi.DAL.csproj" />
+    </ItemGroup>
+
+</Project>

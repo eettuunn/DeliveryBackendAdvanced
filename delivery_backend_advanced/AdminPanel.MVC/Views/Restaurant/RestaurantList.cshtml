@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AdminPanel._Common.Models.Restaurant.RestaurantListElement>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="container w-50">
+    <div class="d-flex flex-column align-items-center">
+        <h2 class="align-self-start pb-2">Рестораны</h2>
+        <table class="table table-striped">
+            <thread>
+                <tr>
+                    <th>Название</th>
+                    <th class="d-flex justify-content-end pe-3">Действие</th>
+                </tr>
+                
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.name</td>
+                        <td class="d-flex justify-content-end">
+                            <a asp-controller="Restaurant" asp-action="EditRest" asp-route-Id="@r.id" class="btn btn-warning m-2">Изменить</a>
+                            <a asp-controller="Restaurant" asp-action="DeleteRest" asp-route-Id="@r.id" class="btn btn-danger m-2">Удалить</a>
+                        </td>
+                    </tr>
+                }
+            </thread>
+        </table>
+        <div class="align-self-start">
+            <a asp-controller="Restaurant" asp-action="CreateRest" class="btn btn-success">Создать ресторан</a>
+        </div>
+    </div>  
+    
+</div>
+</body>
+</html>
