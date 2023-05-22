@@ -1,12 +1,8 @@
-﻿using System.Reflection;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using delivery_backend_advanced.Services;
 using delivery_backend_advanced.Services.Interfaces;
 using DeliveryApi.BL.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using NotificationAPI.Configurators.ConfigClasses;
 using RabbitMQ.Client;
 
 namespace delivery_backend_advanced.Models;
@@ -15,6 +11,8 @@ public static class DeliveryApiBLConfigurator
 {
     public static void ConfigureDeliveryApiServices(this WebApplicationBuilder builder)
     {
+        var rabbitMqConnection = builder.Configuration.GetSection("RabbitMqConnection").Get<RabbitMqConnection>();
+
         builder.Services.AddAutoMapper(typeof(AppMappingProfile));
         
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
@@ -28,10 +26,10 @@ public static class DeliveryApiBLConfigurator
         builder.Services.AddSingleton<IConnection>(x =>
             new ConnectionFactory
             {
-                HostName = "localhost",
-                UserName = "user",
-                Password = "1234",
-                VirtualHost = "/"
+                HostName = rabbitMqConnection.Hostname,
+                UserName = rabbitMqConnection.Username,
+                Password = rabbitMqConnection.Password,
+                VirtualHost = rabbitMqConnection.VirtualHost
             }.CreateConnection()
         );
         

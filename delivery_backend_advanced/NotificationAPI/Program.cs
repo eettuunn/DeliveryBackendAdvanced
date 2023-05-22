@@ -29,7 +29,6 @@ builder.Services.AddCors(options =>
 
 builder.ConfigureNotificationServices();
 
-
 builder.ConfigureNotificationAuth();
 
 builder.Services.AddControllersWithViews();
