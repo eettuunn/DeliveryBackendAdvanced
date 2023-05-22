@@ -26,8 +26,9 @@ builder.Services.AddCors(options =>
             .WithOrigins("http://localhost:63343");
     });
 });
-//todo: test this
+
 builder.ConfigureNotificationServices();
+
 
 builder.ConfigureNotificationAuth();
 

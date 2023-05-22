@@ -1,0 +1,84 @@
+13:41:05.4527608   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:42:40.8309746   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 400
+
+13:43:28.2167940   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:43:56.2837398   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:45:05.5482262   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:49:05.3503000   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:50:29.3359535   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:51:33.8399286   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:52:33.3600257   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:53:10.3359069   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:53:39.8236115   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:53:50.4883825   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:55:18.7271192   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:55:39.2986653   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:55:49.4109850   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:56:03.9622400   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:03:04.6084987   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:03:43.5951707   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:03:57.1533042   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:08:26.1275640   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:10:26.2723152   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:11:41.0343250   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:13:48.8231148   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:14:02.4557399   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:22:12.4472938   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:28:29.6555895   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:29:32.3509675   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:29:51.3852539   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:30:38.6355723   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:41:02.1571746   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:41:22.6684544   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:41:43.2466003   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:58:56.9045557   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:07:00.6382473   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:12:52.5316087   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:14:08.4473686   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:21:48.6829666   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:22:35.2003186   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:22:47.2705076   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:23:10.2638166   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:28:19.9147223   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:28:29.1639109   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

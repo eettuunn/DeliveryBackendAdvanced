@@ -60,7 +60,7 @@ public class CookService : ICookService
         {
             throw new BadRequestException("This is not your order");
         }
-        if (orderEntity.Status > OrderStatus.Packaging || orderEntity.Status == OrderStatus.Created)
+        if (orderEntity.Status != OrderStatus.Kitchen)
         {
             throw new ConflictException("Order is out of kitchen");
         }

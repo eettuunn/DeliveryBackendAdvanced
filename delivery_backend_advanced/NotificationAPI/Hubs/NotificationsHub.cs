@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using NotificationAPI.Models.Dtos;
@@ -20,17 +21,20 @@ public class NotificationsHub : Hub
 
     private async Task SendNotification(NotificationDto notification)
     {
-        await Clients.User(notification.UserId.ToString()).SendAsync("ReceiveMessage",
-            $"{DateTime.UtcNow.ToString("s")} UTC: {notification.Text}");
+        await Clients.User(notification.UserId.ToString()).SendAsync("ReceiveMessage",notification.Text);
     }
 
     public override async Task OnConnectedAsync()
     {
-        _connectedClients.Add(Context.UserIdentifier);
+        var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        if (!_connectedClients.Contains(userId))
+        {
+            _connectedClients.Add(userId);
+        }
 
         var userNotifications = await _context
             .Notifications
-            .Where(n => n.UserId == Guid.Parse(Context.UserIdentifier))
+            .Where(n => n.UserId == Guid.Parse(userId) && n.Status == NotificationStatus.New)
             .ToListAsync();
 
         foreach (var n in userNotifications)
@@ -54,7 +58,7 @@ public class NotificationsHub : Hub
 
     public override Task OnDisconnectedAsync(Exception? exception)
     {
-        _connectedClients.Remove(Context.UserIdentifier);
+        _connectedClients.Remove(Context.User.FindFirst(ClaimTypes.NameIdentifier).Value);
         return base.OnDisconnectedAsync(exception);
     }
 

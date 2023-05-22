@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace NotificationAPI;
 
-public class NameUserIdProvider : IUserIdProvider
+public class UserIdProvider : IUserIdProvider
 {
     public string GetUserId(HubConnectionContext connection)
     {
-        return connection.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return connection.User.FindFirst(ClaimTypes.NameIdentifier).Value;
     }
-   
 }
