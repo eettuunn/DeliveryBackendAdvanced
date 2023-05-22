@@ -1,12 +1,14 @@
 ﻿using AuthApi.DAL;
 using AuthApi.DAL.Entities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace delivery_backend_advanced.Configurations;
 
-public static class AuthApiIdentityConfigurator
+public static class IdentityConfigurator
 {
-    public static void ConfigureAuthApiIdentity(this WebApplicationBuilder builder)
+    public static void ConfigureIdentity(this WebApplicationBuilder builder)
     {
         builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
             {

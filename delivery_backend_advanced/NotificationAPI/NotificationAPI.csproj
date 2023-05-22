@@ -28,9 +28,4 @@
       <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers" />
-      <Folder Include="Interfaces" />
-    </ItemGroup>
-
 </Project>
