@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
+using delivery_backend_advanced.Policies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Tls;
@@ -60,6 +61,7 @@ public class ProfileController : ControllerBase
     /// </summary>
     [HttpGet]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     public async Task<ProfileDto> GetProfile()
     {
         var userEmail = HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
@@ -82,6 +84,7 @@ public class ProfileController : ControllerBase
     /// </summary>
     [HttpPut]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     [Route("edit")]
     public async Task<ActionResult<TokenPairDto>> EditProfile([FromBody] EditProfileDto editProfileDto)
     {

@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Policies;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace delivery_backend_advanced.Controllers;
 [Route("api/manager")]
 [Authorize]
 [Authorize(Roles = "Manager")]
+[Authorize(Policy = PolicyNames.Ban)]
 public class ManagerController : ControllerBase
 {
     private readonly IManagerService _managerService;

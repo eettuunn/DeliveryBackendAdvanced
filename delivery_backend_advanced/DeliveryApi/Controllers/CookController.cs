@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Enums;
+using delivery_backend_advanced.Policies;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ namespace delivery_backend_advanced.Controllers;
 [Route("api/cook")]
 [Authorize]
 [Authorize(Roles = "Cook")]
+[Authorize(Policy = PolicyNames.Ban)]
 public class CookController : ControllerBase
 {
     private readonly ICookService _cookService;

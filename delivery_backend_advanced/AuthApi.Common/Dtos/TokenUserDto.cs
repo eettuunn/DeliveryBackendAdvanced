@@ -7,4 +7,6 @@ public class TokenUserDto
     public string email { get; set; }
     
     public string username { get; set; }
+    
+    public bool isBanned { get; set; }
 }

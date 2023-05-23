@@ -1,6 +1,8 @@
 ﻿using AdminPanel._Common.Models.User;
 using AdminPanel.Interfaces;
 using AutoMapper;
+using delivery_backend_advanced.Policies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminPanel.Controllers;
@@ -31,6 +33,8 @@ public class UserController : Controller
     }
 
     [HttpPost]
+    /*[Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]*/
     public async Task<IActionResult> EditUser(EditUser editUser)
     {
         if (!ModelState.IsValid)
@@ -50,6 +54,10 @@ public class UserController : Controller
         return RedirectToAction("UserList");
     }
 
+    //todo: тут не было post wtf
+    [HttpPost]
+    /*[Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]*/
     public async Task<IActionResult> DeleteUser(Guid id)
     {
         await _userService.DeleteUser(id);

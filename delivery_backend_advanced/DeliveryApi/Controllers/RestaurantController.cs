@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Enums;
+using delivery_backend_advanced.Policies;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,7 @@ public class RestaurantController : ControllerBase
     [HttpGet]
     [Authorize]
     [Authorize(Roles = "Manager")]
+    [Authorize(Policy = PolicyNames.Ban)]
     [Route("orders")]
     public async Task<OrdersPageDto> GetRestaurantOrders([FromQuery] OrderQueryModel query)
     {

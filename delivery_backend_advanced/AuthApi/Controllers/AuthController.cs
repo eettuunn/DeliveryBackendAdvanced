@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
+using delivery_backend_advanced.Policies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,6 +75,7 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     [Route("logout")]
     public async Task LogoutUser()
     {

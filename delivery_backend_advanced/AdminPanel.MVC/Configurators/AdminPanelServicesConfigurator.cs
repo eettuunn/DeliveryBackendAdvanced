@@ -1,5 +1,10 @@
 ﻿using AdminPanel.Interfaces;
 using AdminPanel.Services;
+using AuthApi.BL.Services;
+using AuthApi.Common.Interfaces;
+using delivery_backend_advanced.Policies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AdminPanel.Configurators;
 
@@ -14,7 +19,11 @@ public static class AdminPanelServicesConfigurator
 
         builder.Services.AddAutoMapper(typeof(AppMappingProfile));
         
+        builder.Services.AddScoped<IDbInitializer, DbInitializer>();
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        
+        builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddSingleton<IAuthorizationHandler, BanPolicyHandler>();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AdminPanel._Common.Models.Restaurant;
 using AdminPanel.Interfaces;
+using delivery_backend_advanced.Policies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdminPanel.Controllers;
@@ -24,6 +26,8 @@ public class RestaurantController : Controller
     }
     
     [HttpPost]
+    /*[Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]*/
     public async Task<IActionResult> CreateRest(CreateRest rest)
     {
         if(!ModelState.IsValid)
@@ -66,6 +70,8 @@ public class RestaurantController : Controller
     }
     
     [HttpPost]
+    /*[Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]*/
     public async Task<IActionResult> EditRest(Guid Id, EditRest editRest)
     {
         if(!ModelState.IsValid)

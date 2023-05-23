@@ -53,8 +53,8 @@ public class TokenService : ITokenService
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(ClaimTypes.NameIdentifier, user.id.ToString()),
             new(ClaimTypes.Name, user.username),
-            new(ClaimTypes.Email, user.email)
-            
+            new(ClaimTypes.Email, user.email),
+            new("ban", user.isBanned.ToString())
         };
         
         foreach (var r in roles)

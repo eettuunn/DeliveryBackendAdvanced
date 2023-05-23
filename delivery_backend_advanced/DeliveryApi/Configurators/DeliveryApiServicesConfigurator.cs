@@ -1,7 +1,10 @@
 ﻿using System.Text.Json.Serialization;
+using delivery_backend_advanced.Policies;
 using delivery_backend_advanced.Services;
 using delivery_backend_advanced.Services.Interfaces;
 using DeliveryApi.BL.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using NotificationAPI.Configurators.ConfigClasses;
 using RabbitMQ.Client;
 
@@ -32,6 +35,10 @@ public static class DeliveryApiBLConfigurator
                 VirtualHost = rabbitMqConnection.VirtualHost
             }.CreateConnection()
         );
+        
+        builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddSingleton<IAuthorizationHandler, BanPolicyHandler>();
+
         
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

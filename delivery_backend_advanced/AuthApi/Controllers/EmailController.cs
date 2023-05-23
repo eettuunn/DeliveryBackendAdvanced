@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using AuthApi.Common.Dtos;
 using AuthApi.Common.Interfaces;
+using delivery_backend_advanced.Policies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,7 @@ public class EmailController : ControllerBase
     /// </summary>
     [HttpPost]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     [Route("confirm")]
     public async Task ConfirmEmailAfterRegistration()
     {

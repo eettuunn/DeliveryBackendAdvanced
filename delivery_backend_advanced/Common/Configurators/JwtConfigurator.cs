@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using AuthApi.Common.ConfigClasses;
+using delivery_backend_advanced.Policies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -31,10 +32,16 @@ public static class JwtConfigurator
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Key))
                 };
             });
-        builder.Services.AddAuthorization(options => options.DefaultPolicy =
-            new AuthorizationPolicyBuilder
-                    (JwtBearerDefaults.AuthenticationScheme)
-                .RequireAuthenticatedUser()
-                .Build());
+        builder.Services.AddAuthorization(options =>
+        {
+            options.DefaultPolicy =
+                new AuthorizationPolicyBuilder
+                        (JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build();
+            options.AddPolicy(
+                "Ban",
+                policy => policy.Requirements.Add(new BanPolicy()));
+        });
     }
 }

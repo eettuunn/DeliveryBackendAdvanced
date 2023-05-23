@@ -3,6 +3,7 @@ using System.Security.Claims;
 using delivery_backend_advanced.Exceptions;
 using delivery_backend_advanced.Models.Dtos;
 using delivery_backend_advanced.Models.Enums;
+using delivery_backend_advanced.Policies;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace delivery_backend_advanced.Controllers;
 
 [Route("api/order")]
 [Authorize]
+[Authorize(Policy = PolicyNames.Ban)]
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;

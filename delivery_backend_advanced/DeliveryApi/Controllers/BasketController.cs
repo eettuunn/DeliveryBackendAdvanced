@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Policies;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,7 @@ namespace delivery_backend_advanced.Controllers;
 
 [Route("api/basket")]
 [Authorize]
+[Authorize(Policy = PolicyNames.Ban)]
 public class BasketController : ControllerBase
 {
     private readonly IBasketService _basketService;

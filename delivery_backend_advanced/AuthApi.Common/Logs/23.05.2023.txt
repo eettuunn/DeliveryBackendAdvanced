@@ -4,3 +4,57 @@
 
 12:43:58.8147885   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+15:17:56.8017812   URL: http://localhost:5179/auth/register   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:58:28.9759695   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+15:59:22.0775974   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:00:15.8618187   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:00:58.2283920   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:01:36.9145485   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:03:59.7675522   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:04:46.0088108   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:04:50.0488653   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:04:59.2781969   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:05:08.0020303   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 403
+
+16:08:51.0748604   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:09:01.0630822   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:09:13.7903459   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:10:14.7865668   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:10:24.1894228   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:18:18.1822816   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+16:18:23.5824533   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:09:34.9174662   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:09:37.9083763   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:09:59.3483107   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:10:10.9353705   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:10:12.9363269   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:42.3223611   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:40:49.1951420   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:41:59.2991382   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+17:42:17.4435990   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

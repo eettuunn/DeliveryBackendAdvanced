@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using delivery_backend_advanced.Models.Dtos;
+using delivery_backend_advanced.Policies;
 using delivery_backend_advanced.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,7 @@ public class DishController : ControllerBase
     /// </summary>
     [HttpGet]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     [Route("{dishId}/rating/check")]
     public async Task<bool> CheckAbilityToRate(Guid dishId)
     {
@@ -44,6 +46,7 @@ public class DishController : ControllerBase
     /// </summary>
     [HttpPost]
     [Authorize]
+    [Authorize(Policy = PolicyNames.Ban)]
     [Route("{dishId}/rating")]
     public async Task<IActionResult> RateDish(Guid dishId, [Range(1, 10)] int value)
     {

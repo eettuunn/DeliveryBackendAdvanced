@@ -2,6 +2,9 @@
 using AuthApi.BL;
 using AuthApi.BL.Services;
 using AuthApi.Common.Interfaces;
+using delivery_backend_advanced.Policies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Http;
 using Microsoft.OpenApi.Models;
 
@@ -16,6 +19,8 @@ public static class AuthApiServicesConfigurator
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IProfileService, ProfileService>();
         builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+        builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddSingleton<IAuthorizationHandler, BanPolicyHandler>();
 
         builder.Services.AddAutoMapper(typeof(AppMappingProfile));
     }

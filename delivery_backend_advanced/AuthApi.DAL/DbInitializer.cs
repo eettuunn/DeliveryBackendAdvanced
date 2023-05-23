@@ -3,7 +3,6 @@ using AuthApi.Common.Enums;
 using AuthApi.Common.Interfaces;
 using AuthApi.DAL;
 using AuthApi.DAL.Entities;
-using delivery_backend_advanced.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +35,7 @@ public class DbInitializer : IDbInitializer
         }
         catch (Exception)
         {
-            throw new ConflictException("Something bad happened");
+            //?
         }
 
         if (_roleManager.RoleExistsAsync("Customer").GetAwaiter().GetResult()) return;
