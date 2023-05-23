@@ -86,13 +86,13 @@ public class DishService : IDishService
                     Dish = dishEntity,
                     Customer = customer
                 };
+                await _context.Ratings.AddAsync(ratingEntity);
             }
             else
             {
                 ratingEntity.Value = value;
             }
 
-            await _context.Ratings.AddAsync(ratingEntity);
             RecalculateAverageRating(ref dishEntity);
             await _context.SaveChangesAsync();
         }

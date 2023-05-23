@@ -1,0 +1,242 @@
+11:57:31.0977989   URL: http://localhost:5125/api/order/09241acd-a978-446d-90b5-233e6733fd93   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:57:50.0416298   URL: http://localhost:5125/api/order/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:58:09.1454024   URL: http://localhost:5125/api/order/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:58:18.1698923   URL: http://localhost:5125/api/order/cea7f9ce-76ef-4ffa-b66f-f2e35292b688   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+11:58:42.9488104   URL: http://localhost:5125/api/order/a94b15af-a0ba-4eca-983d-c7daeaf5c253   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 404
+
+12:25:22.7147711   URL: http://localhost:5125/api/restaurant?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:25:41.1532835   URL: http://localhost:5125/api/restaurant?page=1&search=a   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:25:55.7685430   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?menu=provoda&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:25:58.4502930   URL: http://localhost:5125/api/restaurant?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:26:09.2692049   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?menu=provoda&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:26:23.0419759   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?menu=anichu&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:26:29.3724219   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?menu=hihihi&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:26:38.4814741   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:26:44.6996091   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:26:50.5290924   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:27:00.2457056   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?menu=anichu&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:27:08.1196590   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:27:32.7663255   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:27:37.2413606   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=RatingDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:27:45.3420367   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=RatingDesc&page=2   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:27:51.0855695   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=RatingDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:27:58.9216284   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=NameDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:28:14.8395166   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=RatingAsc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:28:22.6842457   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=NameAsc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:28:31.8919776   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=PriceAsc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:28:39.0290817   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:29:04.4707604   URL: http://localhost:5125/api/restaurant/orders?sort=DeliveryAsc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:29:33.8015622   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:29:54.1660599   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating/check   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:10.3423908   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating/check   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:17.8200835   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:19.3162299   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:21.4180741   URL: http://localhost:5125/api/basket   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:25.4470765   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:26.1364514   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:27.0456491   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:28.8905176   URL: http://localhost:5125/api/basket   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:40.2769706   URL: http://localhost:5125/api/basket/reduce/6666c030-340b-481c-8e05-cc7acf12b0d1   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 404
+
+12:30:55.4843750   URL: http://localhost:5125/api/basket/reduce/2439dc15-a7a8-4d5a-883c-40c8214dc155   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:30:57.7650726   URL: http://localhost:5125/api/basket   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:01.9225059   URL: http://localhost:5125/api/basket/delete/2439dc15-a7a8-4d5a-883c-40c8214dc155   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:06.8902615   URL: http://localhost:5125/api/basket   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:09.1803541   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:09.9353488   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:10.6628615   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:11.4231499   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:12.1474736   URL: http://localhost:5125/api/basket/6666c030-340b-481c-8e05-cc7acf12b0d1/8888c030-340b-481c-8e05-cc7acf12b0d2   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:16.2267565   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating/check   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:23.3008393   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:31:49.0928673   URL: http://localhost:5125/api/order   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 400
+
+12:31:56.8283761   URL: http://localhost:5125/api/order   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:32:00.0547625   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:32:09.4068102   URL: http://localhost:5125/api/order/2fff4a3d-fdc7-46ee-89c5-80ed71fdc523   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:32:29.1865652   URL: http://localhost:5125/api/order/cancel/2fff4a3d-fdc7-46ee-89c5-80ed71fdc523   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:32:31.7459685   URL: http://localhost:5125/api/order/2fff4a3d-fdc7-46ee-89c5-80ed71fdc523   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:32:37.8981295   URL: http://localhost:5125/api/order/repeat/2fff4a3d-fdc7-46ee-89c5-80ed71fdc523   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:32:41.4855969   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:32:54.9821367   URL: http://localhost:5125/api/order/4418028c-7a8e-4e86-bbbf-b21bb35ef6e8   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:36:17.8557135   URL: http://localhost:5125/api/order/repeat/2fff4a3d-fdc7-46ee-89c5-80ed71fdc523   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:36:20.9119500   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:36:30.1340122   URL: http://localhost:5125/api/order/cdf9d171-e369-4397-a268-12c3f58b3ef5   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:41:46.2011137   URL: http://localhost:5125/api/order/repeat/2fff4a3d-fdc7-46ee-89c5-80ed71fdc523   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:41:58.3934709   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:42:04.6274633   URL: http://localhost:5125/api/order/cfda9100-4c45-4eb3-bb76-7fa0c019c86d   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:42:14.9063097   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating/check   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:44:24.8656314   URL: http://localhost:5125/api/order?page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:44:41.7279044   URL: http://localhost:5125/api/cook/cfda9100-4c45-4eb3-bb76-7fa0c019c86d   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:44:51.5000590   URL: http://localhost:5125/api/cook/cfda9100-4c45-4eb3-bb76-7fa0c019c86d   METHOD: PATCH   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:44:58.4695431   URL: http://localhost:5125/api/cook/orders?current=true&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:45:22.3141659   URL: http://localhost:5125/api/cook/orders?current=false&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:45:34.7315183   URL: http://localhost:5125/api/cook/orders?current=true&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:45:41.9521575   URL: http://localhost:5125/api/cook/orders?current=true&page=2&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:48:56.8865518   URL: http://localhost:5125/api/cook/orders?current=true&page=1&sort=CreateDesc   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:50:30.8875863   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating/check   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:50:40.2425701   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:50:46.5618170   URL: http://localhost:5125/api/courier/orders?current=false   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:52:10.1388750   URL: http://localhost:5125/api/courier/orders?current=false   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:52:18.8403904   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:52:26.4126017   URL: http://localhost:5125/api/courier/cfda9100-4c45-4eb3-bb76-7fa0c019c86d   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:52:28.9687954   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:52:44.5486902   URL: http://localhost:5125/api/courier/cfda9100-4c45-4eb3-bb76-7fa0c019c86d   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:53:17.6883323   URL: http://localhost:5125/api/courier/cancel/cfda9100-4c45-4eb3-bb76-7fa0c019c86d   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 409
+
+12:53:25.1070187   URL: http://localhost:5125/api/courier/orders?current=true   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:53:31.2266349   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating/check   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+12:54:00.0983279   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating?value=10   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:21:57.6507194   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating?value=10   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:22:05.8128525   URL: http://localhost:5125/api/dish/6666c030-340b-481c-8e05-cc7acf12b0d1/rating?value=8   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:23:13.8337835   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:24:11.1548181   URL: http://localhost:5125/api/manager/menu/1512a6ae-523f-4b51-bc39-bb3537d3223b/6666c030-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:24:23.3584957   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d7?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:24:32.6768872   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:24:44.1630540   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?menu=dadada&sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:25:07.0869199   URL: http://localhost:5125/api/manager/menu/1512a6ae-523f-4b51-bc39-bb3537d3223b/6666c030-340b-481c-8e05-cc7acf12b0d1   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:25:09.0573699   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?menu=dadada&sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:25:11.2921650   URL: http://localhost:5125/api/manager/menu/1512a6ae-523f-4b51-bc39-bb3537d3223b/6666c030-340b-481c-8e05-cc7acf12b0d1   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:25:38.9217881   URL: http://localhost:5125/api/manager/menu/8888c030-340b-481c-8e05-cc7acf12b0d2/6666c030-340b-481c-8e05-cc7acf12b0d1   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 404
+
+13:25:52.6004344   URL: http://localhost:5125/api/manager/8888c030-340b-481c-8e05-cc7acf12b0d2/menu/1512a6ae-523f-4b51-bc39-bb3537d3223b   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:26:01.0165710   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:26:23.0479743   URL: http://localhost:5125/api/manager/menu/1512a6ae-523f-4b51-bc39-bb3537d3223b   METHOD: PUT   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:26:27.8275267   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:26:33.5468182   URL: http://localhost:5125/api/manager/menu/1512a6ae-523f-4b51-bc39-bb3537d3223b   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:33:05.5439305   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:33:59.2409787   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:34:05.9368909   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:37:43.5678353   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:37:55.4411120   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:38:04.5289038   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:38:23.9238369   URL: http://localhost:5125/api/manager/menu/d45eb5d3-45be-499a-8d64-056ff8de3cc9   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:38:26.3425477   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:38:42.8147813   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:38:50.9365822   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:39:01.9350985   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:40:53.4161581   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 400
+
+13:41:58.2339178   URL: http://localhost:5125/api/manager/menu/36831cd4-e79a-4b4c-8097-5526cb9d1fa9   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:42:11.1415032   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:42:43.6822535   URL: http://localhost:5125/api/manager/menu/fd0e71b8-d947-49bb-a4e7-c507b18f1de4   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:44:39.8107032   URL: http://localhost:5125/api/manager/menu/new   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:44:54.1137291   URL: http://localhost:5125/api/manager/menu/f3379d71-53bc-48d8-b3eb-147110e4ea75   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:45:01.0316189   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:45:10.5935393   URL: http://localhost:5125/api/manager/menu/1591b006-7d54-4477-b797-dfc9f91b4fcd   METHOD: DELETE   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+13:45:12.7474498   URL: http://localhost:5125/api/restaurant/8888c030-340b-481c-8e05-cc7acf12b0d2?sort=PriceDesc&page=1   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

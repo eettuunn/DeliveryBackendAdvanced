@@ -5,8 +5,8 @@ public class RestaurantDetailsDto
     public Guid id { get; set; }
     
     public string name { get; set; }
+
+    public List<string> menuNames { get; set; } = new();
     
-    public List<string> menuNames { get; set; }
-    
-    public MenuDto menu { get; set; }
+    public MenuDto? menu { get; set; }
 }

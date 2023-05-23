@@ -153,6 +153,17 @@ public class ManagerService : IManagerService
         }
 
         menuEntity.Dishes = new();
+
+        var rest = await _context
+            .Restaurants
+            .Include(r => r.Menus)
+            .FirstOrDefaultAsync(r => r.Id == menuEntity.Restaurant.Id);
+        var menu = rest.Menus.FirstOrDefault(m => m.Id != menuId);
+        if (menu != null)
+        {
+            menu.IsMain = true;
+        }
+        
         _context.Menus.Remove(menuEntity);
         await _context.SaveChangesAsync();
     }

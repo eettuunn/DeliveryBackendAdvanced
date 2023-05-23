@@ -85,43 +85,50 @@ public class RestaurantService : IRestaurantService
         
         var restDto = _mapper.Map<RestaurantDetailsDto>(rest);
         restDto.menuNames = rest.Menus.Select(menu => menu.Name).ToList();
-        restDto.menu = GetMenu(query.menu, rest);
-        
+        restDto.menu = rest.Menus.Count != 0 ? GetMenu(query.menu, rest) : null;
 
-        var page = query.page ?? 1;
-        var pageDishesCount = _configuration.GetValue<double>("PageSize");
-        var dishCountInMenu = restDto.menu.dishes.Count;
-        var dishesSkip = (int)((page - 1) * pageDishesCount);
-        var dishesTake = (int)Math.Min(dishCountInMenu - (page - 1) * pageDishesCount, pageDishesCount);
-        
-        
-        var dishes = restDto.menu.dishes;
-        SortAndFilterDishes(ref dishes, query);
-        restDto.menu.dishes = dishes;
-        
-        var pageCount = (int)Math.Ceiling(restDto.menu.dishes.Count / pageDishesCount);
-        pageCount = pageCount == 0 ? 1 : pageCount;
-        restDto.menu.dishes = restDto.menu.dishes
-            .Skip(dishesSkip)
-            .Take(dishesTake)
-            .ToList();
-        if (page > pageCount || page < 1)
+        RestaurantPageDto restaurantPage = new RestaurantPageDto();
+        if (restDto.menu != null)
         {
-            throw new BadRequestException("Incorrect current page");
+            var page = query.page ?? 1;
+            var pageDishesCount = _configuration.GetValue<double>("PageSize");
+            var dishCountInMenu = restDto.menu.dishes.Count;
+            var dishesSkip = (int)((page - 1) * pageDishesCount);
+            var dishesTake = (int)Math.Min(dishCountInMenu - (page - 1) * pageDishesCount, pageDishesCount);
+
+
+            var dishes = restDto.menu.dishes;
+            SortAndFilterDishes(ref dishes, query);
+            restDto.menu.dishes = dishes;
+
+            var pageCount = (int)Math.Ceiling(restDto.menu.dishes.Count / pageDishesCount);
+            pageCount = pageCount == 0 ? 1 : pageCount;
+            restDto.menu.dishes = restDto.menu.dishes
+                .Skip(dishesSkip)
+                .Take(dishesTake)
+                .ToList();
+            if (page > pageCount || page < 1)
+            {
+                throw new BadRequestException("Incorrect current page");
+            }
+
+            var pageInfo = new PaginationDto()
+            {
+                current = page,
+                count = pageCount,
+                size = restDto.menu.dishes.Count
+            };
+            restaurantPage = new RestaurantPageDto()
+            {
+                restaurantDetails = restDto,
+                pagination = pageInfo
+            };
+        }
+        else
+        {
+            restaurantPage.restaurantDetails = restDto;
         }
 
-        var pageInfo = new PaginationDto()
-        {
-            current = page,
-            count = pageCount,
-            size = restDto.menu.dishes.Count
-        };
-        RestaurantPageDto restaurantPage = new RestaurantPageDto()
-        {
-            restaurantDetails = restDto,
-            pagination = pageInfo
-        };
-        
         return restaurantPage;
     }
 
@@ -174,7 +181,7 @@ public class RestaurantService : IRestaurantService
         }
     }
 
-    private MenuDto GetMenu(string menuName, RestaurantEntity restaurantEntity)
+    private MenuDto? GetMenu(string menuName, RestaurantEntity restaurantEntity)
     {
         var menuDto = new MenuDto();
         if (menuName == null)

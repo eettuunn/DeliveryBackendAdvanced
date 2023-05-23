@@ -4,5 +4,5 @@ public class RestaurantPageDto
 {
     public RestaurantDetailsDto restaurantDetails { get; set; } = new();
     
-    public PaginationDto pagination { get; set; }
+    public PaginationDto? pagination { get; set; }
 }

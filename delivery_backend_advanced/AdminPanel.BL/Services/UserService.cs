@@ -81,6 +81,7 @@ public class UserService : IUserService
         user.BirthDate = editUser.birthDate.ToUniversalTime();
         user.UserName = editUser.userName ?? user.UserName;
         user.Gender = editUser.gender;
+        user.NormalizedEmail = editUser.email.ToUpper();
 
         var rolesClone = new List<Role>(editUser.roles);
         await ChangeUserRoles(user, rolesClone, editUser.address);

@@ -137,9 +137,8 @@ public class OrderService : IOrderService
         {
             orderDto.dishes[i].amount = orderEntity.Dishes[i].Amount;
         }
-        //todo: no dishes 
+        
         return orderDto;
-
     }
 
     public async Task CancelOrder(Guid orderId, UserInfoDto userInfoDto)
@@ -173,6 +172,7 @@ public class OrderService : IOrderService
         var prevOrder = await _context
             .Orders
             .Include(order => order.Dishes)
+            .ThenInclude(d => d.Dish)
             .Include(order => order.Restaurant)
             .FirstOrDefaultAsync(order => order.Id == orderId && order.Customer.Id == userInfoDto.id) ?? throw new CantFindByIdException("order", orderId);
 
@@ -186,9 +186,23 @@ public class OrderService : IOrderService
             Status = OrderStatus.Created,
             Number = await _context.Orders.CountAsync() + 1,
             Restaurant = prevOrder.Restaurant,
-            Dishes = prevOrder.Dishes,
             Customer = customer
         };
+        foreach (var dib in prevOrder.Dishes)
+        {
+            var newDib = new DishBasketEntity
+            {
+                Id = new Guid(),
+                Amount = dib.Amount,
+                Customer = dib.Customer,
+                Dish = dib.Dish,
+                IsInOrder = true,
+                Restaurant = dib.Restaurant
+            };
+            newOrder.Dishes.Add(newDib);
+            await _context.DishesInBasket.AddAsync(newDib);
+            await _context.SaveChangesAsync();
+        }
 
         await _context.Orders.AddAsync(newOrder);
         await _context.SaveChangesAsync();
@@ -209,6 +223,7 @@ public class OrderService : IOrderService
                     .Where(order => (current == false || order.Status != OrderStatus.Canceled && order.Status != OrderStatus.Delivered) && order.Customer.Id == userId)
                     .AsEnumerable();
                 break;
+            
             case UserRole.Manager:
                 orders = _context
                     .Orders
@@ -217,20 +232,24 @@ public class OrderService : IOrderService
                     .Where(order => order.Restaurant.Managers.Any(m => m.Id == userId))
                     .AsEnumerable();
                 break;
+            
             case UserRole.Cook:
                 orders = _context
                     .Orders
                     .Where(
                         order => !current &&
-                                 order.Status == OrderStatus.Created || current && order.Cook.Id == userId)
+                                 order.Status == OrderStatus.Created || current && order.Cook.Id == userId && 
+                                 (order.Status == OrderStatus.Kitchen || order.Status == OrderStatus.Packaging))
                     .AsEnumerable();
                 break;
+            
             case UserRole.Courier:
                 orders = _context
                     .Orders
                     .Where(
                         order => !current  &&
-                                 order.Status == OrderStatus.Delivery || current && order.Courier.Id == userId)
+                                 order.Status == OrderStatus.Packaging || current && order.Courier.Id == userId &&
+                                 order.Status == OrderStatus.Delivery)
                     .AsEnumerable();
                 break;
         }
