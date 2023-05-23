@@ -18,6 +18,8 @@ public class AppUser : IdentityUser
     
     public CustomerEntity? Customer { get; set; }
     
+    public AdminEntity? Admin { get; set; }
+    
     public string? RefreshToken { get; set; }
     
     public DateTime? RefreshTokenExpiryTime { get; set; }

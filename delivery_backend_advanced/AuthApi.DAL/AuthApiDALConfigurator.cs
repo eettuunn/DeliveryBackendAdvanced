@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AuthApi.Common.Interfaces;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,9 @@ public static class AuthApiDALConfigurator
         {
             var dbContext = scope.ServiceProvider.GetService<AuthDbContext>();
             dbContext?.Database.Migrate();
+
+            var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+            initializer.InitializeAuthDb();
         }
     }
 }

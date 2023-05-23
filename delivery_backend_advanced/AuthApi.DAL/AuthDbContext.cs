@@ -31,10 +31,16 @@ public class AuthDbContext : IdentityDbContext<AppUser>
             .HasOne(x => x.Customer)
             .WithOne(x => x.User)
             .HasForeignKey<CustomerEntity>().IsRequired();
+        
+        modelBuilder.Entity<AppUser>()
+            .HasOne(x => x.Admin)
+            .WithOne(x => x.User)
+            .HasForeignKey<AdminEntity>().IsRequired();
     }
     
     public DbSet<ManagerEntity> Managers { get; set; } 
     public DbSet<CookEntity> Cooks { get; set; } 
     public DbSet<CustomerEntity> Customers { get; set; } 
     public DbSet<CourierEntity> Couriers { get; set; }
+    public DbSet<AdminEntity> Admins { get; set; }
 }

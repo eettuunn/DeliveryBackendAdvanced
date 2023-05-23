@@ -15,6 +15,7 @@ public static class AuthApiServicesConfigurator
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IProfileService, ProfileService>();
+        builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
         builder.Services.AddAutoMapper(typeof(AppMappingProfile));
     }
