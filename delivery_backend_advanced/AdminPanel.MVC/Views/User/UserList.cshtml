@@ -1,4 +1,5 @@
-﻿@model IEnumerable<AdminPanel._Common.Models.User.UserListElement>
+﻿@using AuthApi.Common.Enums
+@model IEnumerable<AdminPanel._Common.Models.User.UserListElement>
 
 <!DOCTYPE html>
 
@@ -12,27 +13,31 @@
         <h2 class="align-self-start pb-2">Пользователи</h2>
         @foreach (var user in Model)
         {
-            <div class="d-flex flex-row justify-content-between align-items-center border bg-light rounded w-100">
-                <div class="p-3">
-                    <div>Имя: <b>@user.userName</b></div>
-                    <div>Почта: @user.email</div>
-                    <div>Гендер: @user.gender</div>
-                    <div>Телефон: @user.phoneNumber</div>
-                    <div>ДР: @user.birthDate.ToShortDateString()</div>
-                    <div class="d-flex flex-row">Роли:\@foreach (var role in user.roles)
-                               {
-                                   @if (role.selected)
-                                   {
-                                       <div>@role.name\</div>
-                                   }
-                               }
+            if (!user.roles.Any(r => r.name == UserRole.Admin && r.selected))
+            {
+                <div class="d-flex flex-row justify-content-between align-items-center border bg-light rounded w-100">
+                    <div class="p-3">
+                        <div>Имя: <b>@user.userName</b></div>
+                        <div>Почта: @user.email</div>
+                        <div>Гендер: @user.gender</div>
+                        <div>Телефон: @user.phoneNumber</div>
+                        <div>ДР: @user.birthDate.ToShortDateString()</div>
+                        <div class="d-flex flex-row">Роли:\
+                            @foreach (var role in user.roles)
+                            {
+                                @if (role.selected)
+                                {
+                                    <div>@role.name\</div>
+                                }
+                            }
                         </div>
+                    </div>
+                    <div class="">
+                        <a asp-controller="User" asp-action="EditUser" asp-route-Id="@user.id.ToString()" class="btn btn-warning m-1">Изменить</a>
+                        <a asp-controller="User" asp-action="DeleteUser" asp-route-id="@user.id" class="btn btn-danger m-1 me-3">Удалить</a>
+                    </div>
                 </div>
-                <div class="">
-                    <a asp-controller="User" asp-action="EditUser" asp-route-Id="@user.id.ToString()" class="btn btn-warning m-1">Изменить</a>
-                    <a asp-controller="User" asp-action="DeleteUser" asp-route-id="@user.id" class="btn btn-danger m-1 me-3">Удалить</a>
-                </div>
-            </div>
+            }
         }
     </div>  
     

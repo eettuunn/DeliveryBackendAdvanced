@@ -1,5 +1,6 @@
 ﻿using AdminPanel._Common.Models.Restaurant;
 using AdminPanel._Common.Models.User;
+using AuthApi.Common.Dtos;
 using AuthApi.DAL.Entities;
 using AutoMapper;
 using delivery_backend_advanced.Models.Entities;
@@ -13,6 +14,7 @@ public class AppMappingProfile : Profile
     {
         CreateMap<RestaurantEntity, RestaurantListElement>();
         CreateMap<RestaurantEntity, RestInfo>();
+        CreateMap<AppUser, TokenUserDto>();
         CreateMap<AppUser, UserListElement>();
         CreateMap<AppUser, UserInfo>();
         CreateMap<IdentityRole, Role>();

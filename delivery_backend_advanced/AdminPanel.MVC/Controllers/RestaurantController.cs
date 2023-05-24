@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdminPanel.Controllers;
 
+[Authorize]
+[Authorize(Roles = "Admin")]
 public class RestaurantController : Controller
 {
     private readonly IRestaurantService _restaurantService;
@@ -26,8 +28,6 @@ public class RestaurantController : Controller
     }
     
     [HttpPost]
-    /*[Authorize]
-    [Authorize(Policy = PolicyNames.Ban)]*/
     public async Task<IActionResult> CreateRest(CreateRest rest)
     {
         if(!ModelState.IsValid)
@@ -70,8 +70,6 @@ public class RestaurantController : Controller
     }
     
     [HttpPost]
-    /*[Authorize]
-    [Authorize(Policy = PolicyNames.Ban)]*/
     public async Task<IActionResult> EditRest(Guid Id, EditRest editRest)
     {
         if(!ModelState.IsValid)

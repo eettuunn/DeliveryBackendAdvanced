@@ -48,11 +48,14 @@
         <div class="d-flex flex-row">
             @for(int i = 0; i < Model.roles.Count; i++)
             {
-                var role = Model.roles[i];
-                @Html.HiddenFor(r => r.roles[i].id)
-                @Html.HiddenFor(r => r.roles[i].name)
-                @Html.CheckBoxFor(r => r.roles[i].selected)
-                @Html.LabelFor(r => r.roles[i].name, role.name.ToString())
+                if (Model.roles[i].name != UserRole.Admin)
+                {
+                    var role = Model.roles[i];
+                    @Html.HiddenFor(r => r.roles[i].id)
+                    @Html.HiddenFor(r => r.roles[i].name)
+                    @Html.CheckBoxFor(r => r.roles[i].selected)
+                    @Html.LabelFor(r => r.roles[i].name, role.name.ToString())
+                }
             }
         </div>
         <div class="mb-3">

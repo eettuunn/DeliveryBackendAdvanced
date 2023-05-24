@@ -30,6 +30,7 @@
     <ItemGroup>
       <ProjectReference Include="..\AdminPanel.Common\AdminPanel.Common.csproj" />
       <ProjectReference Include="..\AdminPanel.BL\AdminPanel.BL.csproj" />
+      <ProjectReference Include="..\AuthApi.BL\AuthApi.BL.csproj" />
       <ProjectReference Include="..\AuthApi.DAL\AuthApi.DAL.csproj" />
       <ProjectReference Include="..\Common\Common.csproj" />
       <ProjectReference Include="..\DeliveryApi.DAL\DeliveryApi.DAL.csproj" />

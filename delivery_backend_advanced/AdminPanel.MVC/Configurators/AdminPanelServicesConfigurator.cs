@@ -22,6 +22,9 @@ public static class AdminPanelServicesConfigurator
         builder.Services.AddScoped<IDbInitializer, DbInitializer>();
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
         
         builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<IAuthorizationHandler, BanPolicyHandler>();

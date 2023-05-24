@@ -5,5 +5,6 @@ public enum UserRole
     Manager,
     Customer,
     Courier,
-    Cook
+    Cook,
+    Admin
 }

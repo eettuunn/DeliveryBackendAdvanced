@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AdminPanel._Common.Models.Auth.Login
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="container bg-light p-4 w-50">
+    <h2>Авторизация</h2>
+    <form asp-action="Login">
+        <div class="mb-3">
+            <label for="input-login" class="form-label">Почта</label>
+            <input asp-for="email" type="text" class="form-control" id="input-login">
+        </div>
+        <div class="mb-3">
+            <label for="input-password" class="form-label">Пароль</label>
+            <input asp-for="password" type="password" class="form-control" id="input-password">
+            <span class="text-danger" asp-validation-for="password"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Войти</button>
+    </form>
+</div>
+</body>
+</html>
