@@ -61,7 +61,7 @@ public class UserService : IUserService
         var customer = await _backendDbContext
             .Customers
             .FirstOrDefaultAsync(c => c.Id == id);
-        userInfo.address = customer.Address;
+        if(customer != null) userInfo.address = customer.Address;
 
         return userInfo;
     }
