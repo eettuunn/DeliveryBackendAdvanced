@@ -106,9 +106,21 @@ public class UserService : IUserService
         await _userManager.DeleteAsync(user);
     }
 
+    public async Task BanUser(Guid id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        user.IsBanned = true;
+        await _userManager.UpdateAsync(user);
+    }
 
-    
-    
+    public async Task UnBanUser(Guid id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        user.IsBanned = false;
+        await _userManager.UpdateAsync(user);
+    }
+
+
     private async Task<List<Role>> GetUserRoles(Guid userId)
     {
         var roles = await _authDbContext

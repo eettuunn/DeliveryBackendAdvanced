@@ -32,7 +32,15 @@
                             }
                         </div>
                     </div>
-                    <div class="">
+                    <div>
+                        @if (user.isBanned)
+                        {
+                            <a asp-controller="User" asp-action="UnBanUser" asp-route-Id="@user.id" class="btn btn-info m-1">Разбанить</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="User" asp-action="BanUser" asp-route-Id="@user.id" class="btn btn-secondary m-1">Забанить</a>
+                        }
                         <a asp-controller="User" asp-action="EditUser" asp-route-Id="@user.id.ToString()" class="btn btn-warning m-1">Изменить</a>
                         <a asp-controller="User" asp-action="DeleteUser" asp-route-id="@user.id" class="btn btn-danger m-1 me-3">Удалить</a>
                     </div>

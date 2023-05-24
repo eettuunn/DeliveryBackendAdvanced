@@ -2,3 +2,9 @@
 
 13:38:03.2622530   URL: http://localhost:5179/auth/register   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+14:21:59.7860556   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:22:10.2975548   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:22:13.3768800   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

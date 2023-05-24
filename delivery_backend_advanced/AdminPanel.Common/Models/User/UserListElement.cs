@@ -17,5 +17,7 @@ public class UserListElement
     public string phoneNumber { get; set; }
 
     public List<Role> roles { get; set; } = new();
+    
+    public bool isBanned { get; set; }
 
 }

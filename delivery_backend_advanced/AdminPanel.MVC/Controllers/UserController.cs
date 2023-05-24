@@ -59,4 +59,16 @@ public class UserController : Controller
         await _userService.DeleteUser(id);
         return RedirectToAction("UserList");
     }
+    
+    public async Task<IActionResult> BanUser(Guid id)
+    {
+        await _userService.BanUser(id);
+        return RedirectToAction("UserList");
+    }
+    
+    public async Task<IActionResult> UnBanUser(Guid id)
+    {
+        await _userService.UnBanUser(id);
+        return RedirectToAction("UserList");
+    }
 }

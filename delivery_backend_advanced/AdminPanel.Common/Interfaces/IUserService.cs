@@ -9,4 +9,6 @@ public interface IUserService
     public Task<UserInfo> GetUserInfo(Guid id);
     public Task EditUser(EditUser editUser, ModelStateDictionary modelState);
     public Task DeleteUser(Guid id);
+    public Task BanUser(Guid id);
+    public Task UnBanUser(Guid id);
 }
