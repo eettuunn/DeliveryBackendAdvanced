@@ -36,7 +36,7 @@ public class CookController : ControllerBase
     }
 
     /// <summary>
-    /// Change status of order when cooked or packaged
+    /// Change status of order when cooked
     /// </summary>
     [HttpPatch]
     [Route("{orderId}")]

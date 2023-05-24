@@ -1,6 +1,6 @@
 ﻿namespace AuthApi.Common.Interfaces;
 
-public interface IDbInitializer
+public interface IDbAuthInitializer
 {
     public void InitializeAuthDb();
 }

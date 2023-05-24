@@ -19,7 +19,7 @@ public static class AdminPanelServicesConfigurator
 
         builder.Services.AddAutoMapper(typeof(AppMappingProfile));
         
-        builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+        builder.Services.AddScoped<IDbAuthInitializer, DbAuthAuthInitializer>();
         builder.Services.AddScoped<IRestaurantService, RestaurantService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IAuthService, AuthService>();

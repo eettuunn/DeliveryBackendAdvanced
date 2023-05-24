@@ -57,7 +57,7 @@ public class CourierController : ControllerBase
     }
     
     /// <summary>
-    /// Courier takes order
+    /// Courier cancel order
     /// </summary>
     [HttpPost]
     [Route("cancel/{orderId}")]

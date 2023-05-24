@@ -8,3 +8,11 @@
 
 14:22:13.3768800   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
 
+14:32:27.9351594   URL: http://localhost:5179/auth/login   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:32:44.8021214   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 401
+
+14:32:50.7794492   URL: http://localhost:5179/profile   METHOD: GET   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+
+14:37:27.4394334   URL: http://localhost:5179/email/confirm   METHOD: POST   PROTOCOL: HTTP/1.1   STATUS_CODE: 200
+

@@ -21,7 +21,7 @@ public static class AuthApiDALConfigurator
             var dbContext = scope.ServiceProvider.GetService<AuthDbContext>();
             dbContext?.Database.Migrate();
 
-            var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+            var initializer = scope.ServiceProvider.GetRequiredService<IDbAuthInitializer>();
             initializer.InitializeAuthDb();
         }
     }

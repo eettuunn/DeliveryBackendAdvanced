@@ -59,7 +59,7 @@
             }
         </div>
         <div class="mb-3">
-            @Html.LabelFor(m => m.selectedRestaurantValue, "Выберите ресторан")
+            @Html.LabelFor(m => m.selectedRestaurantValue, "Выберите ресторан, если выбрана роль Manager или Cook")
             @Html.DropDownListFor(m => m.selectedRestaurantValue, Model.restaurantIds)
         </div>
         <button type="submit" class="btn btn-success">Редактировать</button>

@@ -9,14 +9,14 @@ using Microsoft.Extensions.Configuration;
 
 namespace AuthApi.BL.Services;
 
-public class DbInitializer : IDbInitializer
+public class DbAuthAuthInitializer : IDbAuthInitializer
 {
     private readonly AuthDbContext _context;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<AppUser> _userManager;
     private readonly IConfiguration _configuration;
 
-    public DbInitializer(AuthDbContext context, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, IConfiguration configuration)
+    public DbAuthAuthInitializer(AuthDbContext context, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, IConfiguration configuration)
     {
         _context = context;
         _roleManager = roleManager;
